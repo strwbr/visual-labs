@@ -1,0 +1,17 @@
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\Visual_lab_1.exe
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\Visual_lab_1.deps.json
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\Visual_lab_1.runtimeconfig.json
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\Visual_lab_1.runtimeconfig.dev.json
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\Visual_lab_1.dll
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\Visual_lab_1.pdb
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.csproj.AssemblyReference.cache
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.FormController.resources
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.Properties.Resources.resources
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.csproj.GenerateResource.cache
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.AssemblyInfoInputs.cache
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.AssemblyInfo.cs
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.csproj.CoreCompileInputs.cache
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.dll
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.pdb
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\obj\Release\netcoreapp3.1\Visual_lab_1.genruntimeconfig.cache

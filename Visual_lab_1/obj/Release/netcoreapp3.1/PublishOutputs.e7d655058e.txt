@@ -1,0 +1,5 @@
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\publish\Visual_lab_1.exe
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\publish\Visual_lab_1.dll
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\publish\Visual_lab_1.deps.json
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\publish\Visual_lab_1.runtimeconfig.json
+C:\Users\boris\source\repos\Visual_lab_1\Visual_lab_1\bin\Release\netcoreapp3.1\publish\Visual_lab_1.pdb
