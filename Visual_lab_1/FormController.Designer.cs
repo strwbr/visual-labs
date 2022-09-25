@@ -51,6 +51,10 @@ namespace Visual_lab_1
             this.label2 = new System.Windows.Forms.Label();
             this.picturePanel = new System.Windows.Forms.Panel();
             this.displayedPicturePanel = new System.Windows.Forms.PictureBox();
+            this.lensPc = new System.Windows.Forms.PictureBox();
+            this.normalizeCb = new System.Windows.Forms.CheckBox();
+            this.interpolateCb = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.shiftCodesGb.SuspendLayout();
@@ -58,6 +62,7 @@ namespace Visual_lab_1
             this.groupBox6.SuspendLayout();
             this.picturePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.displayedPicturePanel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lensPc)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -268,7 +273,7 @@ namespace Visual_lab_1
             this.picturePanel.Controls.Add(this.displayedPicturePanel);
             this.picturePanel.Location = new System.Drawing.Point(13, 90);
             this.picturePanel.Name = "picturePanel";
-            this.picturePanel.Size = new System.Drawing.Size(910, 500);
+            this.picturePanel.Size = new System.Drawing.Size(596, 500);
             this.picturePanel.TabIndex = 9;
             // 
             // displayedPicturePanel
@@ -280,11 +285,56 @@ namespace Visual_lab_1
             this.displayedPicturePanel.TabIndex = 0;
             this.displayedPicturePanel.TabStop = false;
             // 
+            // lensPc
+            // 
+            this.lensPc.Location = new System.Drawing.Point(645, 93);
+            this.lensPc.Name = "lensPc";
+            this.lensPc.Size = new System.Drawing.Size(466, 443);
+            this.lensPc.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.lensPc.TabIndex = 10;
+            this.lensPc.TabStop = false;
+            // 
+            // normalizeCb
+            // 
+            this.normalizeCb.AutoSize = true;
+            this.normalizeCb.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.normalizeCb.Location = new System.Drawing.Point(938, 30);
+            this.normalizeCb.Name = "normalizeCb";
+            this.normalizeCb.Size = new System.Drawing.Size(168, 23);
+            this.normalizeCb.TabIndex = 11;
+            this.normalizeCb.Text = "Нормировать яркость";
+            this.normalizeCb.UseVisualStyleBackColor = true;
+            // 
+            // interpolateCb
+            // 
+            this.interpolateCb.AutoSize = true;
+            this.interpolateCb.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.interpolateCb.Location = new System.Drawing.Point(938, 53);
+            this.interpolateCb.Name = "interpolateCb";
+            this.interpolateCb.Size = new System.Drawing.Size(141, 23);
+            this.interpolateCb.TabIndex = 12;
+            this.interpolateCb.Text = "Интерполировать";
+            this.interpolateCb.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(691, 596);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(293, 50);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FormController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(944, 771);
+            this.ClientSize = new System.Drawing.Size(1150, 771);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.interpolateCb);
+            this.Controls.Add(this.normalizeCb);
+            this.Controls.Add(this.lensPc);
             this.Controls.Add(this.picturePanel);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox4);
@@ -305,7 +355,9 @@ namespace Visual_lab_1
             this.picturePanel.ResumeLayout(false);
             this.picturePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.displayedPicturePanel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lensPc)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -333,6 +385,10 @@ namespace Visual_lab_1
         private System.Windows.Forms.TextBox brightnessTb;
         private System.Windows.Forms.Panel picturePanel;
         private System.Windows.Forms.PictureBox displayedPicturePanel;
+        private System.Windows.Forms.PictureBox lensPc;
+        private System.Windows.Forms.CheckBox normalizeCb;
+        private System.Windows.Forms.CheckBox interpolateCb;
+        private System.Windows.Forms.Button button1;
     }
 }
 

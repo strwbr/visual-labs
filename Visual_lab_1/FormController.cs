@@ -12,6 +12,9 @@ namespace Visual_lab_1
         ImageInfo imageInfo;
         // Текущее изображение, с параметрами, заданными пользователем
         Bitmap currentImage;
+
+        Bitmap fragment; // Фрагмент изображения, выбранный пользователем
+        Bitmap scaledImage; // Увеличенное изображение
         // Сдвиг изображения (при запуске приложения сдвиг = 0)
         int codeShift = 0;
         // Верхняя граница изображения (при запуске приложения граница = 0)
@@ -28,12 +31,43 @@ namespace Visual_lab_1
             setTopLinesBtn.Click += SetTopLinesBtn_Click;
             // движение курсора по изображению
             displayedPicturePanel.MouseMove += DisplayedPicturePanel_MouseMove;
+            displayedPicturePanel.MouseClick += DisplayedPicturePanel_MouseClick;
             // на радио-кнопки из группы "Сдвигать коды на"
             for (int i = 0; i < shiftCodesGb.Controls.Count; i++)
             {
                 RadioButton rb = (RadioButton)shiftCodesGb.Controls[i];
                 rb.CheckedChanged += ShiftCodesRb_CheckedChanged;
             }
+
+        }
+
+        private void DisplayedPicturePanel_MouseClick(object sender, MouseEventArgs e)
+        {
+            // Размер фрагмента 60х60 - вынести получение в отдельный textbox
+            int fragSize = 60;
+            int radius = fragSize / 2;
+            Point clickLocation = e.Location;
+            int x, y;
+
+            x = clickLocation.X - radius;
+            y = clickLocation.Y - radius;
+
+            if (clickLocation.X - radius < 0) x = 0;
+            if (clickLocation.Y - radius < 0) y = 0;
+
+            if (clickLocation.X + radius > currentImage.Width) x = currentImage.Width - fragSize;
+            if (clickLocation.Y + radius > currentImage.Height) y = currentImage.Height - fragSize;
+
+            fragment = currentImage.Clone(new Rectangle(x, y, fragSize, fragSize), currentImage.PixelFormat);
+            scaledImage = IsNeedToInterpolate()
+                ? ImageController.BilinearInterpolationScaling(fragment, 5)
+                : ImageController.NearestNeighborScaling(fragment, 5);
+            lensPc.Image = scaledImage;
+        }
+
+        private bool IsNeedToInterpolate()
+        {
+            return interpolateCb.Checked;
         }
 
         /* Обработчик нажатия на кнопку "Загрузить" для загрузки файла .mbv
@@ -145,6 +179,8 @@ namespace Visual_lab_1
                 "Файл не загружен");
         }
 
+
+
         /* Получение пути к файлу с видеоданными изображения, выбранному пользователем
          * Возвращаемое значение: строковое значение пути к файлу
          */
@@ -180,5 +216,11 @@ namespace Visual_lab_1
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ImageController.ResizeBilinear(imageInfo);
+        }
+
+        
     }
 }
