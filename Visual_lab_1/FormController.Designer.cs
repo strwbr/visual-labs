@@ -54,7 +54,15 @@ namespace Visual_lab_1
             this.lensPc = new System.Windows.Forms.PictureBox();
             this.normalizeCb = new System.Windows.Forms.CheckBox();
             this.interpolateCb = new System.Windows.Forms.CheckBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.shiftCodesGb.SuspendLayout();
@@ -63,6 +71,9 @@ namespace Visual_lab_1
             this.picturePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.displayedPicturePanel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lensPc)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -70,9 +81,9 @@ namespace Visual_lab_1
             this.groupBox1.Controls.Add(this.loadFileBtn);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(12, 13);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(443, 70);
+            this.groupBox1.Size = new System.Drawing.Size(409, 72);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Загрузка tiff-файла";
@@ -91,7 +102,7 @@ namespace Visual_lab_1
             this.groupBox2.Controls.Add(this.loadedFileLbl);
             this.groupBox2.Location = new System.Drawing.Point(129, 15);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(308, 49);
+            this.groupBox2.Size = new System.Drawing.Size(272, 49);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Загружено изображение";
@@ -112,9 +123,9 @@ namespace Visual_lab_1
             this.shiftCodesGb.Controls.Add(this.codeShift_1);
             this.shiftCodesGb.Controls.Add(this.codeShift_0);
             this.shiftCodesGb.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.shiftCodesGb.Location = new System.Drawing.Point(461, 14);
+            this.shiftCodesGb.Location = new System.Drawing.Point(427, 13);
             this.shiftCodesGb.Name = "shiftCodesGb";
-            this.shiftCodesGb.Size = new System.Drawing.Size(200, 70);
+            this.shiftCodesGb.Size = new System.Drawing.Size(182, 72);
             this.shiftCodesGb.TabIndex = 1;
             this.shiftCodesGb.TabStop = false;
             this.shiftCodesGb.Text = "Сдвигать коды на:";
@@ -122,7 +133,7 @@ namespace Visual_lab_1
             // codeShift_2
             // 
             this.codeShift_2.AutoSize = true;
-            this.codeShift_2.Location = new System.Drawing.Point(128, 30);
+            this.codeShift_2.Location = new System.Drawing.Point(110, 30);
             this.codeShift_2.Name = "codeShift_2";
             this.codeShift_2.Size = new System.Drawing.Size(35, 23);
             this.codeShift_2.TabIndex = 2;
@@ -132,7 +143,7 @@ namespace Visual_lab_1
             // codeShift_1
             // 
             this.codeShift_1.AutoSize = true;
-            this.codeShift_1.Location = new System.Drawing.Point(90, 30);
+            this.codeShift_1.Location = new System.Drawing.Point(69, 30);
             this.codeShift_1.Name = "codeShift_1";
             this.codeShift_1.Size = new System.Drawing.Size(35, 23);
             this.codeShift_1.TabIndex = 1;
@@ -142,7 +153,7 @@ namespace Visual_lab_1
             // codeShift_0
             // 
             this.codeShift_0.AutoSize = true;
-            this.codeShift_0.Location = new System.Drawing.Point(52, 30);
+            this.codeShift_0.Location = new System.Drawing.Point(26, 30);
             this.codeShift_0.Name = "codeShift_0";
             this.codeShift_0.Size = new System.Drawing.Size(35, 23);
             this.codeShift_0.TabIndex = 0;
@@ -154,9 +165,9 @@ namespace Visual_lab_1
             this.groupBox4.Controls.Add(this.setTopLinesBtn);
             this.groupBox4.Controls.Add(this.topImgLinesTb);
             this.groupBox4.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupBox4.Location = new System.Drawing.Point(667, 14);
+            this.groupBox4.Location = new System.Drawing.Point(615, 13);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(256, 70);
+            this.groupBox4.Size = new System.Drawing.Size(256, 72);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Верхние строки изображений:";
@@ -273,7 +284,7 @@ namespace Visual_lab_1
             this.picturePanel.Controls.Add(this.displayedPicturePanel);
             this.picturePanel.Location = new System.Drawing.Point(13, 90);
             this.picturePanel.Name = "picturePanel";
-            this.picturePanel.Size = new System.Drawing.Size(596, 500);
+            this.picturePanel.Size = new System.Drawing.Size(573, 500);
             this.picturePanel.TabIndex = 9;
             // 
             // displayedPicturePanel
@@ -287,7 +298,7 @@ namespace Visual_lab_1
             // 
             // lensPc
             // 
-            this.lensPc.Location = new System.Drawing.Point(645, 93);
+            this.lensPc.Location = new System.Drawing.Point(592, 91);
             this.lensPc.Name = "lensPc";
             this.lensPc.Size = new System.Drawing.Size(466, 443);
             this.lensPc.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -298,7 +309,7 @@ namespace Visual_lab_1
             // 
             this.normalizeCb.AutoSize = true;
             this.normalizeCb.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.normalizeCb.Location = new System.Drawing.Point(938, 30);
+            this.normalizeCb.Location = new System.Drawing.Point(31, 35);
             this.normalizeCb.Name = "normalizeCb";
             this.normalizeCb.Size = new System.Drawing.Size(168, 23);
             this.normalizeCb.TabIndex = 11;
@@ -309,31 +320,118 @@ namespace Visual_lab_1
             // 
             this.interpolateCb.AutoSize = true;
             this.interpolateCb.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.interpolateCb.Location = new System.Drawing.Point(938, 53);
+            this.interpolateCb.Location = new System.Drawing.Point(31, 67);
             this.interpolateCb.Name = "interpolateCb";
             this.interpolateCb.Size = new System.Drawing.Size(141, 23);
             this.interpolateCb.TabIndex = 12;
             this.interpolateCb.Text = "Интерполировать";
             this.interpolateCb.UseVisualStyleBackColor = true;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.groupBox7);
+            this.groupBox3.Controls.Add(this.interpolateCb);
+            this.groupBox3.Controls.Add(this.normalizeCb);
+            this.groupBox3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.groupBox3.Location = new System.Drawing.Point(274, 596);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(371, 116);
+            this.groupBox3.TabIndex = 13;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Масштабирование";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.button1);
+            this.groupBox5.Controls.Add(this.textBox1);
+            this.groupBox5.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.groupBox5.Location = new System.Drawing.Point(877, 13);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(208, 72);
+            this.groupBox5.TabIndex = 13;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Размер фрагмента";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(17, 32);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(54, 25);
+            this.textBox1.TabIndex = 0;
+            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(691, 596);
+            this.button1.Location = new System.Drawing.Point(94, 30);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(293, 50);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "button1";
+            this.button1.Size = new System.Drawing.Size(99, 29);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "<-- задать";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.radioButton4);
+            this.groupBox7.Controls.Add(this.radioButton3);
+            this.groupBox7.Controls.Add(this.radioButton2);
+            this.groupBox7.Controls.Add(this.radioButton1);
+            this.groupBox7.Location = new System.Drawing.Point(221, 14);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(144, 96);
+            this.groupBox7.TabIndex = 14;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Увеличить в:";
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(25, 28);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(35, 23);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "1";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(25, 56);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(35, 23);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "3";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(81, 28);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(35, 23);
+            this.radioButton3.TabIndex = 2;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "5";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(81, 56);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(35, 23);
+            this.radioButton4.TabIndex = 3;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "7";
+            this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // FormController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1150, 771);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.interpolateCb);
-            this.Controls.Add(this.normalizeCb);
+            this.ClientSize = new System.Drawing.Size(1134, 771);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.lensPc);
             this.Controls.Add(this.picturePanel);
             this.Controls.Add(this.groupBox6);
@@ -356,6 +454,12 @@ namespace Visual_lab_1
             this.picturePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.displayedPicturePanel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lensPc)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -388,7 +492,15 @@ namespace Visual_lab_1
         private System.Windows.Forms.PictureBox lensPc;
         private System.Windows.Forms.CheckBox normalizeCb;
         private System.Windows.Forms.CheckBox interpolateCb;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.RadioButton radioButton4;
     }
 }
 

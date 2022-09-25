@@ -67,8 +67,17 @@ namespace Visual_lab_1
             // Получение массива кодов яркостей пикселей
             ushort[] pixels = GetPixels(imageInfo, shift, topLine);
 
-            // Создание объекта Bitmap с шириной width и высотой height.
-            Bitmap image = new Bitmap(width, height);
+            // Создание объекта Bitmap
+            Bitmap image;
+            // Заполнение пикселями - установка цветов
+            FillBitmap(pixels, width, height, out image);
+
+            return image;
+        }
+
+        private static void FillBitmap(ushort[] pixels, int width, int height, out Bitmap bitmap)
+        {
+            Bitmap temp = new Bitmap(width, height);
             // Счетчик количества пикселей
             int pixelNum = 0;
             // Задание цветов у пикселей в bitmap
@@ -76,14 +85,12 @@ namespace Visual_lab_1
             {
                 for (int k = 0; k < width; k++)
                 {
-                    ushort color = pixels[pixelNum];
                     // Значения цветов R, G, B равны
-                    image.SetPixel(k, i, Color.FromArgb(color, color, color));
-                    //image.SetPixel(k, i, Color.FromArgb(pixels[pixelNum], pixels[pixelNum], pixels[pixelNum]));
+                    temp.SetPixel(k, i, Color.FromArgb(pixels[pixelNum], pixels[pixelNum], pixels[pixelNum]));
                     pixelNum++;
                 }
             }
-            return image;
+            bitmap = temp;
         }
 
         public static Bitmap NearestNeighborScaling(Bitmap fragment, int scale)
@@ -110,20 +117,9 @@ namespace Visual_lab_1
                 }
             }
 
-            Bitmap scaledImage = new Bitmap(newWidth, newHeight);
-            int pixelNum = 0;
-            // Задание цветов у пикселей в bitmap
-            for (int i = 0; i < newHeight; i++)
-            {
-                for (int k = 0; k < newWidth; k++)
-                {
-                    ushort color = scaledPixels[pixelNum];
-                    // Значения цветов R, G, B равны
-                    scaledImage.SetPixel(k, i, Color.FromArgb(color, color, color));
-                    //image.SetPixel(k, i, Color.FromArgb(pixels[pixelNum], pixels[pixelNum], pixels[pixelNum]));
-                    pixelNum++;
-                }
-            }
+            Bitmap scaledImage;
+            FillBitmap(scaledPixels, newWidth, newHeight, out scaledImage);
+
             return scaledImage;
         }
 
@@ -162,126 +158,10 @@ namespace Visual_lab_1
                 }
             }
 
-            Bitmap scaledImage = new Bitmap(newWidth, newHeight);
-            int pixelNum = 0;
-            // Задание цветов у пикселей в bitmap
-            for (int i = 0; i < newHeight; i++)
-            {
-                for (int k = 0; k < newWidth; k++)
-                {
-                    ushort color = scaledPixels[pixelNum];
-                    // Значения цветов R, G, B равны
-                    scaledImage.SetPixel(k, i, Color.FromArgb(color, color, color));
-                    //image.SetPixel(k, i, Color.FromArgb(pixels[pixelNum], pixels[pixelNum], pixels[pixelNum]));
-                    pixelNum++;
-                }
-            }
+            Bitmap scaledImage;
+            FillBitmap(scaledPixels, newWidth, newHeight, out scaledImage);
+
             return scaledImage;
-        }
-
-
-        // возвращать Bitmap
-        public static void ResizeNN(ImageInfo imageInfo)
-        {
-            ushort[] origPix = GetPixels(imageInfo, 0, 2900);
-            int w1 = 500, h1 = 100;
-            int w2 = w1 * 10, h2 = h1 * 10;
-
-            ushort[] resizePix = new ushort[w2 * h2];
-            Bitmap resizeImg = new Bitmap(w2, h2);
-
-            int x_ratio = (int)((w1 << 16) / w2) + 1;
-            int y_ratio = (int)((h1 << 16) / h2) + 1;
-
-            int x2, y2;
-            for (int i = 0; i < h2; i++)
-            {
-                for (int j = 0; j < w2; j++)
-                {
-                    x2 = ((j * x_ratio) >> 16);
-                    y2 = ((i * y_ratio) >> 16);
-                    resizePix[(i * w2) + j] = origPix[(y2 * w1) + x2];
-                }
-            }
-            int count1 = 0;
-
-            // В отдельный метод вынести
-            for (int i = 0; i < h2; i++)
-            {
-                for (int k = 0; k < w2; k++)
-                {
-                    resizeImg.SetPixel(k, i, Color.FromArgb(resizePix[count1], resizePix[count1], resizePix[count1]));
-                    count1++;
-                }
-            }
-            resizeImg.Save("imgResize.jpg", ImageFormat.Jpeg);
-        }
-
-        public static void ResizeBilinear(ImageInfo imageInfo)
-        {
-            ushort[] origPix = GetPixels(imageInfo, 0, 2900);
-
-            ushort min = origPix[0], max = origPix[0];
-            for (int i = 1; i < origPix.Length; i++)
-            {
-                if (max < origPix[i]) max = origPix[i];
-                if (min > origPix[i]) min = origPix[i];
-            }
-
-
-            int w1 = 500, h1 = 100;
-            int w2 = w1 * 10, h2 = h1 * 10;
-
-            ushort[] resizePix = new ushort[w2 * h2];
-            Bitmap resizeImg = new Bitmap(w2, h2);
-
-            int A, B, C, D, x, y, index;
-            ushort gray;
-            float x_ratio = ((float)(w1 - 1)) / w2;
-            float y_ratio = ((float)(h1 - 1)) / h2;
-            float x_diff, y_diff, ya, yb;
-            int offset = 0;
-            for (int i = 0; i < h2; i++)
-            {
-                for (int j = 0; j < w2; j++)
-                {
-                    x = (int)(x_ratio * j);
-                    y = (int)(y_ratio * i);
-                    x_diff = (x_ratio * j) - x;
-                    y_diff = (y_ratio * i) - y;
-                    index = y * w1 + x;
-
-                    // range is 0 to 255 thus bitwise AND with 0xff
-                    D = origPix[index + w1 + 1];
-                    A = origPix[index];
-                    B = origPix[index + 1];
-                    C = origPix[index + w1];
-
-
-                    // Y = A(1-w)(1-h) + B(w)(1-h) + C(h)(1-w) + Dwh
-                    gray = (ushort)(
-                            A * (1 - x_diff) * (1 - y_diff) + B * (x_diff) * (1 - y_diff) +
-                            C * (y_diff) * (1 - x_diff) + D * (x_diff * y_diff)
-                            );
-
-                    //gray = (ushort)(255 * ((resizePix[offset] - min) / (max - min)));
-
-                    resizePix[offset++] = gray;
-                }
-            }
-
-            int count1 = 0;
-
-            // В отдельный метод вынести
-            for (int i = 0; i < h2; i++)
-            {
-                for (int k = 0; k < w2; k++)
-                {
-                    resizeImg.SetPixel(k, i, Color.FromArgb(resizePix[count1], resizePix[count1], resizePix[count1]));
-                    count1++;
-                }
-            }
-            resizeImg.Save("imgBilinear.jpg", ImageFormat.Jpeg);
         }
     }
 }
