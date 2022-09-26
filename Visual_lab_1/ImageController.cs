@@ -163,5 +163,19 @@ namespace Visual_lab_1
 
             return scaledImage;
         }
+
+        //public static Bitmap OverviewImage(Bitmap image)
+        //{
+        //    //Bitmap overviewImage = new Bitmap(image.Width, image.Height/2);
+        //    //for(int i = 0, j = 0; i < image.Height; i++, j+=2)
+        //    //{
+        //    //    for(int k = 0; k < image.Width; i++)
+        //    //    {
+        //    //        ushort color = image.GetPixel(k, j).R;
+        //    //        overviewImage.SetPixel(k, i, Color.FromArgb(color, color, color));
+        //    //    }
+        //    //}
+        //    //return overviewImage;
+        //}
     }
 }

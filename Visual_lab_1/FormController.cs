@@ -20,6 +20,8 @@ namespace Visual_lab_1
         // Верхняя граница изображения (при запуске приложения граница = 0)
         int topLines = 0;
 
+        bool isInterpolate = false;
+
         public FormController()
         {
             InitializeComponent();
@@ -46,26 +48,48 @@ namespace Visual_lab_1
             if (imageInfo != null)
             {
                 // Размер фрагмента 60х60 - вынести получение в отдельный textbox
-                int fragSize = 60;
-                int radius = fragSize / 2;
-                Point clickLocation = e.Location;
-                int x, y;
+                fragment = GetImageFragment(e.Location, 60);
+                SetScaledImage();
 
-                x = clickLocation.X - radius;
-                y = clickLocation.Y - radius;
 
-                if (clickLocation.X - radius < 0) x = 0;
-                if (clickLocation.Y - radius < 0) y = 0;
-
-                if (clickLocation.X + radius > currentImage.Width) x = currentImage.Width - fragSize;
-                if (clickLocation.Y + radius > currentImage.Height) y = currentImage.Height - fragSize;
-
-                fragment = currentImage.Clone(new Rectangle(x, y, fragSize, fragSize), currentImage.PixelFormat);
-                scaledImage = IsNeedToInterpolate()
-                    ? ImageController.BilinearInterpolationScaling(fragment, 5)
-                    : ImageController.NearestNeighborScaling(fragment, 5);
-                lensPc.Image = scaledImage;
+                //scaledImage = fragment;
+                //scaledImage = IsNeedToInterpolate()
+                //    ? ImageController.BilinearInterpolationScaling(fragment, 5)
+                //    : ImageController.NearestNeighborScaling(fragment, 5);
+                //lensPc.Image = scaledImage;
             }
+        }
+
+        private Bitmap GetImageFragment(Point clickLocation, int fragSize)
+        {
+            int radius = fragSize / 2;
+            int x, y;
+
+            x = clickLocation.X - radius;
+            y = clickLocation.Y - radius;
+
+            if (clickLocation.X - radius < 0) x = 0;
+            if (clickLocation.Y - radius < 0) y = 0;
+
+            if (clickLocation.X + radius > currentImage.Width) x = currentImage.Width - fragSize;
+            if (clickLocation.Y + radius > currentImage.Height) y = currentImage.Height - fragSize;
+
+            return currentImage.Clone(new Rectangle(x, y, fragSize, fragSize), currentImage.PixelFormat);
+        }
+
+        private void SetScaledImage()
+        {
+            scaledImage = isInterpolate
+                ? ImageController.BilinearInterpolationScaling(fragment, 5)
+                : ImageController.NearestNeighborScaling(fragment, 5);
+            lensPc.Image = scaledImage;
+        }
+
+        private void interpolateCb_CheckedChanged(object sender, EventArgs e)
+        {
+            isInterpolate = interpolateCb.Checked;
+            SetScaledImage();
+            //lensPc.Image = 
         }
 
         private bool IsNeedToInterpolate()
@@ -216,5 +240,12 @@ namespace Visual_lab_1
         {
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+
+        private void normalizeCb_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }
