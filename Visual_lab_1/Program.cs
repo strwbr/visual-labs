@@ -15,6 +15,9 @@ namespace Visual_lab_1
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormController());
+            
         }
+
+        
     }
 }

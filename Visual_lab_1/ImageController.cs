@@ -113,7 +113,9 @@ namespace Visual_lab_1
                 {
                     x2 = (k * xRatio) >> 16;
                     y2 = (i * yRatio) >> 16;
-                    scaledPixels[i * newWidth + k] = fragment.GetPixel(x2, y2).R;
+                    ushort color = fragment.GetPixel(x2, y2).R;
+                    
+                    scaledPixels[i * newWidth + k] = color;
                 }
             }
 
@@ -121,6 +123,32 @@ namespace Visual_lab_1
             FillBitmap(scaledPixels, newWidth, newHeight, out scaledImage);
 
             return scaledImage;
+        }
+
+        public static Bitmap NormalizeBrightness(Bitmap fragment)
+        {
+            int min = fragment.GetPixel(0, 0).R;
+            int max = fragment.GetPixel(0, 0).R;
+            for(int i = 0; i < fragment.Height; i++)
+            {
+                for(int k = 0; k < fragment.Width; k++)
+                {
+                    ushort color = fragment.GetPixel(k, i).R;
+                    if (min > color) min = color;
+                    if (max < color) max = color;
+                }
+            }
+            Bitmap normalizeFrag = new Bitmap(fragment.Width, fragment.Height);
+            for(int i = 0; i < fragment.Height; i++)
+            {
+                for(int k = 0; k < fragment.Width; k++)
+                {
+                    ushort color = fragment.GetPixel(k, i).R;
+                    color = (ushort)(255 * (color - min) / (max - min));
+                    normalizeFrag.SetPixel(k, i, Color.FromArgb(color, color, color));
+                }
+            }
+            return normalizeFrag;
         }
 
         public static Bitmap BilinearInterpolationScaling(Bitmap fragment, int scale)
@@ -164,18 +192,19 @@ namespace Visual_lab_1
             return scaledImage;
         }
 
-        //public static Bitmap OverviewImage(Bitmap image)
-        //{
-        //    //Bitmap overviewImage = new Bitmap(image.Width, image.Height/2);
-        //    //for(int i = 0, j = 0; i < image.Height; i++, j+=2)
-        //    //{
-        //    //    for(int k = 0; k < image.Width; i++)
-        //    //    {
-        //    //        ushort color = image.GetPixel(k, j).R;
-        //    //        overviewImage.SetPixel(k, i, Color.FromArgb(color, color, color));
-        //    //    }
-        //    //}
-        //    //return overviewImage;
-        //}
+        public static Bitmap OverviewImage(Bitmap image)
+        {
+            int m = 5;
+            Bitmap overviewImage = new Bitmap(image.Width / m, image.Height / m);
+            for (int i = 0, j = 0; i < image.Height; i += m, j++)
+            {
+                for (int k = 0, t = 0; k < image.Width; k += m, t++)
+                {
+                    ushort color = image.GetPixel(k, i).R;
+                    overviewImage.SetPixel(t, j, Color.FromArgb(color, color, color));
+                }
+            }
+            return overviewImage;
+        }
     }
 }

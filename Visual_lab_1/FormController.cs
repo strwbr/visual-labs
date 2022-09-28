@@ -12,15 +12,12 @@ namespace Visual_lab_1
         ImageInfo imageInfo;
         // Текущее изображение, с параметрами, заданными пользователем
         Bitmap currentImage;
-
-        Bitmap fragment; // Фрагмент изображения, выбранный пользователем
-        Bitmap scaledImage; // Увеличенное изображение
+        // Фрагмент изображения, выбранный пользователем
+        Bitmap fragment;
         // Сдвиг изображения (при запуске приложения сдвиг = 0)
         int codeShift = 0;
         // Верхняя граница изображения (при запуске приложения граница = 0)
         int topLines = 0;
-
-        bool isInterpolate = false;
 
         public FormController()
         {
@@ -33,6 +30,7 @@ namespace Visual_lab_1
             setTopLinesBtn.Click += SetTopLinesBtn_Click;
             // движение курсора по изображению
             displayedPicturePanel.MouseMove += DisplayedPicturePanel_MouseMove;
+            // нажатие клавиши мыши по изображению
             displayedPicturePanel.MouseClick += DisplayedPicturePanel_MouseClick;
             // на радио-кнопки из группы "Сдвигать коды на"
             for (int i = 0; i < shiftCodesGb.Controls.Count; i++)
@@ -40,7 +38,36 @@ namespace Visual_lab_1
                 RadioButton rb = (RadioButton)shiftCodesGb.Controls[i];
                 rb.CheckedChanged += ShiftCodesRb_CheckedChanged;
             }
+            // на радио-кнопки из группы "Увеличить в:"
+            for (int i = 0; i < scaleValueGb.Controls.Count; i++)
+            {
+                RadioButton rb = (RadioButton)scaleValueGb.Controls[i];
+                rb.CheckedChanged += scaleValueRb_CheckedChanged;
+            }
+        }
 
+        private void scaleValueRb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (fragment != null)
+            {
+                //RadioButton rb = sender as RadioButton;
+                //if (rb.Checked)
+                //{
+                SetFragment(fragment, normalizeCb.Checked, interpolateCb.Checked);
+                //} 
+            }
+        }
+
+        private int GetScaleValue()
+        {
+            int scaleValue = 1;
+            for (int i = 0; i < scaleValueGb.Controls.Count; i++)
+            {
+                RadioButton rb = (RadioButton)scaleValueGb.Controls[i];
+                if (rb.Checked)
+                    scaleValue = Convert.ToInt32(rb.Text);
+            }
+            return scaleValue;
         }
 
         private void DisplayedPicturePanel_MouseClick(object sender, MouseEventArgs e)
@@ -48,16 +75,22 @@ namespace Visual_lab_1
             if (imageInfo != null)
             {
                 // Размер фрагмента 60х60 - вынести получение в отдельный textbox
-                fragment = GetImageFragment(e.Location, 60);
-                SetScaledImage();
+                int fragSize = 60;
 
-
-                //scaledImage = fragment;
-                //scaledImage = IsNeedToInterpolate()
-                //    ? ImageController.BilinearInterpolationScaling(fragment, 5)
-                //    : ImageController.NearestNeighborScaling(fragment, 5);
-                //lensPc.Image = scaledImage;
+                fragment = GetImageFragment(e.Location, fragSize);
+                SetFragment(fragment, normalizeCb.Checked, interpolateCb.Checked);
             }
+        }
+
+        private void SetFragment(Bitmap frag, bool normalize, bool interpolate)
+        {
+            if (normalize) frag = ImageController.NormalizeBrightness(frag);
+
+            frag = interpolate
+                ? ImageController.BilinearInterpolationScaling(frag, GetScaleValue())
+                : ImageController.NearestNeighborScaling(frag, GetScaleValue());
+
+            lensPc.Image = frag;
         }
 
         private Bitmap GetImageFragment(Point clickLocation, int fragSize)
@@ -77,24 +110,27 @@ namespace Visual_lab_1
             return currentImage.Clone(new Rectangle(x, y, fragSize, fragSize), currentImage.PixelFormat);
         }
 
-        private void SetScaledImage()
-        {
-            scaledImage = isInterpolate
-                ? ImageController.BilinearInterpolationScaling(fragment, 5)
-                : ImageController.NearestNeighborScaling(fragment, 5);
-            lensPc.Image = scaledImage;
-        }
-
         private void interpolateCb_CheckedChanged(object sender, EventArgs e)
         {
-            isInterpolate = interpolateCb.Checked;
-            SetScaledImage();
-            //lensPc.Image = 
+            if (fragment != null)
+                SetFragment(fragment, normalizeCb.Checked, interpolateCb.Checked);
         }
 
-        private bool IsNeedToInterpolate()
+        private void normalizeCb_CheckedChanged(object sender, EventArgs e)
         {
-            return interpolateCb.Checked;
+            if (fragment != null)
+                SetFragment(fragment, normalizeCb.Checked, interpolateCb.Checked);
+        }
+
+        private void createOverviewImageBtn_Click(object sender, EventArgs e)
+        {
+            if (imageInfo != null)
+            {
+                overviewImagePb.Image = ImageController.OverviewImage(currentImage);
+            }
+            else ShowWarning(
+              "Изображение отсутствует. Загрузите файл формата .mbv, воспользовавшись кнопкой \"Загрузить\".",
+              "Файл не загружен");
         }
 
         /* Обработчик нажатия на кнопку "Загрузить" для загрузки файла .mbv
@@ -117,7 +153,8 @@ namespace Visual_lab_1
                 SetImage(currentImage);
 
                 // Отображение имени загруженного файла
-                loadedFileLbl.Text = Path.GetFileName(path); // Debug -- поменять на нужный лейбл 
+                loadedFileLbl.Text = Path.GetFileName(path);
+                lensPc.Image = null;
             }
         }
 
@@ -241,11 +278,6 @@ namespace Visual_lab_1
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        private void normalizeCb_CheckedChanged(object sender, EventArgs e)
-        {
 
-        }
-
-        
     }
 }
