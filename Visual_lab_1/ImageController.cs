@@ -67,7 +67,7 @@ namespace Visual_lab_1
             // Получение массива кодов яркостей пикселей
             ushort[] pixels = GetPixels(imageInfo, shift, topLine);
 
-            // Создание объекта Bitmap
+            // Инициализация объекта Bitmap
             Bitmap image;
             // Заполнение пикселями - установка цветов
             FillBitmap(pixels, width, height, out image);
@@ -75,12 +75,20 @@ namespace Visual_lab_1
             return image;
         }
 
+        /* Задание яркостей пикселей объекта bitmap
+         * Параметры: pixels - массив значений яркостей,
+         *            width - ширина изображения,
+         *            height - высота изображения,
+         *            bitmap - изображение, пикслям которого необходимо задать яркости
+         * Метод ничего не возвращает. Он изменяет выходной параметр bitmap
+         */
         private static void FillBitmap(ushort[] pixels, int width, int height, out Bitmap bitmap)
         {
+            // Инициализация объекта типа Bitmap с шириной width и высотой height
             Bitmap temp = new Bitmap(width, height);
             // Счетчик количества пикселей
             int pixelNum = 0;
-            // Задание цветов у пикселей в bitmap
+            // Задание яркостей пикселей в bitmap
             for (int i = 0; i < height; i++)
             {
                 for (int k = 0; k < width; k++)
@@ -90,17 +98,27 @@ namespace Visual_lab_1
                     pixelNum++;
                 }
             }
+            // Присваение объекта temp выходному папарметру bitmap
             bitmap = temp;
         }
 
+        /* Увеличение фрагмента изображения методом ближайшего соседа
+         * Параметры: fragment - фрагмент изображения, который надо увеличить,
+         *            scale - во сколько раз необходимо увеличить фрагмент
+         * Возвращаемое значение: объект типа Bitmap - увеличенный в scale раз фрагмент
+         */
         public static Bitmap NearestNeighborScaling(Bitmap fragment, int scale)
         {
+            // Получение ширины и высоты изначального фрагмента
             int width = fragment.Width;
             int height = fragment.Height;
 
+            // Вычисление новых значений ширины и высоты
             int newWidth = width * scale;
             int newHeight = height * scale;
 
+            // Инициализация массива яркостей пикселей увеличенного фрагмента.
+            // Размер массива равен количеству пикселей в фрагменте после увеличения.
             ushort[] scaledPixels = new ushort[newWidth * newHeight];
 
             int xRatio = ((width << 16) / newWidth) + 1;
@@ -119,43 +137,26 @@ namespace Visual_lab_1
                 }
             }
 
+            // Инициализация объекта Bitmap - увеличенного фрагмента
             Bitmap scaledImage;
+            // Установка яркостей пикселей у увеличенного фрагмента scaledImage
             FillBitmap(scaledPixels, newWidth, newHeight, out scaledImage);
 
             return scaledImage;
         }
 
-        public static Bitmap NormalizeBrightness(Bitmap fragment)
-        {
-            int min = fragment.GetPixel(0, 0).R;
-            int max = fragment.GetPixel(0, 0).R;
-            for(int i = 0; i < fragment.Height; i++)
-            {
-                for(int k = 0; k < fragment.Width; k++)
-                {
-                    ushort color = fragment.GetPixel(k, i).R;
-                    if (min > color) min = color;
-                    if (max < color) max = color;
-                }
-            }
-            Bitmap normalizeFrag = new Bitmap(fragment.Width, fragment.Height);
-            for(int i = 0; i < fragment.Height; i++)
-            {
-                for(int k = 0; k < fragment.Width; k++)
-                {
-                    ushort color = fragment.GetPixel(k, i).R;
-                    color = (ushort)(255 * (color - min) / (max - min));
-                    normalizeFrag.SetPixel(k, i, Color.FromArgb(color, color, color));
-                }
-            }
-            return normalizeFrag;
-        }
-
+        /* Увеличение фрагмента изображения методом биленейной субпиксельной интерполяции
+         * Параметры: fragment - фрагмент изображения, который надо увеличить,
+         *            scale - во сколько раз необходимо увеличить фрагмент
+         * Возвращаемое значение: объект типа Bitmap - увеличенный в scale раз фрагмент
+         */
         public static Bitmap BilinearInterpolationScaling(Bitmap fragment, int scale)
         {
+            // Получение ширины и высоты изначального фрагмента
             int width = fragment.Width;
             int height = fragment.Height;
 
+            // Вычисление новых значений ширины и высоты
             int newWidth = width * scale;
             int newHeight = height * scale;
 
@@ -163,6 +164,8 @@ namespace Visual_lab_1
             float yRatio = ((float)(height - 1)) / newHeight;
             int offset = 0, index;
 
+            // Инициализация массива яркостей пикселей увеличенного фрагмента.
+            // Размер массива равен количеству пикселей в фрагменте после увеличения.
             ushort[] scaledPixels = new ushort[newWidth * newHeight];
 
             for (int i = 0; i < newHeight; i++)
@@ -186,10 +189,45 @@ namespace Visual_lab_1
                 }
             }
 
+            // Инициализация объекта Bitmap - увеличенного фрагмента
             Bitmap scaledImage;
+            // Установка яркостей пикселей у увеличенного фрагмента scaledImage
             FillBitmap(scaledPixels, newWidth, newHeight, out scaledImage);
 
             return scaledImage;
+        }
+
+        /* Нормирование яркости пикселей фрагмента изображения
+         * Параметр: fragment - фрагмент изображения, который надо увеличить
+         * Возвращаемое значение: объект типа Bitmap - фрагмент, яроксти пикселей которого были нормированы
+         */
+        public static Bitmap NormalizeBrightness(Bitmap fragment)
+        {
+            // Вычисление минимальной и максимальной яркости пикселей фрагмента
+            // Первоначально задаем, что яркость 1-го пикселя фрагмента минимальна и максимальна
+            int min = fragment.GetPixel(0, 0).R;
+            int max = fragment.GetPixel(0, 0).R;
+            for (int i = 0; i < fragment.Height; i++)
+            {
+                for (int k = 0; k < fragment.Width; k++)
+                {
+                    ushort color = fragment.GetPixel(k, i).R;
+                    if (min > color) min = color;
+                    if (max < color) max = color;
+                }
+            }
+            // 
+            Bitmap normalizeFrag = new Bitmap(fragment.Width, fragment.Height);
+            for (int i = 0; i < fragment.Height; i++)
+            {
+                for (int k = 0; k < fragment.Width; k++)
+                {
+                    ushort color = fragment.GetPixel(k, i).R;
+                    color = (ushort)(255 * (color - min) / (max - min));
+                    normalizeFrag.SetPixel(k, i, Color.FromArgb(color, color, color));
+                }
+            }
+            return normalizeFrag;
         }
 
         public static Bitmap OverviewImage(Bitmap image)
