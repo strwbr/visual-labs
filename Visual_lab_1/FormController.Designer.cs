@@ -59,9 +59,6 @@ namespace Visual_lab_1
             this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.overviewImagePb = new System.Windows.Forms.PictureBox();
             this.createOverviewImageBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -76,7 +73,6 @@ namespace Visual_lab_1
             ((System.ComponentModel.ISupportInitialize)(this.lensPc)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.scaleValueGb.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.overviewImagePb)).BeginInit();
             this.SuspendLayout();
             // 
@@ -206,7 +202,7 @@ namespace Visual_lab_1
             this.groupBox6.Controls.Add(this.label3);
             this.groupBox6.Controls.Add(this.label2);
             this.groupBox6.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupBox6.Location = new System.Drawing.Point(12, 596);
+            this.groupBox6.Location = new System.Drawing.Point(12, 496);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(239, 161);
             this.groupBox6.TabIndex = 4;
@@ -291,14 +287,14 @@ namespace Visual_lab_1
             this.picturePanel.Controls.Add(this.displayedPicturePanel);
             this.picturePanel.Location = new System.Drawing.Point(13, 90);
             this.picturePanel.Name = "picturePanel";
-            this.picturePanel.Size = new System.Drawing.Size(573, 500);
+            this.picturePanel.Size = new System.Drawing.Size(573, 400);
             this.picturePanel.TabIndex = 9;
             // 
             // displayedPicturePanel
             // 
             this.displayedPicturePanel.Location = new System.Drawing.Point(0, 0);
             this.displayedPicturePanel.Name = "displayedPicturePanel";
-            this.displayedPicturePanel.Size = new System.Drawing.Size(559, 334);
+            this.displayedPicturePanel.Size = new System.Drawing.Size(559, 200);
             this.displayedPicturePanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.displayedPicturePanel.TabIndex = 0;
             this.displayedPicturePanel.TabStop = false;
@@ -316,7 +312,7 @@ namespace Visual_lab_1
             // 
             this.normalizeCb.AutoSize = true;
             this.normalizeCb.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.normalizeCb.Location = new System.Drawing.Point(23, 35);
+            this.normalizeCb.Location = new System.Drawing.Point(23, 24);
             this.normalizeCb.Name = "normalizeCb";
             this.normalizeCb.Size = new System.Drawing.Size(168, 23);
             this.normalizeCb.TabIndex = 11;
@@ -328,7 +324,7 @@ namespace Visual_lab_1
             // 
             this.interpolateCb.AutoSize = true;
             this.interpolateCb.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.interpolateCb.Location = new System.Drawing.Point(23, 67);
+            this.interpolateCb.Location = new System.Drawing.Point(23, 51);
             this.interpolateCb.Name = "interpolateCb";
             this.interpolateCb.Size = new System.Drawing.Size(141, 23);
             this.interpolateCb.TabIndex = 12;
@@ -342,9 +338,9 @@ namespace Visual_lab_1
             this.groupBox3.Controls.Add(this.interpolateCb);
             this.groupBox3.Controls.Add(this.normalizeCb);
             this.groupBox3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupBox3.Location = new System.Drawing.Point(257, 596);
+            this.groupBox3.Location = new System.Drawing.Point(257, 496);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(371, 107);
+            this.groupBox3.Size = new System.Drawing.Size(261, 161);
             this.groupBox3.TabIndex = 13;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Масштабирование";
@@ -354,7 +350,7 @@ namespace Visual_lab_1
             this.scaleValueGb.Controls.Add(this.radioButton4);
             this.scaleValueGb.Controls.Add(this.radioButton3);
             this.scaleValueGb.Controls.Add(this.radioButton2);
-            this.scaleValueGb.Location = new System.Drawing.Point(208, 25);
+            this.scaleValueGb.Location = new System.Drawing.Point(20, 84);
             this.scaleValueGb.Name = "scaleValueGb";
             this.scaleValueGb.Size = new System.Drawing.Size(144, 65);
             this.scaleValueGb.TabIndex = 14;
@@ -394,37 +390,9 @@ namespace Visual_lab_1
             this.radioButton2.Text = "3";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.button1);
-            this.groupBox5.Controls.Add(this.textBox1);
-            this.groupBox5.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupBox5.Location = new System.Drawing.Point(877, 13);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(208, 72);
-            this.groupBox5.TabIndex = 13;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Размер фрагмента";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(94, 30);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(99, 29);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "<-- задать";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(17, 32);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(54, 25);
-            this.textBox1.TabIndex = 0;
-            // 
             // overviewImagePb
             // 
-            this.overviewImagePb.Location = new System.Drawing.Point(1023, 116);
+            this.overviewImagePb.Location = new System.Drawing.Point(1023, 35);
             this.overviewImagePb.Name = "overviewImagePb";
             this.overviewImagePb.Size = new System.Drawing.Size(100, 50);
             this.overviewImagePb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -435,9 +403,9 @@ namespace Visual_lab_1
             // 
             this.createOverviewImageBtn.AutoSize = true;
             this.createOverviewImageBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.createOverviewImageBtn.Location = new System.Drawing.Point(257, 714);
+            this.createOverviewImageBtn.Location = new System.Drawing.Point(102, 663);
             this.createOverviewImageBtn.Name = "createOverviewImageBtn";
-            this.createOverviewImageBtn.Size = new System.Drawing.Size(371, 31);
+            this.createOverviewImageBtn.Size = new System.Drawing.Size(311, 31);
             this.createOverviewImageBtn.TabIndex = 15;
             this.createOverviewImageBtn.Text = "Построить обзорное изображение";
             this.createOverviewImageBtn.UseVisualStyleBackColor = true;
@@ -457,7 +425,7 @@ namespace Visual_lab_1
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label6.Location = new System.Drawing.Point(1023, 90);
+            this.label6.Location = new System.Drawing.Point(1023, 13);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(162, 19);
             this.label6.TabIndex = 17;
@@ -467,13 +435,12 @@ namespace Visual_lab_1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1566, 765);
+            this.ClientSize = new System.Drawing.Size(1303, 709);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.createOverviewImageBtn);
             this.Controls.Add(this.overviewImagePb);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.lensPc);
             this.Controls.Add(this.picturePanel);
             this.Controls.Add(this.groupBox6);
@@ -500,8 +467,6 @@ namespace Visual_lab_1
             this.groupBox3.PerformLayout();
             this.scaleValueGb.ResumeLayout(false);
             this.scaleValueGb.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.overviewImagePb)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -536,9 +501,6 @@ namespace Visual_lab_1
         private System.Windows.Forms.CheckBox normalizeCb;
         private System.Windows.Forms.CheckBox interpolateCb;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox scaleValueGb;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton3;

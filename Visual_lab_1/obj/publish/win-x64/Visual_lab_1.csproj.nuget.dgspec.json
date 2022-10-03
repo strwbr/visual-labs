@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\boris\\source\\repos\\Visual_lab_1\\Visual_lab_1\\Visual_lab_1.csproj": {}
+    "C:\\Users\\boris\\source\\repos\\visual-labs\\Visual_lab_1\\Visual_lab_1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\boris\\source\\repos\\Visual_lab_1\\Visual_lab_1\\Visual_lab_1.csproj": {
+    "C:\\Users\\boris\\source\\repos\\visual-labs\\Visual_lab_1\\Visual_lab_1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\boris\\source\\repos\\Visual_lab_1\\Visual_lab_1\\Visual_lab_1.csproj",
+        "projectUniqueName": "C:\\Users\\boris\\source\\repos\\visual-labs\\Visual_lab_1\\Visual_lab_1.csproj",
         "projectName": "Visual_lab_1",
-        "projectPath": "C:\\Users\\boris\\source\\repos\\Visual_lab_1\\Visual_lab_1\\Visual_lab_1.csproj",
+        "projectPath": "C:\\Users\\boris\\source\\repos\\visual-labs\\Visual_lab_1\\Visual_lab_1.csproj",
         "packagesPath": "C:\\Users\\boris\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\boris\\source\\repos\\Visual_lab_1\\Visual_lab_1\\obj\\publish\\win-x64\\",
+        "outputPath": "C:\\Users\\boris\\source\\repos\\visual-labs\\Visual_lab_1\\obj\\publish\\win-x64\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\boris\\AppData\\Roaming\\NuGet\\NuGet.Config",
