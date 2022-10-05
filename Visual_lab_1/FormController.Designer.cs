@@ -43,11 +43,9 @@ namespace Visual_lab_1
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.brightnessTb = new System.Windows.Forms.TextBox();
             this.yTb = new System.Windows.Forms.TextBox();
-            this.xMatrixTb = new System.Windows.Forms.TextBox();
-            this.xCompZoneTb = new System.Windows.Forms.TextBox();
+            this.xTb = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.picturePanel = new System.Windows.Forms.Panel();
             this.displayedPicturePanel = new System.Windows.Forms.PictureBox();
@@ -195,16 +193,14 @@ namespace Visual_lab_1
             // 
             this.groupBox6.Controls.Add(this.brightnessTb);
             this.groupBox6.Controls.Add(this.yTb);
-            this.groupBox6.Controls.Add(this.xMatrixTb);
-            this.groupBox6.Controls.Add(this.xCompZoneTb);
+            this.groupBox6.Controls.Add(this.xTb);
             this.groupBox6.Controls.Add(this.label5);
             this.groupBox6.Controls.Add(this.label4);
-            this.groupBox6.Controls.Add(this.label3);
             this.groupBox6.Controls.Add(this.label2);
             this.groupBox6.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.groupBox6.Location = new System.Drawing.Point(12, 496);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(239, 161);
+            this.groupBox6.Size = new System.Drawing.Size(190, 127);
             this.groupBox6.TabIndex = 4;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Координаты курсора:";
@@ -212,7 +208,7 @@ namespace Visual_lab_1
             // brightnessTb
             // 
             this.brightnessTb.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.brightnessTb.Location = new System.Drawing.Point(159, 122);
+            this.brightnessTb.Location = new System.Drawing.Point(112, 89);
             this.brightnessTb.Name = "brightnessTb";
             this.brightnessTb.ReadOnly = true;
             this.brightnessTb.Size = new System.Drawing.Size(50, 27);
@@ -221,33 +217,24 @@ namespace Visual_lab_1
             // yTb
             // 
             this.yTb.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.yTb.Location = new System.Drawing.Point(159, 89);
+            this.yTb.Location = new System.Drawing.Point(112, 56);
             this.yTb.Name = "yTb";
             this.yTb.ReadOnly = true;
             this.yTb.Size = new System.Drawing.Size(50, 27);
             this.yTb.TabIndex = 6;
             // 
-            // xMatrixTb
-            // 
-            this.xMatrixTb.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.xMatrixTb.Location = new System.Drawing.Point(159, 56);
-            this.xMatrixTb.Name = "xMatrixTb";
-            this.xMatrixTb.ReadOnly = true;
-            this.xMatrixTb.Size = new System.Drawing.Size(50, 27);
-            this.xMatrixTb.TabIndex = 5;
-            // 
             // xCompZoneTb
             // 
-            this.xCompZoneTb.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.xCompZoneTb.Location = new System.Drawing.Point(159, 23);
-            this.xCompZoneTb.Name = "xCompZoneTb";
-            this.xCompZoneTb.ReadOnly = true;
-            this.xCompZoneTb.Size = new System.Drawing.Size(50, 27);
-            this.xCompZoneTb.TabIndex = 4;
+            this.xTb.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.xTb.Location = new System.Drawing.Point(112, 24);
+            this.xTb.Name = "xCompZoneTb";
+            this.xTb.ReadOnly = true;
+            this.xTb.Size = new System.Drawing.Size(50, 27);
+            this.xTb.TabIndex = 4;
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(53, 122);
+            this.label5.Location = new System.Drawing.Point(6, 89);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(100, 27);
             this.label5.TabIndex = 3;
@@ -256,29 +243,20 @@ namespace Visual_lab_1
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(53, 89);
+            this.label4.Location = new System.Drawing.Point(6, 56);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 27);
             this.label4.TabIndex = 2;
             this.label4.Text = "Y =";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label3
-            // 
-            this.label3.Location = new System.Drawing.Point(53, 56);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(100, 27);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Х (мартица) = ";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(53, 23);
+            this.label2.Location = new System.Drawing.Point(6, 24);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(100, 27);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Х (ЗК) =";
+            this.label2.Text = "Х =";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // picturePanel
@@ -312,7 +290,7 @@ namespace Visual_lab_1
             // 
             this.normalizeCb.AutoSize = true;
             this.normalizeCb.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.normalizeCb.Location = new System.Drawing.Point(23, 24);
+            this.normalizeCb.Location = new System.Drawing.Point(23, 35);
             this.normalizeCb.Name = "normalizeCb";
             this.normalizeCb.Size = new System.Drawing.Size(168, 23);
             this.normalizeCb.TabIndex = 11;
@@ -324,7 +302,7 @@ namespace Visual_lab_1
             // 
             this.interpolateCb.AutoSize = true;
             this.interpolateCb.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.interpolateCb.Location = new System.Drawing.Point(23, 51);
+            this.interpolateCb.Location = new System.Drawing.Point(23, 80);
             this.interpolateCb.Name = "interpolateCb";
             this.interpolateCb.Size = new System.Drawing.Size(141, 23);
             this.interpolateCb.TabIndex = 12;
@@ -338,9 +316,9 @@ namespace Visual_lab_1
             this.groupBox3.Controls.Add(this.interpolateCb);
             this.groupBox3.Controls.Add(this.normalizeCb);
             this.groupBox3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupBox3.Location = new System.Drawing.Point(257, 496);
+            this.groupBox3.Location = new System.Drawing.Point(208, 496);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(261, 161);
+            this.groupBox3.Size = new System.Drawing.Size(378, 127);
             this.groupBox3.TabIndex = 13;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Масштабирование";
@@ -350,9 +328,9 @@ namespace Visual_lab_1
             this.scaleValueGb.Controls.Add(this.radioButton4);
             this.scaleValueGb.Controls.Add(this.radioButton3);
             this.scaleValueGb.Controls.Add(this.radioButton2);
-            this.scaleValueGb.Location = new System.Drawing.Point(20, 84);
+            this.scaleValueGb.Location = new System.Drawing.Point(239, 10);
             this.scaleValueGb.Name = "scaleValueGb";
-            this.scaleValueGb.Size = new System.Drawing.Size(144, 65);
+            this.scaleValueGb.Size = new System.Drawing.Size(125, 111);
             this.scaleValueGb.TabIndex = 14;
             this.scaleValueGb.TabStop = false;
             this.scaleValueGb.Text = "Увеличить в:";
@@ -360,7 +338,7 @@ namespace Visual_lab_1
             // radioButton4
             // 
             this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(100, 28);
+            this.radioButton4.Location = new System.Drawing.Point(16, 82);
             this.radioButton4.Name = "radioButton4";
             this.radioButton4.Size = new System.Drawing.Size(35, 23);
             this.radioButton4.TabIndex = 3;
@@ -371,7 +349,7 @@ namespace Visual_lab_1
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(59, 28);
+            this.radioButton3.Location = new System.Drawing.Point(16, 53);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(35, 23);
             this.radioButton3.TabIndex = 2;
@@ -382,7 +360,7 @@ namespace Visual_lab_1
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(18, 28);
+            this.radioButton2.Location = new System.Drawing.Point(16, 24);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(35, 23);
             this.radioButton2.TabIndex = 1;
@@ -403,7 +381,7 @@ namespace Visual_lab_1
             // 
             this.createOverviewImageBtn.AutoSize = true;
             this.createOverviewImageBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.createOverviewImageBtn.Location = new System.Drawing.Point(102, 663);
+            this.createOverviewImageBtn.Location = new System.Drawing.Point(12, 629);
             this.createOverviewImageBtn.Name = "createOverviewImageBtn";
             this.createOverviewImageBtn.Size = new System.Drawing.Size(311, 31);
             this.createOverviewImageBtn.TabIndex = 15;
@@ -488,11 +466,9 @@ namespace Visual_lab_1
         private System.Windows.Forms.Button setTopLinesBtn;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox xCompZoneTb;
-        private System.Windows.Forms.TextBox xMatrixTb;
+        private System.Windows.Forms.TextBox xTb;
         private System.Windows.Forms.TextBox yTb;
         private System.Windows.Forms.TextBox brightnessTb;
         private System.Windows.Forms.Panel picturePanel;

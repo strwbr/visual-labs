@@ -19,6 +19,9 @@ namespace Visual_lab_1
         // Верхняя граница изображения (при запуске приложения граница = 0)
         int topLines = 0;
 
+        ushort[] currentPixels;
+        ushort[] fragmentPixels;
+
         public FormController()
         {
             InitializeComponent();
@@ -77,7 +80,9 @@ namespace Visual_lab_1
                 // Размер фрагмента 60х60 - вынести получение в отдельный textbox
                 int fragSize = 60;
 
-                fragment = GetImageFragment(e.Location, fragSize);
+                fragmentPixels = GetImageFragment(e.Location, fragSize);
+                fragment = ImageCtrl.CreateImage(fragmentPixels, fragSize, fragSize, codeShift);
+                //lensPc.Image = fragment;
                 SetFragment(fragment, normalizeCb.Checked, interpolateCb.Checked);
             }
         }
@@ -93,7 +98,9 @@ namespace Visual_lab_1
             lensPc.Image = frag;
         }
 
-        private Bitmap GetImageFragment(Point clickLocation, int fragSize)
+
+
+        private ushort[] GetImageFragment(Point clickLocation, int fragSize)
         {
             int radius = fragSize / 2;
             int x, y;
@@ -107,7 +114,17 @@ namespace Visual_lab_1
             if (clickLocation.X + radius > currentImage.Width) x = currentImage.Width - fragSize;
             if (clickLocation.Y + radius > currentImage.Height) y = currentImage.Height - fragSize;
 
-            return currentImage.Clone(new Rectangle(x, y, fragSize, fragSize), currentImage.PixelFormat);
+            ushort[] fragPixels = new ushort[fragSize * fragSize];
+            int pixelNum = 0;
+            for (int i = y; i < y + fragSize; i++)
+            {
+                for (int k = x; k < x + fragSize; k++)
+                {
+                    fragPixels[pixelNum] = currentPixels[imageInfo.Width * i + k];
+                    pixelNum++;
+                }
+            }
+            return fragPixels;
         }
 
         private void interpolateCb_CheckedChanged(object sender, EventArgs e)
@@ -146,10 +163,12 @@ namespace Visual_lab_1
             {
                 // Создание объекта с информацией об изображении
                 imageInfo = new ImageInfo(path);
-                // Создание изображения для отображения его на экране;
-                // значение сдвига, установленное ранее, сохраняется, а верхняя граница сбрасывается
-                currentImage = ImageController.CreateImage(imageInfo, codeShift, topLines);
+
+                currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
+
                 // Отображение изображения на экране
+                currentImage = ImageCtrl.CreateImage(
+                    currentPixels, imageInfo.Width, imageInfo.Height-topLines, codeShift);
                 SetImage(currentImage);
 
                 // Отображение имени загруженного файла
@@ -173,10 +192,9 @@ namespace Visual_lab_1
                     // Если заданное значение меньше высоты изображения и неотрицательно
                     if (topLines < imageInfo.Height && topLines >= 0)
                     {
-                        // Создание изображения для отображения его на экране с полученным знаение верхней границы;
-                        // при этом значение сдвига, установленного ранее, сохраняется
-                        currentImage = ImageController.CreateImage(imageInfo, codeShift, topLines);
+                        currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
                         // Отображение изображения на экране
+                        currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, codeShift, topLines);
                         SetImage(currentImage);
                     }
                     else
@@ -208,9 +226,9 @@ namespace Visual_lab_1
             {
                 // Вывод значений
                 // яркости пикселя, на который указывает курсор
-                brightnessTb.Text = currentImage.GetPixel(e.Location.X, e.Location.Y).R.ToString();
+                brightnessTb.Text = currentPixels[imageInfo.Width * e.Location.Y + e.Location.X].ToString();
                 // координаты пикселя по X
-                xMatrixTb.Text = xCompZoneTb.Text = e.Location.X.ToString();
+                xTb.Text = e.Location.X.ToString();
                 // координаты пикселя по Y
                 yTb.Text = e.Location.Y.ToString();
             }
@@ -231,10 +249,10 @@ namespace Visual_lab_1
                 {
                     // Получение значения сдвига, соответствующего данной радио-кнопке 
                     codeShift = Convert.ToInt32(rb.Text);
-                    // Создание изображения для отображения его на экране с полученным значением сдвига;
-                    // при этом значение верхней границы, установленной ранее, сохраняется
-                    currentImage = ImageController.CreateImage(imageInfo, codeShift, topLines);
+
+                    currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
                     // Отображение изображения на экране
+                    currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, codeShift, topLines);
                     SetImage(currentImage);
                 }
             }
@@ -278,6 +296,20 @@ namespace Visual_lab_1
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-
+        private ushort[,] OneDimToTwoDim(ushort[] pix)
+        {
+            int w = 500, h = 3000;
+            ushort[,] temp = new ushort[h, w];
+            int count = 0;
+            for (int i = 0; i < h; i++)
+            {
+                for (int k = 0; k < w; k++)
+                {
+                    temp[i, k] = pix[count];
+                    count++;
+                }
+            }
+            return temp;
+        }
     }
 }
