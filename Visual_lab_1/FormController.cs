@@ -17,6 +17,8 @@ namespace Visual_lab_1
         // Верхняя граница изображения (при запуске приложения граница = 0)
         int topLines = 0;
 
+        const int fragSize = 60;
+
         ushort[] currentPixels;
         ushort[] fragmentPixels;
 
@@ -49,13 +51,9 @@ namespace Visual_lab_1
 
         private void scaleValueRb_CheckedChanged(object sender, EventArgs e)
         {
-            if (fragment != null)
+            if (fragmentPixels != null)
             {
-                //RadioButton rb = sender as RadioButton;
-                //if (rb.Checked)
-                //{
-                SetFragment(fragment, normalizeCb.Checked, interpolateCb.Checked);
-                //} 
+                SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
             }
         }
 
@@ -75,26 +73,41 @@ namespace Visual_lab_1
         {
             if (imageInfo != null)
             {
-                // Размер фрагмента 60х60 - вынести получение в отдельный textbox
-                int fragSize = 60;
-
                 fragmentPixels = GetImageFragment(e.Location, fragSize);
-                fragment = ImageCtrl.CreateImage(fragmentPixels, fragSize, fragSize, GetShiftValue());
                 //lensPc.Image = fragment;
-                SetFragment(fragment, normalizeCb.Checked, interpolateCb.Checked);
+                SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
             }
         }
 
-        private void SetFragment(Bitmap frag, bool normalize, bool interpolate)
+        private void SetFragment(ushort[] fragPixels, bool normalize, bool interpolate)
         {
-            if (normalize) frag = ImageController.NormalizeBrightness(frag);
+            if (fragPixels != null)
+            {
+                Bitmap frag;
+                int scale = GetScaleValue();
 
-            frag = interpolate
-                ? ImageController.BilinearInterpolationScaling(frag, GetScaleValue())
-                : ImageController.NearestNeighborScaling(frag, GetScaleValue());
+                if (normalize) fragPixels = ImageCtrl.NormalizeBrightness(fragPixels);
 
-            lensPc.Image = frag;
+                fragPixels = interpolate
+                    ? ImageCtrl.BilinearInterpolationScaling(fragPixels, fragSize, scale)
+                    : ImageCtrl.NearestNeighborScaling(fragPixels, fragSize, scale);
+
+                frag = ImageCtrl.CreateImage(fragPixels, fragSize * scale, fragSize * scale, GetShiftValue());
+
+                lensPc.Image = frag;
+            }
         }
+
+        //private void SetFragment(Bitmap frag, bool normalize, bool interpolate)
+        //{
+        //    if (normalize) frag = ImageController.NormalizeBrightness(frag);
+
+        //    frag = interpolate
+        //        ? ImageController.BilinearInterpolationScaling(frag, GetScaleValue())
+        //        : ImageController.NearestNeighborScaling(frag, GetScaleValue());
+
+        //    lensPc.Image = frag;
+        //}
 
         private ushort[] GetImageFragment(Point clickLocation, int fragSize)
         {
@@ -125,14 +138,14 @@ namespace Visual_lab_1
 
         private void interpolateCb_CheckedChanged(object sender, EventArgs e)
         {
-            if (fragment != null)
-                SetFragment(fragment, normalizeCb.Checked, interpolateCb.Checked);
+            if (fragmentPixels != null)
+                SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
         }
 
         private void normalizeCb_CheckedChanged(object sender, EventArgs e)
         {
-            if (fragment != null)
-                SetFragment(fragment, normalizeCb.Checked, interpolateCb.Checked);
+            if (fragmentPixels != null)
+                SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
         }
 
         private void createOverviewImageBtn_Click(object sender, EventArgs e)
@@ -242,7 +255,11 @@ namespace Visual_lab_1
                 currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
                 // Отображение изображения на экране
                 currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, GetShiftValue(), topLines);
+
                 SetImage(currentImage);
+                SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
+                //fragmentPixels
+                //SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
             }
 
         }
