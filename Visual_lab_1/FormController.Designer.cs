@@ -61,6 +61,7 @@ namespace Visual_lab_1
             this.createOverviewImageBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.shiftCodesGb.SuspendLayout();
@@ -223,11 +224,11 @@ namespace Visual_lab_1
             this.yTb.Size = new System.Drawing.Size(50, 27);
             this.yTb.TabIndex = 6;
             // 
-            // xCompZoneTb
+            // xTb
             // 
             this.xTb.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.xTb.Location = new System.Drawing.Point(112, 24);
-            this.xTb.Name = "xCompZoneTb";
+            this.xTb.Name = "xTb";
             this.xTb.ReadOnly = true;
             this.xTb.Size = new System.Drawing.Size(50, 27);
             this.xTb.TabIndex = 4;
@@ -409,11 +410,21 @@ namespace Visual_lab_1
             this.label6.TabIndex = 17;
             this.label6.Text = "Обзорное изображение";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1194, 396);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(80, 69);
+            this.button1.TabIndex = 18;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // FormController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1303, 709);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.createOverviewImageBtn);
@@ -485,6 +496,7 @@ namespace Visual_lab_1
         private System.Windows.Forms.Button createOverviewImageBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button1;
     }
 }
 
