@@ -14,8 +14,6 @@ namespace Visual_lab_1
         Bitmap currentImage;
         // Фрагмент изображения, выбранный пользователем
         Bitmap fragment;
-        // Сдвиг изображения (при запуске приложения сдвиг = 0)
-        int codeShift = 0;
         // Верхняя граница изображения (при запуске приложения граница = 0)
         int topLines = 0;
 
@@ -81,7 +79,7 @@ namespace Visual_lab_1
                 int fragSize = 60;
 
                 fragmentPixels = GetImageFragment(e.Location, fragSize);
-                fragment = ImageCtrl.CreateImage(fragmentPixels, fragSize, fragSize, codeShift);
+                fragment = ImageCtrl.CreateImage(fragmentPixels, fragSize, fragSize, GetShiftValue());
                 //lensPc.Image = fragment;
                 SetFragment(fragment, normalizeCb.Checked, interpolateCb.Checked);
             }
@@ -97,8 +95,6 @@ namespace Visual_lab_1
 
             lensPc.Image = frag;
         }
-
-
 
         private ushort[] GetImageFragment(Point clickLocation, int fragSize)
         {
@@ -168,7 +164,7 @@ namespace Visual_lab_1
 
                 // Отображение изображения на экране
                 currentImage = ImageCtrl.CreateImage(
-                    currentPixels, imageInfo.Width, imageInfo.Height-topLines, codeShift);
+                    currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                 SetImage(currentImage);
 
                 // Отображение имени загруженного файла
@@ -194,7 +190,7 @@ namespace Visual_lab_1
                     {
                         currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
                         // Отображение изображения на экране
-                        currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, codeShift, topLines);
+                        currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, GetShiftValue(), topLines);
                         SetImage(currentImage);
                     }
                     else
@@ -242,23 +238,25 @@ namespace Visual_lab_1
         {
             if (imageInfo != null)
             {
-                // Получение объекта радио-кнопки, вызвавшей событие
-                RadioButton rb = sender as RadioButton;
-                // Если эта радио-кнопка выбрана
-                if (rb.Checked)
-                {
-                    // Получение значения сдвига, соответствующего данной радио-кнопке 
-                    codeShift = Convert.ToInt32(rb.Text);
 
-                    currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
-                    // Отображение изображения на экране
-                    currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, codeShift, topLines);
-                    SetImage(currentImage);
-                }
+                currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
+                // Отображение изображения на экране
+                currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, GetShiftValue(), topLines);
+                SetImage(currentImage);
             }
-            else ShowWarning(
-                "Изображение отсутствует. Загрузите файл формата .mbv, воспользовавшись кнопкой \"Загрузить\".",
-                "Файл не загружен");
+
+        }
+
+        private int GetShiftValue()
+        {
+            int shift = 0;
+            for (int i = 0; i < shiftCodesGb.Controls.Count; i++)
+            {
+                RadioButton rb = (RadioButton)shiftCodesGb.Controls[i];
+                if (rb.Checked)
+                    shift = Convert.ToInt32(rb.Text);
+            }
+            return shift;
         }
 
         /* Получение пути к файлу с видеоданными изображения, выбранному пользователем
