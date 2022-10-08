@@ -61,7 +61,6 @@ namespace Visual_lab_1
             this.createOverviewImageBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.shiftCodesGb.SuspendLayout();
@@ -382,9 +381,9 @@ namespace Visual_lab_1
             // 
             this.createOverviewImageBtn.AutoSize = true;
             this.createOverviewImageBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.createOverviewImageBtn.Location = new System.Drawing.Point(12, 629);
+            this.createOverviewImageBtn.Location = new System.Drawing.Point(208, 629);
             this.createOverviewImageBtn.Name = "createOverviewImageBtn";
-            this.createOverviewImageBtn.Size = new System.Drawing.Size(311, 31);
+            this.createOverviewImageBtn.Size = new System.Drawing.Size(378, 31);
             this.createOverviewImageBtn.TabIndex = 15;
             this.createOverviewImageBtn.Text = "Построить обзорное изображение";
             this.createOverviewImageBtn.UseVisualStyleBackColor = true;
@@ -410,21 +409,11 @@ namespace Visual_lab_1
             this.label6.TabIndex = 17;
             this.label6.Text = "Обзорное изображение";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(1194, 396);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(80, 69);
-            this.button1.TabIndex = 18;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // FormController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1303, 709);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(1303, 696);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.createOverviewImageBtn);
@@ -496,7 +485,6 @@ namespace Visual_lab_1
         private System.Windows.Forms.Button createOverviewImageBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button1;
     }
 }
 

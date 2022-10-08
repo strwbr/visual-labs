@@ -12,14 +12,13 @@ namespace Visual_lab_1
         ImageInfo imageInfo;
         // Текущее изображение, с параметрами, заданными пользователем
         Bitmap currentImage;
-        // Фрагмент изображения, выбранный пользователем
-        Bitmap fragment;
         // Верхняя граница изображения (при запуске приложения граница = 0)
         int topLines = 0;
-
+        // Размер фрагмента, равный 60х60
         const int fragSize = 60;
-
+        // Яркости пикселей, с учетом верхней границы
         ushort[] currentPixels;
+        // Яркости пикселей фрагмента изображения
         ushort[] fragmentPixels;
 
         public FormController()
@@ -152,10 +151,15 @@ namespace Visual_lab_1
         {
             if (imageInfo != null)
             {
-                overviewImagePb.Image = ImageController.OverviewImage(currentImage);
+                const int m = 5;
+                ushort[] overviewPixels = ImageCtrl.OverviewImage(
+                    imageInfo.PixelBrightness, imageInfo.Width, imageInfo.Height, m);
+                Bitmap overviewImage = ImageCtrl.CreateImage(
+                    overviewPixels, imageInfo.Width / m, imageInfo.Height / m, GetShiftValue());
+                overviewImagePb.Image = overviewImage;
             }
             else ShowWarning(
-              "Изображение отсутствует. Загрузите файл формата .mbv, воспользовавшись кнопкой \"Загрузить\".",
+              "Невозможно построить обзорное изображение. Загрузите файл формата .mbv, воспользовавшись кнопкой \"Загрузить\".",
               "Файл не загружен");
         }
 
@@ -203,7 +207,9 @@ namespace Visual_lab_1
                     {
                         currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
                         // Отображение изображения на экране
-                        currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, GetShiftValue(), topLines);
+                        //currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, GetShiftValue(), topLines);
+                        currentImage = ImageCtrl.CreateImage(
+                            currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                         SetImage(currentImage);
                     }
                     else
@@ -254,14 +260,14 @@ namespace Visual_lab_1
 
                 currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
                 // Отображение изображения на экране
-                currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, GetShiftValue(), topLines);
-
+                //currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, GetShiftValue(), topLines);
+                currentImage = ImageCtrl.CreateImage(
+                           currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                 SetImage(currentImage);
                 SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
                 //fragmentPixels
                 //SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
             }
-
         }
 
         private int GetShiftValue()

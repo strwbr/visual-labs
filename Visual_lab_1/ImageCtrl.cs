@@ -27,19 +27,19 @@ namespace Visual_lab_1
         }
 
 
-        public static Bitmap CreateImage(ImageInfo imageInfo, ushort[] brightness, int shift, int topLine)
-        {
-            int width = imageInfo.Width;
-            int height = imageInfo.Height - topLine;
+        //public static Bitmap CreateImage(ImageInfo imageInfo, ushort[] brightness, int shift, int topLine)
+        //{
+        //    int width = imageInfo.Width;
+        //    int height = imageInfo.Height - topLine;
 
+        //    ushort[] temp = GetChannelsValues(brightness, shift);
+        //    return FillBitmap(temp, width, height);
+        //}
+
+        public static Bitmap CreateImage(ushort[] brightness, int width, int height, int shift)
+        {
             ushort[] temp = GetChannelsValues(brightness, shift);
             return FillBitmap(temp, width, height);
-        }
-
-        public static Bitmap CreateImage(ushort[] brightness, int w, int h, int shift)
-        {
-            ushort[] temp = GetChannelsValues(brightness, shift);
-            return FillBitmap(temp, w, h);
         }
 
         private static ushort[] GetChannelsValues(ushort[] brightness, int shift)
@@ -52,6 +52,8 @@ namespace Visual_lab_1
             return channels;
         }
 
+        // TODO: добавить 4-й параметр shift и сдвиг с маскированием сделать здесь
+        // Удалить CreateImage, GetChannelsValue
         private static Bitmap FillBitmap(ushort[] pixels, int width, int height)
         {
             // Инициализация объекта типа Bitmap с шириной width и высотой height
@@ -176,35 +178,35 @@ namespace Visual_lab_1
             return scaledPixels;
         }
 
-        //public static ushort[] OverviewImage(ImageInfo image)
-        //{
-        //    int m = 5;
-        //    Bitmap overviewImage = new Bitmap(image.Width / m, image.Height / m);
-        //    for (int i = 0, j = 0; i < image.Height; i += m, j++)
-        //    {
-        //        for (int k = 0, t = 0; k < image.Width; k += m, t++)
-        //        {
-        //            ushort color = image.GetPixel(k, i).R;
-        //            overviewImage.SetPixel(t, j, Color.FromArgb(color, color, color));
-        //        }
-        //    }
-        //    return overviewImage;
-        //}
-
-        private static ushort[,] OneDimToTwoDim(ushort[] pix, int width, int height)
+        public static ushort[] OverviewImage(ushort[] brightness, int width, int height, int m)
         {
-            int w = width, h = height;
-            ushort[,] temp = new ushort[h, w];
-            int count = 0;
-            for (int i = 0; i < h; i++)
+            ushort[] overviewPixels = new ushort[width * height];
+            int pixelNum = 0;
+            for (int i = 0, j = 0; i < height; i += m, j++)
             {
-                for (int k = 0; k < w; k++)
+                for (int k = 0, t = 0; k < width; k += m, t++)
                 {
-                    temp[i, k] = pix[count];
-                    count++;
+                    overviewPixels[pixelNum] = brightness[i * width + k];
+                    pixelNum++;
                 }
             }
-            return temp;
+            return overviewPixels;
         }
+
+        //private static ushort[,] OneDimToTwoDim(ushort[] pix, int width, int height)
+        //{
+        //    int w = width, h = height;
+        //    ushort[,] temp = new ushort[h, w];
+        //    int count = 0;
+        //    for (int i = 0; i < h; i++)
+        //    {
+        //        for (int k = 0; k < w; k++)
+        //        {
+        //            temp[i, k] = pix[count];
+        //            count++;
+        //        }
+        //    }
+        //    return temp;
+        //}
     }
 }
