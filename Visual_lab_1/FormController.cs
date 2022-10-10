@@ -16,7 +16,7 @@ namespace Visual_lab_1
         int topLines = 0;
         // Размер фрагмента, равный 60х60
         const int fragSize = 60;
-        // Яркости пикселей, с учетом верхней границы
+        // Текущие яркости пикселей, с учетом верхней границы и без учета сдвига кодов
         ushort[] currentPixels;
         // Яркости пикселей фрагмента изображения
         ushort[] fragmentPixels;
@@ -44,55 +44,97 @@ namespace Visual_lab_1
             for (int i = 0; i < scaleValueGb.Controls.Count; i++)
             {
                 RadioButton rb = (RadioButton)scaleValueGb.Controls[i];
-                rb.CheckedChanged += scaleValueRb_CheckedChanged;
+                rb.CheckedChanged += ScaleValueRb_CheckedChanged;
             }
         }
 
-        private void scaleValueRb_CheckedChanged(object sender, EventArgs e)
+        /* Обработчик выбора значения увеличения фрагмента
+         * При изменении значения увеличения на форме отображается новый фрагмент, увеличенный в выбранное число раз
+         * Параметры: sender - объект, вызвавший событие,
+         *            e - аргумент, хранящий информацию о событии.
+         */
+        private void ScaleValueRb_CheckedChanged(object sender, EventArgs e)
         {
+            // Проверка наличия фрагмента
             if (fragmentPixels != null)
             {
+                // Отображения фрагмента в соответствующее поле на форме
                 SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
             }
         }
 
+        /* Получение текущего значения увеличения
+         * Возвращаемое значение: значение увеличения
+         */
         private int GetScaleValue()
         {
-            int scaleValue = 1;
+            // Инициализация значения увеличения изображения
+            // Первоначально равняется 3 - самому младшему предлагаемому значению
+            int scaleValue = 3;
+            // Проход по элементам (радиокнопкам) группы "Увеличить в:"
             for (int i = 0; i < scaleValueGb.Controls.Count; i++)
             {
+                // Получение текущей радиокнопки
                 RadioButton rb = (RadioButton)scaleValueGb.Controls[i];
+                // Если текущая радиокнопка выбрана
                 if (rb.Checked)
+                    // Получить целое число, соответсвующее выбранной радиокнопке
                     scaleValue = Convert.ToInt32(rb.Text);
             }
+            // Возвращение выбранного значения увеличения
             return scaleValue;
         }
 
+        /* Обработчик события нажатия по элементу формы с изображением
+         * Параметры: sender - объект, вызвавший событие,
+         *            e - аргумент, хранящий информацию о событии.
+         */
         private void DisplayedPicturePanel_MouseClick(object sender, MouseEventArgs e)
         {
+            // Если изображение было закружено из файла
             if (imageInfo != null)
             {
+                // Получение фрагмента изображения по координатам пикселя, на который указывал курсор мыши при клике
                 fragmentPixels = GetImageFragment(e.Location, fragSize);
-                //lensPc.Image = fragment;
+                // Отображения фрагмента в соответствующем поле на форме
                 SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
             }
         }
 
+        /* Отображение фрагамента в соответствующем поле на форме
+         * с учетом нормирования яркостей пикселей и метода увеличения
+         * Параметры: fragPixels - яркости пикселей фрагмента,
+         *            normalize - необходимо ли нормировать яркости,
+         *            interpolate - метод увеличения: true - билинейная интерполяция, false - метод ближайщего соседа.
+         * Возвращаемое значение: метод ничего не возвращает            
+         */
         private void SetFragment(ushort[] fragPixels, bool normalize, bool interpolate)
         {
+            // Проверка наличия фрагмента
+            // ЛИШНЯЯ ПРОВЕРКА
             if (fragPixels != null)
             {
+                // Инициализация объекта Bitmap - изображения, которое будет выведено в поле фрагмента
                 Bitmap frag;
+                // Получение текущего значения увеличения
                 int scale = GetScaleValue();
+                // Если было выбрано нормирование яркостей
+                if (normalize)
+                    // Нормирование яркостей пикселей; параметр fragPixels заменяется на массив с нормированными яркостями
+                    fragPixels = ImageCtrl.NormalizeBrightness(fragPixels);
 
-                if (normalize) fragPixels = ImageCtrl.NormalizeBrightness(fragPixels);
-
+                // В зависимости от выбранного метода увеличения вызывается соответствующий метод увеличения;
+                // параметр fragPixels заменяется на массив с увеличенными пикселями
                 fragPixels = interpolate
+                    // Билинейная субпиксельная интерполяция
                     ? ImageCtrl.BilinearInterpolationScaling(fragPixels, fragSize, scale)
+                    // Метод ближайщего соседа
                     : ImageCtrl.NearestNeighborScaling(fragPixels, fragSize, scale);
 
+                // Создание изображения из массива пикселей
+                // Размер созданного фрагмента равен увеличенному в scale раз размеру исходного фрагмента
                 frag = ImageCtrl.CreateImage(fragPixels, fragSize * scale, fragSize * scale, GetShiftValue());
-
+                // Установка созданного изображения в элемент lensPc
                 lensPc.Image = frag;
             }
         }
@@ -108,57 +150,97 @@ namespace Visual_lab_1
         //    lensPc.Image = frag;
         //}
 
+        /* Получение фрагмента изображения по координатам пикселя (центр фрагмента)
+         * Параметры: clickLocation - координата пикселя,
+         *            fragSize - размера фрагмента.
+         * Возвращаемое значение: массив яркостей пикселей фрагмента
+         */
         private ushort[] GetImageFragment(Point clickLocation, int fragSize)
         {
+            // Получение радиуса, в пределах которого берутся пикселя для фрагмента
             int radius = fragSize / 2;
+            // Координаты левого верхнего угла фрагмента
             int x, y;
-
+            // Вычисление координаты у четом радиуса
             x = clickLocation.X - radius;
             y = clickLocation.Y - radius;
 
+            // Если 
             if (clickLocation.X - radius < 0) x = 0;
             if (clickLocation.Y - radius < 0) y = 0;
 
             if (clickLocation.X + radius > currentImage.Width) x = currentImage.Width - fragSize;
             if (clickLocation.Y + radius > currentImage.Height) y = currentImage.Height - fragSize;
 
+            // Инициализация массива яркостей пикселей фрагмента
+            // Размер массива равен количеству пикселей в фрагменте
             ushort[] fragPixels = new ushort[fragSize * fragSize];
+            // Счетчик количества пикселей в фрагменте
             int pixelNum = 0;
+            // Проход по пикселям текущего изображения
+            // Проход начинается с координаты левого верхнего угла фрагмента
             for (int i = y; i < y + fragSize; i++)
             {
                 for (int k = x; k < x + fragSize; k++)
                 {
+                    // Присваивание текущему значению яркости фрагмента соответствующей яркости, взятой из текущего изображения
                     fragPixels[pixelNum] = currentPixels[imageInfo.Width * i + k];
+                    // Увеличение счетчика пикселей фрагмента на 1
                     pixelNum++;
                 }
             }
+            // Возврат массива яркостей пикселей фрагмента
             return fragPixels;
         }
 
-        private void interpolateCb_CheckedChanged(object sender, EventArgs e)
+        /* Обработчик изменения метода увеличения
+         * Параметры: sender - объект, вызвавший событие,
+         *            e - аргумент, хранящий информацию о событии.
+         */
+        private void InterpolateCb_CheckedChanged(object sender, EventArgs e)
         {
+            // Проверка наличия фрагмента
             if (fragmentPixels != null)
+                // Отображения фрагмента в соответствующем поле на форме с учетом нормирования и метода увеличения
                 SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
         }
 
-        private void normalizeCb_CheckedChanged(object sender, EventArgs e)
+        /* Обработчик изменения необходимости нормировки яркостей пикселей
+         * Параметры: sender - объект, вызвавший событие,
+         *            e - аргумент, хранящий информацию о событии.
+         */
+        private void NormalizeCb_CheckedChanged(object sender, EventArgs e)
         {
+            // Проверка наличия фрагмента
             if (fragmentPixels != null)
+                // Отображения фрагмента в соответствующем поле на форме с учетом нормирования и метода увеличения
                 SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
         }
 
-        private void createOverviewImageBtn_Click(object sender, EventArgs e)
+        /* Обработчик кнопки для создания обзорного изображения (ОИ)
+         * Параметры: sender - объект, вызвавший событие,
+         *            e - аргумент, хранящий информацию о событии.
+         */
+        private void CreateOverviewImageBtn_Click(object sender, EventArgs e)
         {
+            // Если изображение было считано с файла
             if (imageInfo != null)
             {
+                // 
                 const int m = 5;
+                // Получение массива яркостей ОИ
                 ushort[] overviewPixels = ImageCtrl.OverviewImage(
                     imageInfo.PixelBrightness, imageInfo.Width, imageInfo.Height, m);
+                // Создание ОИ с учетом выбранного сдвига кодов
                 Bitmap overviewImage = ImageCtrl.CreateImage(
                     overviewPixels, imageInfo.Width / m, imageInfo.Height / m, GetShiftValue());
+                // Установка ОИ в поле для его вывода 
                 overviewImagePb.Image = overviewImage;
             }
-            else ShowWarning(
+            // Если изображение не было считано с файла
+            else
+                // Показ соответствующего предупреждения
+                ShowWarning(
               "Невозможно построить обзорное изображение. Загрузите файл формата .mbv, воспользовавшись кнопкой \"Загрузить\".",
               "Файл не загружен");
         }
@@ -176,16 +258,18 @@ namespace Visual_lab_1
             {
                 // Создание объекта с информацией об изображении
                 imageInfo = new ImageInfo(path);
-
+                // Получение массива яркостей пикселей изображения с учетом верхней границы
                 currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
 
                 // Отображение изображения на экране
                 currentImage = ImageCtrl.CreateImage(
                     currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
+                // Установка полученного изображения в соответсвующее поле вывода
                 SetImage(currentImage);
 
                 // Отображение имени загруженного файла
                 loadedFileLbl.Text = Path.GetFileName(path);
+                // Очистка поля с увеличенным фрагментом
                 lensPc.Image = null;
             }
         }
@@ -205,28 +289,41 @@ namespace Visual_lab_1
                     // Если заданное значение меньше высоты изображения и неотрицательно
                     if (topLines < imageInfo.Height && topLines >= 0)
                     {
+                        // Получение массива яркостей пикселей изображения с учетом верхней границы
                         currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
                         // Отображение изображения на экране
                         //currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, GetShiftValue(), topLines);
                         currentImage = ImageCtrl.CreateImage(
                             currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
+                        // Установка полученного изображения в соответсвующее поле вывода
                         SetImage(currentImage);
                     }
+                    // Если введенное число не соответствует допустимому диапазону
                     else
                     {
+                        // Обнуление значения верхней границы
                         topLines = 0;
+                        // В поле ввода верхней границы отображается 0
                         topImgLinesTb.Text = "0";
+                        // Показ предупреждения
                         ShowWarning("Введенное число вне диапазона.", "Недопустимое значение");
                     }
                 }
+                // Если введенное значение - не целое число
                 else
                 {
+                    // Обнуление значения верхней границы
                     topLines = 0;
-                    topImgLinesTb.Text = "";
+                    // В поле ввода верхней границы отображается 0
+                    topImgLinesTb.Text = "0";
+                    // Показ предупреждения
                     ShowWarning("Необходимо ввести целое число.", "Недопустимое значение");
                 }
             }
-            else ShowWarning(
+            // Если изображение не было загружено из файла
+            else
+                // Показ предупреждения
+                ShowWarning(
                 "Изображение отсутствует. Загрузите файл формата .mbv, воспользовавшись кнопкой \"Загрузить\".",
                 "Файл не загружен");
         }
@@ -237,6 +334,7 @@ namespace Visual_lab_1
          */
         private void DisplayedPicturePanel_MouseMove(object sender, MouseEventArgs e)
         {
+            // Если файл выбран и с него считана информация
             if (imageInfo != null)
             {
                 // Вывод значений
@@ -255,30 +353,40 @@ namespace Visual_lab_1
          */
         private void ShiftCodesRb_CheckedChanged(object sender, EventArgs e)
         {
+            // Если файл выбран и с него считана информация
             if (imageInfo != null)
             {
-
+                // Получение массива яркостей пикселей изображения с учетом верхней границы
                 currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
                 // Отображение изображения на экране
-                //currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, GetShiftValue(), topLines);
                 currentImage = ImageCtrl.CreateImage(
                            currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
+                // Установка полученного изображения в соответствующее поле вывода
                 SetImage(currentImage);
+                // Отображения фрагмента в соответствующем поле на форме с учетом нормирования и метода увеличения
                 SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
                 //fragmentPixels
                 //SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
             }
         }
 
+        /* Получение текущего значения сдвига кодов */
         private int GetShiftValue()
         {
+            // Инициализация значения сдвига кодов
+            // Первоначально равняется 0 - самому младшему из предлагаемых значений сдвигов
             int shift = 0;
+            // Проход по элементам группы "Сдвигать коды на:"
             for (int i = 0; i < shiftCodesGb.Controls.Count; i++)
             {
+                // Получение текущей радиокнопки
                 RadioButton rb = (RadioButton)shiftCodesGb.Controls[i];
+                // Если текущая радиокнопка выбрана
                 if (rb.Checked)
+                    // Получить целое число, соответсвующее выбранной радиокнопке
                     shift = Convert.ToInt32(rb.Text);
             }
+            // Возвращение выбраного значения сдвига кодов
             return shift;
         }
 

@@ -296,7 +296,7 @@ namespace Visual_lab_1
             this.normalizeCb.TabIndex = 11;
             this.normalizeCb.Text = "Нормировать яркость";
             this.normalizeCb.UseVisualStyleBackColor = true;
-            this.normalizeCb.CheckedChanged += new System.EventHandler(this.normalizeCb_CheckedChanged);
+            this.normalizeCb.CheckedChanged += new System.EventHandler(this.NormalizeCb_CheckedChanged);
             // 
             // interpolateCb
             // 
@@ -308,7 +308,7 @@ namespace Visual_lab_1
             this.interpolateCb.TabIndex = 12;
             this.interpolateCb.Text = "Интерполировать";
             this.interpolateCb.UseVisualStyleBackColor = true;
-            this.interpolateCb.CheckedChanged += new System.EventHandler(this.interpolateCb_CheckedChanged);
+            this.interpolateCb.CheckedChanged += new System.EventHandler(this.InterpolateCb_CheckedChanged);
             // 
             // groupBox3
             // 
@@ -387,7 +387,7 @@ namespace Visual_lab_1
             this.createOverviewImageBtn.TabIndex = 15;
             this.createOverviewImageBtn.Text = "Построить обзорное изображение";
             this.createOverviewImageBtn.UseVisualStyleBackColor = true;
-            this.createOverviewImageBtn.Click += new System.EventHandler(this.createOverviewImageBtn_Click);
+            this.createOverviewImageBtn.Click += new System.EventHandler(this.CreateOverviewImageBtn_Click);
             // 
             // label1
             // 
