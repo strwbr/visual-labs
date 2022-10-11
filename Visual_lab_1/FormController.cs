@@ -280,7 +280,7 @@ namespace Visual_lab_1
                 // Билинейная субпиксельная интерполяция
                 ? ImageCtrl.BilinearInterpolationScaling(fragPixels, fragSize, scale)
                 // Метод ближайщего соседа
-                : ImageCtrl.NearestNeighborScaling(fragPixels, fragSize, scale);
+                : ImageCtrl.NearestNeighborScaling(fragPixels, fragSize, fragSize, scale);
 
             // Создание изображения из массива пикселей
             // Размер созданного фрагмента равен увеличенному в scale раз размеру исходного фрагмента

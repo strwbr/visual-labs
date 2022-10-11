@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 
 namespace Visual_lab_1
@@ -96,37 +97,39 @@ namespace Visual_lab_1
 
         /* Увеличение изображения в заданное число раз методом ближайшего соседа
          * Параметры: pixels - массив яркостей пикселей изображения, которое необходимо увеличить,
-         *            size - первоначальный размер изображения (= длине = высот изображения),
+         *            oldWidth - первоначальная длина изображения,
+         *            oldHeight - первоначальная высота изображения,
          *            scale - значение увеличения
          * Возвращаемое значение: массив яркостей пикселей увеличенного изображения
          */
-        public static ushort[] NearestNeighborScaling(ushort[] pixels, int size, int scale)
+        public static ushort[] NearestNeighborScaling(ushort[] pixels, int oldWidth, int oldHeight, int scale)
         {
-            // Инициализация первоначальных значений ширины и высоты изображения
-            // Т.к. фрагмент - квадратный, то они равны параметру size
-            int oldWidth, oldHeight;
-            oldWidth = oldHeight = size;
-
             // Вычисление новых значений ширины и высоты
             int newWidth = oldWidth * scale;
             int newHeight = oldHeight * scale;
 
             // Инициализация массива яркостей пикселей увеличенного фрагмента
-            // Размер массива равен количеству пикселей в фрагменте после увеличения
+            // Размер массива равен количеству пикселей в изображении после увеличения
             ushort[] scaledPixels = new ushort[newWidth * newHeight];
 
-            int xRatio = ((oldWidth << 16) / newWidth) + 1;
-            int yRatio = ((oldHeight << 16) / newHeight) + 1;
+            // Соотношение по горизонтали между исходным изображением и новым
+            double scaleX = oldWidth / (double)newWidth;
+            // Соотношение по вертикали между исходным изображением и новым
+            double scaleY = oldHeight / (double)newHeight;
 
-            int x2, y2;
+            // Счетчик количества пикселй
+            int pixelNum = 0;
             for (int i = 0; i < newHeight; i++)
             {
                 for (int k = 0; k < newWidth; k++)
                 {
-                    x2 = (k * xRatio) >> 16;
-                    y2 = (i * yRatio) >> 16;
-
-                    scaledPixels[i * newWidth + k] = pixels[y2 * oldWidth + x2];
+                    // Вычисление координаты пикселя исходного изображения в увеличенном изображении
+                    double newX = Math.Floor(k * scaleX);
+                    double newY = Math.Floor(i * scaleY);
+                    // Добавление нового пикселя в массив по полученным координатам
+                    scaledPixels[pixelNum] = pixels[(int)(newY * oldWidth + newX)];
+                    // Увеличение счетчика на 1
+                    pixelNum++;
                 }
             }
             return scaledPixels;
