@@ -131,7 +131,7 @@ namespace Visual_lab_1
             // codeShift_2
             // 
             this.codeShift_2.AutoSize = true;
-            this.codeShift_2.Location = new System.Drawing.Point(110, 30);
+            this.codeShift_2.Location = new System.Drawing.Point(116, 30);
             this.codeShift_2.Name = "codeShift_2";
             this.codeShift_2.Size = new System.Drawing.Size(35, 23);
             this.codeShift_2.TabIndex = 2;
@@ -141,7 +141,7 @@ namespace Visual_lab_1
             // codeShift_1
             // 
             this.codeShift_1.AutoSize = true;
-            this.codeShift_1.Location = new System.Drawing.Point(69, 30);
+            this.codeShift_1.Location = new System.Drawing.Point(75, 30);
             this.codeShift_1.Name = "codeShift_1";
             this.codeShift_1.Size = new System.Drawing.Size(35, 23);
             this.codeShift_1.TabIndex = 1;
@@ -152,7 +152,7 @@ namespace Visual_lab_1
             // 
             this.codeShift_0.AutoSize = true;
             this.codeShift_0.Checked = true;
-            this.codeShift_0.Location = new System.Drawing.Point(26, 30);
+            this.codeShift_0.Location = new System.Drawing.Point(32, 30);
             this.codeShift_0.Name = "codeShift_0";
             this.codeShift_0.Size = new System.Drawing.Size(35, 23);
             this.codeShift_0.TabIndex = 0;

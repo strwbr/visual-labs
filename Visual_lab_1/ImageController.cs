@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 
 namespace Visual_lab_1
 {
-    // Класс, содержащий в себе методы для работы с изображением 
-    class ImageController
+    class ImageController 
     {
         /* Считывание байтов с файла 
          * Параметры: path - путь к файлу, с которого необходимо считать байты.
@@ -18,71 +16,35 @@ namespace Visual_lab_1
             return readBytes;
         }
 
-        /* Получение кодов яркости пикселей
-         * Параметры: imageInfo - объект, содержащий информацию об изображении,
-         *            shift - значение сдвига байтов,
-         *            topLine - значение верхней границы изображения.
-         * Возвращаемое значение: массив ushort (16-bit), содержащий коды яркости пикселей.
+        /* Получение яркостей пикселей изображения с учетом верхней границы
+         * Параметры: imageInfo - объект, хранящий в себе считанные с файла яркости пикселей,
+         *            topLine - значение верхней границы
+         * Возвращаемое значение: массив яркостей пикселей обрезанного изображения
          */
-        private static ushort[] GetPixels(ImageInfo imageInfo, int shift, int topLine)
+        public static ushort[] GetBrightness(ImageInfo imageInfo, int topLine)
         {
-            // Инициализация массива пикселей
-            // размер массива равен количеству пикселей с учетом значения верхней границы
-            ushort[] pixels = new ushort[imageInfo.CountPixels - imageInfo.Width * topLine];
-            // Временный массив, хранящий в себе байты, считанные с файла
-            byte[] temp = imageInfo.ImageBytes;
+            // Инициализация массива с яркостями пикселей обрезанного изображения;
+            // размер массива равен новому количеству пикселей в обрезанном изображении
+            ushort[] brightness = new ushort[imageInfo.CountPixels - imageInfo.Width * topLine];
 
-            // Заполнение массива pixels, путем получения двух байт из 2-х соответствующих элементов массива temp
+            // Заполнение массива яркостей обрезанного изображения
             // k - счетчик, начальное значение которого соответствует верхней границе, заданной пользователем
-            for (int i = 0, k = imageInfo.Width * topLine * 2 + 4; k < temp.Length; i++, k += 2)
+            for (int i = 0, k = imageInfo.Width * topLine; k < imageInfo.PixelBrightness.Length; i++, k++)
             {
-                pixels[i] = (ushort)(GetTwoBytes(temp[k], temp[k + 1], shift) & 255);
+                brightness[i] = imageInfo.PixelBrightness[k];
             }
 
-            return pixels;
+            return brightness;
         }
 
-        /* Объединение двух байт
-         * Параметры: first и second - байты, который необходимо объединить,
-                      shift - байтовый сдвиг.
-         * Возвращаемое значение: 16-битовое число - объединенные байты
+        /* Создание изображения (объект Bitmap) с задаваемым размером сдвигом кодов из массива 2-байтных яркостей пикселей 
+         * Параметры: pixels - 2-байтные яркости пикселей, из которых создается изображение,
+         *            width - ширина создаваемого изображения,
+         *            height - высота создаваемого изображения,
+         *            shift - сдвиг кодов пикселей
+         * Возвращаемое значение: построенное изображение (Bitmap)
          */
-        private static ushort GetTwoBytes(byte first, byte second, int shift)
-        {
-            return (ushort)((first | (second << 8)) >> shift);
-        }
-
-        /* Создание объекта Bitmap из считанного файла со значениями сдвига и верхней границы, 
-         * задаваемыми пользователем
-         * Параметры: imageInfo - объект, содержащий информацию об изображении, из которого необходимо создать bitmap,
-         *            shift - сдвиг байтов,
-         *            topLine - верхняя граница.
-         * Возвращаемое значение: объект Bitmap - созданное изображение
-         */
-        public static Bitmap CreateImage(ImageInfo imageInfo, int shift, int topLine)
-        {
-            // Получение ширины и высоты изображения,
-            int width = imageInfo.Width;
-            int height = imageInfo.Height - topLine;
-            // Получение массива кодов яркостей пикселей
-            ushort[] pixels = GetPixels(imageInfo, shift, topLine);
-
-            // Инициализация объекта Bitmap
-            Bitmap image;
-            // Заполнение пикселями - установка цветов
-            FillBitmap(pixels, width, height, out image);
-
-            return image;
-        }
-
-        /* Задание яркостей пикселей объекта bitmap
-         * Параметры: pixels - массив значений яркостей,
-         *            width - ширина изображения,
-         *            height - высота изображения,
-         *            bitmap - изображение, пикслям которого необходимо задать яркости
-         * Метод ничего не возвращает. Он изменяет выходной параметр bitmap
-         */
-        private static void FillBitmap(ushort[] pixels, int width, int height, out Bitmap bitmap)
+        public static Bitmap CreateImage(ushort[] pixels, int width, int height, int shift)
         {
             // Инициализация объекта типа Bitmap с шириной width и высотой height
             Bitmap temp = new Bitmap(width, height);
@@ -93,156 +55,218 @@ namespace Visual_lab_1
             {
                 for (int k = 0; k < width; k++)
                 {
-                    // Значения цветов R, G, B равны
-                    temp.SetPixel(k, i, Color.FromArgb(pixels[pixelNum], pixels[pixelNum], pixels[pixelNum]));
+                    // Получение 8-битных яркостей пикселей (с учетом сдвига) из 2-байтных кодов
+                    // путем сдвига 2-байтного кода вправо на shift битов и логического умножения на 255
+                    ushort color = (ushort)((pixels[pixelNum] >> shift) & 255);
+                    // Значения каналов R, G, B равны
+                    temp.SetPixel(k, i, Color.FromArgb(color, color, color));
+                    // Увеличение счетчика на 1
                     pixelNum++;
                 }
             }
-            // Присваение объекта temp выходному папарметру bitmap
-            bitmap = temp;
+            return temp;
         }
 
-        /* Увеличение фрагмента изображения методом ближайшего соседа
-         * Параметры: fragment - фрагмент изображения, который надо увеличить,
-         *            scale - во сколько раз необходимо увеличить фрагмент
-         * Возвращаемое значение: объект типа Bitmap - увеличенный в scale раз фрагмент
+        /* Нормирование яркостей пикселей
+         * Параметр: pixels - пиксели, яркости которых надо нормировать
+         * Возращаемое значение: массив нормированных яркостей
          */
-        public static Bitmap NearestNeighborScaling(Bitmap fragment, int scale)
+        public static ushort[] NormalizeBrightness(ushort[] pixels)
         {
-            // Получение ширины и высоты изначального фрагмента
-            int width = fragment.Width;
-            int height = fragment.Height;
+            // Вычисление диапазона яркостей в массиве
+            // Первоначально яркость 1-го пикселя массива и минимальна и максимальна
+            ushort min = pixels[0];
+            ushort max = pixels[0];
+            // Проход по массиву пикселей - получение минимальной и максимальной яркостей
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                if (min > pixels[i]) min = pixels[i];
+                if (max < pixels[i]) max = pixels[i];
+            }
 
+            // Инициализация массива нормированных яркостей; размер массива равен размеру исходного массива
+            ushort[] normalizePixels = new ushort[pixels.Length];
+            // Получение новых, нормированных, значений яркостей
+            for (int i = 0; i < normalizePixels.Length; i++)
+            {
+                // Приведение диапазона яркостей (от min до max) к новому (от 0 до 255)
+                normalizePixels[i] = (ushort)(255 * (pixels[i] - min) / (max - min));
+            }
+            return normalizePixels;
+        }
+
+        /* Масштабирование изображения в заданное число раз методом ближайшего соседа
+         * Параметры: pixels - массив яркостей пикселей изображения, которое необходимо масштабировать,
+         *            oldWidth - первоначальная длина изображения,
+         *            oldHeight - первоначальная высота изображения,
+         *            scale - значение масштабирования
+         * Возвращаемое значение: массив яркостей пикселей масштабированного изображения
+         */
+        public static ushort[] NearestNeighborScaling(ushort[] pixels, int oldWidth, int oldHeight, int scale)
+        {
             // Вычисление новых значений ширины и высоты
-            int newWidth = width * scale;
-            int newHeight = height * scale;
+            int newWidth = oldWidth * scale;
+            int newHeight = oldHeight * scale;
 
-            // Инициализация массива яркостей пикселей увеличенного фрагмента.
-            // Размер массива равен количеству пикселей в фрагменте после увеличения.
+            // Инициализация массива яркостей пикселей масштабированного изображения
+            // Размер массива равен количеству пикселей в изображении после масштабирования
             ushort[] scaledPixels = new ushort[newWidth * newHeight];
 
-            int xRatio = ((width << 16) / newWidth) + 1;
-            int yRatio = ((height << 16) / newHeight) + 1;
+            // Соотношение по горизонтали между исходным изображением и новым
+            double scaleX = oldWidth / (double)newWidth;
+            // Соотношение по вертикали между исходным изображением и новым
+            double scaleY = oldHeight / (double)newHeight;
 
-            int x2, y2;
+            // Счетчик количества пикселй
+            int pixelNum = 0;
             for (int i = 0; i < newHeight; i++)
             {
                 for (int k = 0; k < newWidth; k++)
                 {
-                    x2 = (k * xRatio) >> 16;
-                    y2 = (i * yRatio) >> 16;
-                    ushort color = fragment.GetPixel(x2, y2).R;
-                    
-                    scaledPixels[i * newWidth + k] = color;
+                    // Вычисление координаты пикселя исходного изображения в увеличенном изображении
+                    double newX = Math.Floor(k * scaleX);
+                    double newY = Math.Floor(i * scaleY);
+                    // Добавление нового пикселя в массив по полученным координатам
+                    scaledPixels[pixelNum] = pixels[(int)(newY * oldWidth + newX)];
+                    // Увеличение счетчика на 1
+                    pixelNum++;
                 }
             }
-
-            // Инициализация объекта Bitmap - увеличенного фрагмента
-            Bitmap scaledImage;
-            // Установка яркостей пикселей у увеличенного фрагмента scaledImage
-            FillBitmap(scaledPixels, newWidth, newHeight, out scaledImage);
-
-            return scaledImage;
+            return scaledPixels;
         }
 
-        /* Увеличение фрагмента изображения методом биленейной субпиксельной интерполяции
-         * Параметры: fragment - фрагмент изображения, который надо увеличить,
-         *            scale - во сколько раз необходимо увеличить фрагмент
-         * Возвращаемое значение: объект типа Bitmap - увеличенный в scale раз фрагмент
+        /* Масштабирование изображения в заданное число раз методом билинейной субпиксельной интерполяции
+         * Параметры: pixels - массив яркостей пикселей изображения, которое необходимо масштабировать,
+         *            oldWidth - первоначальная длина изображения,
+         *            oldHeight - первоначальная высота изображения,
+         *            scale - значение увеличения
+         * Возвращаемое значение: массив яркостей пикселей масштабированного изображения
          */
-        public static Bitmap BilinearInterpolationScaling(Bitmap fragment, int scale)
+        public static ushort[] BilinearInterpolationScaling(ushort[] pixels, int oldWidth, int oldHeight, int scale)
         {
-            // Получение ширины и высоты изначального фрагмента
-            int width = fragment.Width;
-            int height = fragment.Height;
-
             // Вычисление новых значений ширины и высоты
-            int newWidth = width * scale;
-            int newHeight = height * scale;
+            int newWidth = oldWidth * scale;
+            int newHeight = oldHeight * scale;
 
-            float xRatio = ((float)(width - 1)) / newWidth;
-            float yRatio = ((float)(height - 1)) / newHeight;
-            int offset = 0, index;
-
-            // Инициализация массива яркостей пикселей увеличенного фрагмента.
-            // Размер массива равен количеству пикселей в фрагменте после увеличения.
+            // Инициализация массива яркостей пикселей масштабированного фрагмента
+            // Размер массива равен количеству пикселей в фрагменте после масштабирования
             ushort[] scaledPixels = new ushort[newWidth * newHeight];
 
+            // Соотношение по горизонтали между исходным изображением и новым
+            float scaleX = ((float)(oldWidth - 1)) / newWidth;
+            // Соотношение по вертикали между исходным изображением и новым
+            float scaleY = ((float)(oldHeight - 1)) / newHeight;
+            
+            // Счетчик количества пикселей нового изображения
+            int pixelNum = 0;
             for (int i = 0; i < newHeight; i++)
             {
                 for (int k = 0; k < newWidth; k++)
                 {
-                    int x = (int)(xRatio * k);
-                    int y = (int)(yRatio * i);
-                    float xDif = xRatio * k - x;
-                    float yDif = yRatio * i - y;
-                    index = y * width + x;
+                    // Вычисление координаты пикселя исходного изображения в увеличенном изображении
+                    int newX = (int)(scaleX * k);
+                    int newY = (int)(scaleY * i);
+                    // Вычисление расстояния от нового пикселя до пикселя i1, расположенного в точке (0;0)
+                    float dx = scaleX * k - newX;
+                    float dy = scaleY * i - newY;
+                    // Координата 1-го из 4-х смежных пикселей
+                    int first = newY * oldWidth + newX;
+                    // Яркости 4-х смежных пикселей
+                    int i1 = pixels[first]; // Верхний левый
+                    int i2 = pixels[first + 1]; // Верхний правый
+                    int i3 = pixels[first + oldWidth]; // Нижний левый
+                    int i4 = pixels[first + oldWidth + 1]; // Нижний правый
 
-                    int a = fragment.GetPixel(x, y).R;
-                    int b = fragment.GetPixel(x + 1, y).R;
-                    int c = fragment.GetPixel(x, y + 1).R;
-                    int d = fragment.GetPixel(x + 1, y + 1).R;
-
-                    scaledPixels[offset] =
-                        (ushort)(a * (1 - xDif) * (1 - yDif) + b * xDif * (1 - yDif) + c * (1 - xDif) * yDif + d * xDif * yDif);
-                    offset++;
+                    // Вычисление яркости смещенного пикселя и добавление в массив scaledPixels
+                    scaledPixels[pixelNum] =
+                        (ushort)(i1 * (1 - dx) * (1 - dy) + i2 * dx * (1 - dy) + i3 * (1 - dx) * dy + i4 * dx * dy);
+                    pixelNum++;
                 }
             }
-
-            // Инициализация объекта Bitmap - увеличенного фрагмента
-            Bitmap scaledImage;
-            // Установка яркостей пикселей у увеличенного фрагмента scaledImage
-            FillBitmap(scaledPixels, newWidth, newHeight, out scaledImage);
-
-            return scaledImage;
+            return scaledPixels;
         }
 
-        /* Нормирование яркости пикселей фрагмента изображения
-         * Параметр: fragment - фрагмент изображения, который надо увеличить
-         * Возвращаемое значение: объект типа Bitmap - фрагмент, яроксти пикселей которого были нормированы
+        /* Получение массива яркостей обзорного изображения (ОИ)
+         * Параметры: brightness - яркости пикселей изображения, для которого необходимо построить ОИ,
+         *            width - ширина первоначального изображения,
+         *            height - выоста первоначального изображения,
+         *            m - значение прореживания (во сколько раз уменьшатся длина и высота исходного иозбражения)
          */
-        public static Bitmap NormalizeBrightness(Bitmap fragment)
+        public static ushort[] OverviewImage(ushort[] brightness, int width, int height, int m)
         {
-            // Вычисление минимальной и максимальной яркости пикселей фрагмента
-            // Первоначально задаем, что яркость 1-го пикселя фрагмента минимальна и максимальна
-            int min = fragment.GetPixel(0, 0).R;
-            int max = fragment.GetPixel(0, 0).R;
-            for (int i = 0; i < fragment.Height; i++)
+            // Инициализация массива яркостей ОИ;
+            // ширина и высота ОИ меньше исходных в m раз
+            ushort[] overviewPixels = new ushort[width / m * height / m];
+            // Счетчик количества пикселей
+            int pixelNum = 0;
+            // Прореживание исходного массива brightness
+            // Берется каждая m-я строка, а в ней каждый m-й пиксель
+            for (int i = 0, j = 0; i < height; i += m, j++)
             {
-                for (int k = 0; k < fragment.Width; k++)
+                for (int k = 0, t = 0; k < width; k += m, t++)
                 {
-                    ushort color = fragment.GetPixel(k, i).R;
-                    if (min > color) min = color;
-                    if (max < color) max = color;
+                    overviewPixels[pixelNum] = brightness[i * width + k];
+                    pixelNum++;
                 }
             }
-            // 
-            Bitmap normalizeFrag = new Bitmap(fragment.Width, fragment.Height);
-            for (int i = 0; i < fragment.Height; i++)
-            {
-                for (int k = 0; k < fragment.Width; k++)
-                {
-                    ushort color = fragment.GetPixel(k, i).R;
-                    color = (ushort)(255 * (color - min) / (max - min));
-                    normalizeFrag.SetPixel(k, i, Color.FromArgb(color, color, color));
-                }
-            }
-            return normalizeFrag;
+            return overviewPixels;
         }
 
-        public static Bitmap OverviewImage(Bitmap image)
-        {
-            int m = 5;
-            Bitmap overviewImage = new Bitmap(image.Width / m, image.Height / m);
-            for (int i = 0, j = 0; i < image.Height; i += m, j++)
-            {
-                for (int k = 0, t = 0; k < image.Width; k += m, t++)
-                {
-                    ushort color = image.GetPixel(k, i).R;
-                    overviewImage.SetPixel(t, j, Color.FromArgb(color, color, color));
-                }
-            }
-            return overviewImage;
-        }
+        /* Получение 8-битных яркостей пикселей (с учетом сдвига) из 2-байтных кодов, считанных с файла
+        * Параметры: brightness - 2-байтные яркости пикселей, считанные из файла,
+        *            shift - сдвиг кодов пикселей
+        * Возвращаемое значение: массив 8-битных яркостей пикселей
+        */
+        //private static ushort[] GetChannelsValues(ushort[] brightness, int shift)
+        //{
+        //    // Инициализация массива 8-битных яркостей; размер массива равен размеру массива brightness
+        //    ushort[] channels = new ushort[brightness.Length];
+        //    // Заполнение массива channels путем сдвига 2-байтного кода вправо на shift битов и логического умножения на 255 
+        //    for (int i = 0; i < brightness.Length; i++)
+        //    {
+        //        channels[i] = (ushort)((brightness[i] >> shift) & 255);
+        //    }
+        //    return channels;
+        //}
+
+        //public static Bitmap CreateImage(ImageInfo imageInfo, ushort[] brightness, int shift, int topLine)
+        //{
+        //    int width = imageInfo.Width;
+        //    int height = imageInfo.Height - topLine;
+
+        //    ushort[] temp = GetChannelsValues(brightness, shift);
+        //    return FillBitmap(temp, width, height);
+        //}
+
+        /* Создание изображения (объект Bitmap) с задаваемым размером сдвигом кодов из массива яркостей пикселей
+         * Параметры: brightness - яркости пикселей, из которых создается изображение,
+         *            width - ширина создаваемого изображения,
+         *            height - высота создаваемого изображения,
+         *            shift - сдвиг кодов пикселей
+         * Возвращаемое значение: построенное изображение (Bitmap)
+         */
+        //public static Bitmap CreateImage(ushort[] brightness, int width, int height, int shift)
+        //{
+        //    // Получение 8-битных яркостей пикселей
+        //    ushort[] temp = GetChannelsValues(brightness, shift);
+        //    // Установка яркостей пикселей у изображения и возврат полученного изображения
+        //    return FillBitmap(temp, width, height);
+        //}
+
+        //private static ushort[,] OneDimToTwoDim(ushort[] pix, int width, int height)
+        //{
+        //    int w = width, h = height;
+        //    ushort[,] temp = new ushort[h, w];
+        //    int count = 0;
+        //    for (int i = 0; i < h; i++)
+        //    {
+        //        for (int k = 0; k < w; k++)
+        //        {
+        //            temp[i, k] = pix[count];
+        //            count++;
+        //        }
+        //    }
+        //    return temp;
+        //}
     }
 }

@@ -14,8 +14,8 @@ namespace Visual_lab_1
         Bitmap currentImage;
         // Верхняя граница изображения (при запуске приложения граница = 0)
         int topLines = 0;
-        // Размер фрагмента, равный 60х60
-        const int fragSize = 60;
+        // Размер фрагмента, равный 50х50
+        const int fragSize = 50;
         // Текущие яркости пикселей, с учетом верхней границы и без учета сдвига кодов
         ushort[] currentPixels;
         // Яркости пикселей фрагмента изображения
@@ -62,10 +62,10 @@ namespace Visual_lab_1
                 // Создание объекта с информацией об изображении
                 imageInfo = new ImageInfo(path);
                 // Получение массива яркостей пикселей изображения с учетом верхней границы
-                currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
+                currentPixels = ImageController.GetBrightness(imageInfo, topLines);
 
                 // Отображение изображения на экране
-                currentImage = ImageCtrl.CreateImage(
+                currentImage = ImageController.CreateImage(
                     currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                 // Установка полученного изображения в соответсвующее поле вывода
                 SetImage(currentImage);
@@ -93,10 +93,10 @@ namespace Visual_lab_1
                     if (topLines < imageInfo.Height && topLines >= 0)
                     {
                         // Получение массива яркостей пикселей изображения с учетом верхней границы
-                        currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
+                        currentPixels = ImageController.GetBrightness(imageInfo, topLines);
                         // Отображение изображения на экране
                         //currentImage = ImageCtrl.CreateImage(imageInfo, currentPixels, GetShiftValue(), topLines);
-                        currentImage = ImageCtrl.CreateImage(
+                        currentImage = ImageController.CreateImage(
                             currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                         // Установка полученного изображения в соответсвующее поле вывода
                         SetImage(currentImage);
@@ -160,9 +160,9 @@ namespace Visual_lab_1
             if (imageInfo != null)
             {
                 // Получение массива яркостей пикселей изображения с учетом верхней границы
-                currentPixels = ImageCtrl.GetBrightness(imageInfo, topLines);
+                currentPixels = ImageController.GetBrightness(imageInfo, topLines);
                 // Отображение изображения на экране с 
-                currentImage = ImageCtrl.CreateImage(
+                currentImage = ImageController.CreateImage(
                            currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                 // Установка полученного изображения в соответствующее поле вывода
                 SetImage(currentImage);
@@ -272,19 +272,19 @@ namespace Visual_lab_1
             // Если было выбрано нормирование яркостей
             if (normalize)
                 // Нормирование яркостей пикселей; параметр fragPixels заменяется на массив с нормированными яркостями
-                fragPixels = ImageCtrl.NormalizeBrightness(fragPixels);
+                fragPixels = ImageController.NormalizeBrightness(fragPixels);
 
             // В зависимости от выбранного метода увеличения вызывается соответствующий метод увеличения;
             // параметр fragPixels заменяется на массив с увеличенными пикселями
             fragPixels = interpolate
                 // Билинейная субпиксельная интерполяция
-                ? ImageCtrl.BilinearInterpolationScaling(fragPixels, fragSize, scale)
+                ? ImageController.BilinearInterpolationScaling(fragPixels, fragSize, fragSize, scale)
                 // Метод ближайщего соседа
-                : ImageCtrl.NearestNeighborScaling(fragPixels, fragSize, fragSize, scale);
+                : ImageController.NearestNeighborScaling(fragPixels, fragSize, fragSize, scale);
 
             // Создание изображения из массива пикселей
             // Размер созданного фрагмента равен увеличенному в scale раз размеру исходного фрагмента
-            frag = ImageCtrl.CreateImage(fragPixels, fragSize * scale, fragSize * scale, GetShiftValue());
+            frag = ImageController.CreateImage(fragPixels, fragSize * scale, fragSize * scale, GetShiftValue());
             // Установка созданного изображения в элемент lensPc
             lensPc.Image = frag;
         }
@@ -322,13 +322,13 @@ namespace Visual_lab_1
             // Если изображение было считано с файла
             if (imageInfo != null)
             {
-                // 
+                // Значение прореживания исходного изображения
                 const int m = 5;
                 // Получение массива яркостей ОИ
-                ushort[] overviewPixels = ImageCtrl.OverviewImage(
+                ushort[] overviewPixels = ImageController.OverviewImage(
                     imageInfo.PixelBrightness, imageInfo.Width, imageInfo.Height, m);
                 // Создание ОИ с учетом выбранного сдвига кодов
-                Bitmap overviewImage = ImageCtrl.CreateImage(
+                Bitmap overviewImage = ImageController.CreateImage(
                     overviewPixels, imageInfo.Width / m, imageInfo.Height / m, GetShiftValue());
                 // Установка ОИ в поле для его вывода 
                 overviewImagePb.Image = overviewImage;
@@ -397,7 +397,7 @@ namespace Visual_lab_1
             // Установка фильтра на файлы формата mbv
             fileDialog.Filter = "MBV files (*.mbv) | *.mbv";
 
-            // Открытие окна.
+            // Открытие окна
             // Если пользователь выбрал файл и нажал ОК, то возвращает путь,
             // иначе возвращает null
             return (fileDialog.ShowDialog() == DialogResult.OK) ? fileDialog.FileName : null;
