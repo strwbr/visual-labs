@@ -123,7 +123,7 @@ namespace Visual_lab_1
             {
                 for (int k = 0; k < newWidth; k++)
                 {
-                    // Вычисление координаты пикселя исходного изображения в увеличенном изображении
+                    // Сопоставление координат с исходным изображением
                     double newX = Math.Floor(k * scaleX);
                     double newY = Math.Floor(i * scaleY);
                     // Добавление нового пикселя в массив по полученным координатам
@@ -163,10 +163,10 @@ namespace Visual_lab_1
             {
                 for (int k = 0; k < newWidth; k++)
                 {
-                    // Вычисление координаты пикселя исходного изображения в увеличенном изображении
+                    // Сопоставление координат с исходным изображением
                     int newX = (int)(scaleX * k);
                     int newY = (int)(scaleY * i);
-                    // Вычисление расстояния от нового пикселя до пикселя i1, расположенного в точке (0;0)
+                    // Вычисление расстояния от нового пикселя до пикселя i1 (верхнего левого)
                     float dx = scaleX * k - newX;
                     float dy = scaleY * i - newY;
                     // Координата 1-го из 4-х смежных пикселей
@@ -189,7 +189,7 @@ namespace Visual_lab_1
         /* Получение массива яркостей обзорного изображения (ОИ)
          * Параметры: brightness - яркости пикселей изображения, для которого необходимо построить ОИ,
          *            width - ширина первоначального изображения,
-         *            height - выоста первоначального изображения,
+         *            height - высота первоначального изображения,
          *            m - значение прореживания (во сколько раз уменьшатся длина и высота исходного иозбражения)
          */
         public static ushort[] OverviewImage(ushort[] brightness, int width, int height, int m)
@@ -201,9 +201,9 @@ namespace Visual_lab_1
             int pixelNum = 0;
             // Прореживание исходного массива brightness
             // Берется каждая m-я строка, а в ней каждый m-й пиксель
-            for (int i = 0, j = 0; i < height; i += m, j++)
+            for (int i = 0; i < height; i += m)
             {
-                for (int k = 0, t = 0; k < width; k += m, t++)
+                for (int k = 0; k < width; k += m)
                 {
                     overviewPixels[pixelNum] = brightness[i * width + k];
                     pixelNum++;

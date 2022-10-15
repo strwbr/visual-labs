@@ -281,7 +281,7 @@ namespace Visual_lab_1
             // 
             this.lensPc.Location = new System.Drawing.Point(592, 116);
             this.lensPc.Name = "lensPc";
-            this.lensPc.Size = new System.Drawing.Size(425, 425);
+            this.lensPc.Size = new System.Drawing.Size(360, 360);
             this.lensPc.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.lensPc.TabIndex = 10;
             this.lensPc.TabStop = false;
@@ -370,7 +370,7 @@ namespace Visual_lab_1
             // 
             // overviewImagePb
             // 
-            this.overviewImagePb.Location = new System.Drawing.Point(1023, 35);
+            this.overviewImagePb.Location = new System.Drawing.Point(982, 35);
             this.overviewImagePb.Name = "overviewImagePb";
             this.overviewImagePb.Size = new System.Drawing.Size(100, 50);
             this.overviewImagePb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -403,7 +403,7 @@ namespace Visual_lab_1
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label6.Location = new System.Drawing.Point(1023, 13);
+            this.label6.Location = new System.Drawing.Point(982, 13);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(162, 19);
             this.label6.TabIndex = 17;
@@ -413,7 +413,7 @@ namespace Visual_lab_1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1303, 696);
+            this.ClientSize = new System.Drawing.Size(1203, 685);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.createOverviewImageBtn);
