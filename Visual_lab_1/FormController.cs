@@ -15,7 +15,7 @@ namespace Visual_lab_1
         // Верхняя граница изображения (при запуске приложения граница = 0)
         int topLines = 0;
         // Размер фрагмента, равный 50х50
-        const int fragSize = 50;
+        int fragmentSize = 50;
         // Текущие яркости пикселей, с учетом верхней границы и без учета сдвига кодов
         ushort[] currentPixels;
         // Яркости пикселей фрагмента изображения
@@ -100,6 +100,8 @@ namespace Visual_lab_1
                             currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                         // Установка полученного изображения в соответсвующее поле вывода
                         SetImage(currentImage);
+                        // Получение нового размера фрагмента
+                        fragmentSize = GetFragmentSize();
                     }
                     // Если введенное число не соответствует допустимому диапазону
                     else
@@ -142,7 +144,9 @@ namespace Visual_lab_1
             {
                 // Вывод значений
                 // яркости пикселя, на который указывает курсор
-                brightnessTb.Text = currentPixels[imageInfo.Width * e.Location.Y + e.Location.X].ToString();
+                // Проверка на вылет за пределы отображаемого изображения
+                if (e.Location.X < currentImage.Width && e.Location.Y < currentImage.Height)
+                    brightnessTb.Text = currentPixels[imageInfo.Width * e.Location.Y + e.Location.X].ToString();
                 // координаты пикселя по X
                 xTb.Text = e.Location.X.ToString();
                 // координаты пикселя по Y
@@ -200,10 +204,23 @@ namespace Visual_lab_1
             if (imageInfo != null)
             {
                 // Получение фрагмента изображения по координатам пикселя, на который указывал курсор мыши при клике
-                fragmentPixels = GetImageFragment(e.Location, fragSize);
+                fragmentPixels = GetImageFragment(e.Location, fragmentSize);
                 // Отображения фрагмента в соответствующем поле на форме с учетом нормирования и метода увеличения
                 SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
             }
+        }
+
+        /* Получение размера фрагмента, который можно получить из изображения, отображаемого на экране 
+         * Возвращаемое значение: размер фрагмента*/
+        private int GetFragmentSize()
+        {
+            // Изначально размер фрагмента 50 на 50
+            int fragSize = 50;
+            // Если высота изображения меньше, чем fragSize
+            if (fragSize > currentImage.Height) 
+                // то новый размер фрагмента равен выосте изображения
+                fragSize = currentImage.Height;
+            return fragSize;
         }
 
         /* Получение фрагмента изображения по координатам пикселя (центр фрагмента)
@@ -213,6 +230,7 @@ namespace Visual_lab_1
          */
         private ushort[] GetImageFragment(Point clickLocation, int fragSize)
         {
+            fragSize = GetFragmentSize();
             // Получение радиуса построения фрагмента
             int radius = fragSize / 2;
             // Координаты левого верхнего угла фрагмента
@@ -274,17 +292,22 @@ namespace Visual_lab_1
                 // Нормирование яркостей пикселей; параметр fragPixels заменяется на массив с нормированными яркостями
                 fragPixels = ImageController.NormalizeBrightness(fragPixels);
 
+            // Если размер фрагмента равен 1 на 1 и выбрана билинейная интерполяция,
+            // то увеличение фрагмента будет происходит методом ближайшего соседа
+            if (fragPixels.Length == 1 && interpolate) 
+                interpolate = false; 
+
             // В зависимости от выбранного метода увеличения вызывается соответствующий метод увеличения;
             // параметр fragPixels заменяется на массив с увеличенными пикселями
             fragPixels = interpolate
                 // Билинейная субпиксельная интерполяция
-                ? ImageController.BilinearInterpolationScaling(fragPixels, fragSize, fragSize, scale)
+                ? ImageController.BilinearInterpolationScaling(fragPixels, fragmentSize, fragmentSize, scale)
                 // Метод ближайщего соседа
-                : ImageController.NearestNeighborScaling(fragPixels, fragSize, fragSize, scale);
+                : ImageController.NearestNeighborScaling(fragPixels, fragmentSize, fragmentSize, scale);
 
             // Создание изображения из массива пикселей
             // Размер созданного фрагмента равен увеличенному в scale раз размеру исходного фрагмента
-            frag = ImageController.CreateImage(fragPixels, fragSize * scale, fragSize * scale, GetShiftValue());
+            frag = ImageController.CreateImage(fragPixels, fragmentSize * scale, fragmentSize * scale, GetShiftValue());
             // Установка созданного изображения в элемент lensPc
             lensPc.Image = frag;
         }

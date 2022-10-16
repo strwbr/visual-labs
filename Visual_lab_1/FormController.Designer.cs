@@ -272,7 +272,7 @@ namespace Visual_lab_1
             // 
             this.displayedPicturePanel.Location = new System.Drawing.Point(0, 0);
             this.displayedPicturePanel.Name = "displayedPicturePanel";
-            this.displayedPicturePanel.Size = new System.Drawing.Size(559, 200);
+            this.displayedPicturePanel.Size = new System.Drawing.Size(500, 1);
             this.displayedPicturePanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.displayedPicturePanel.TabIndex = 0;
             this.displayedPicturePanel.TabStop = false;
