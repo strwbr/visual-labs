@@ -81,8 +81,6 @@ namespace visual_lab_3
             this.brightAmountChart.Size = new System.Drawing.Size(320, 300);
             this.brightAmountChart.TabIndex = 0;
             this.brightAmountChart.Text = "chart1";
-            this.brightAmountChart.KeyDown += new System.Windows.Forms.KeyEventHandler(this.brightAmountChart_KeyDown);
-            this.brightAmountChart.KeyUp += new System.Windows.Forms.KeyEventHandler(this.brightAmountChart_KeyUp);
             this.brightAmountChart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BrightAmountChart_MouseDown);
             this.brightAmountChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BrightAmountChart_MouseMove);
             this.brightAmountChart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BrightAmountChart_MouseUp);
