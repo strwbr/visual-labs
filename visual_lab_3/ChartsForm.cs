@@ -15,13 +15,13 @@ namespace visual_lab_3
     {
         // Количество различных яркостей в изображении
         int[] amountBright = new int[256];
-        //StripLine leftBoundary = new StripLine();
-        //StripLine rightBoundary = new StripLine();
-        StripLine[] boundaries = new StripLine[2];
 
         bool moveLeftBoundary = false;
         bool moveRightBoundary = false;
         bool moveBoth = false;
+
+        private int LeftBoundaryPos => leftBoundaryTrack.Value;
+        private int RightBoundaryPos => rightBoundaryTrack.Value;
 
         public ChartsForm()
         {
@@ -41,16 +41,9 @@ namespace visual_lab_3
                     count++;
                 }
             }
-            foreach(ushort val in temp)
+            foreach (ushort val in temp)
             {
                 amountBright[val]++;
-            }
-
-            for(int i = 0; i < boundaries.Length; i++)
-            {
-                boundaries[i] = new StripLine();
-                boundaries[i].BackColor = Color.Red;
-                boundaries[i].StripWidth = 2;
             }
         }
 
@@ -61,74 +54,55 @@ namespace visual_lab_3
                 brightAmountChart.Series[0].Points.AddXY(i, amountBright[i]);
             }
 
-            int leftBoundaryPos = GetLeftBoundaryPos();
-            boundaries[0] = UpdateBoundaryPos(boundaries[0], leftBoundaryPos);
-            SetBoundary(boundaries[0]);
+            int leftBoundaryPos = LeftBoundaryPos;
+            UpdateBoundaryPos(0, leftBoundaryPos);
             leftBoundaryValueTb.Text = leftBoundaryPos.ToString();
 
-            int rightBoundaryPos = GetRightBoundaryPos();
-            boundaries[1] = UpdateBoundaryPos(boundaries[1], rightBoundaryPos);
-            SetBoundary(boundaries[1]);
+            int rightBoundaryPos = RightBoundaryPos;
+            UpdateBoundaryPos(1, rightBoundaryPos);
             rightBoundaryValueTb.Text = rightBoundaryPos.ToString();
         }
 
-        private int GetLeftBoundaryPos()
-        {
-            return leftBoundaryTrack.Value;
-        }
 
-        private int GetRightBoundaryPos()
-        {
-            return rightBoundaryTrack.Value;
-        }
 
         private void LeftBoundaryTrack_ValueChanged(object sender, EventArgs e)
         {
-            int leftBoundaryPos = GetLeftBoundaryPos();
-            boundaries[0] = UpdateBoundaryPos(boundaries[0],leftBoundaryPos);
-            SetBoundaries();
+            int leftBoundaryPos = LeftBoundaryPos;
+            UpdateBoundaryPos(0, leftBoundaryPos);
             leftBoundaryValueTb.Text = leftBoundaryPos.ToString();
-            
+
+            // DEBUG
             label3.Text = amountBright[leftBoundaryPos].ToString();
         }
 
         private void RightBoundaryTrack_ValueChanged(object sender, EventArgs e)
         {
-            int rightBoundaryPos = GetRightBoundaryPos();
-            boundaries[1] = UpdateBoundaryPos(boundaries[1], rightBoundaryPos);
-            SetBoundaries();
+            int rightBoundaryPos = RightBoundaryPos;
+            UpdateBoundaryPos(1, rightBoundaryPos);
             rightBoundaryValueTb.Text = rightBoundaryPos.ToString();
 
+            // DEBUG
             label4.Text = amountBright[rightBoundaryPos].ToString();
         }
 
-        private void SetBoundaries()
-        {
-            brightAmountChart.ChartAreas[0].AxisX.StripLines.Clear();
-            SetBoundary(boundaries[0]);
-            SetBoundary(boundaries[1]);
-        }
 
-        private StripLine UpdateBoundaryPos(StripLine boundary, int x)
+        private void UpdateBoundaryPos(int index, int x)
         {
-            boundary.IntervalOffset = x;
-            return boundary;
-        }
-
-        private void SetBoundary(StripLine boundary)
-        {
-            brightAmountChart.ChartAreas[0].AxisX.StripLines.Add(boundary);
+            brightAmountChart.ChartAreas[0].AxisX.StripLines[index].IntervalOffset = x;
         }
 
         private void BrightAmountChart_MouseDown(object sender, MouseEventArgs e)
         {
             int x = (int)brightAmountChart.ChartAreas[0].AxisX.PixelPositionToValue(e.Location.X);
-            int xL = (int)boundaries[0].IntervalOffset;
-            int xR = (int)boundaries[1].IntervalOffset;
-            moveLeftBoundary = (x > xL - 3 && x < xL + 3);
-            moveRightBoundary = (x > xR - 3 && x < xR + 3);
+            int xL = LeftBoundaryPos; //(int)boundaries[0].IntervalOffset;
+            int xR = RightBoundaryPos; //(int)boundaries[1].IntervalOffset;
+            moveLeftBoundary = (x > xL - 3) && (x < xL + 3);
+            moveRightBoundary = (x > xR - 3) && (x < xR + 3);
 
-            // TODO обработать вариант когда они очень близко друг к другу
+            if (IsFixBoundaries())
+                moveLeftBoundary = moveRightBoundary = true;
+
+            // DEBUG
             label5.Text = $"left: {moveLeftBoundary}, right: {moveRightBoundary}, both: {moveBoth}";
         }
 
@@ -136,49 +110,57 @@ namespace visual_lab_3
         {
             moveLeftBoundary = false;
             moveRightBoundary = false;
-            label5.Text = $"left: {moveLeftBoundary}, right: {moveRightBoundary}, both: {moveBoth}";
+            moveBoth = false;
 
+            // DEBUG
+            label5.Text = $"left: {moveLeftBoundary}, right: {moveRightBoundary}, both: {moveBoth}";
         }
 
         private void BrightAmountChart_MouseMove(object sender, MouseEventArgs e)
         {
             int x = (int)brightAmountChart.ChartAreas[0].AxisX.PixelPositionToValue(e.Location.X);
-            if (moveBoth)
+
+            if (x >= 0 && x <= 255)
             {
-                // REFACTOR
-                leftBoundaryTrack.Value = x;
-                rightBoundaryTrack.Value = x;
-            }
-            else
-            {
-                if (moveLeftBoundary)
+                if (IsFixBoundaries())
                 {
-                    //boundaries[0] = UpdateBoundaryPos(boundaries[0], x);
-                    leftBoundaryTrack.Value = x;
+                    //int dxL = Math.Abs(x - leftBoundaryTrack.Value);
+                    //int dxR = Math.Abs(x - rightBoundaryTrack.Value);
+                    //int dx = (dxL > dxR) ? dxR : dxL;
+                    //leftBoundaryTrack.Value += dx;
+                    //rightBoundaryTrack.Value += dx;
+
+                    // Это не работает если левая и правая границы поменялись местами
+                    if (moveLeftBoundary)
+                    {
+                        int dx = Math.Abs(LeftBoundaryPos - RightBoundaryPos);
+                        leftBoundaryTrack.Value = x;
+                        rightBoundaryTrack.Value = x + dx;
+                    }
+                    else if (moveRightBoundary)
+                    {
+                        int dx = Math.Abs(LeftBoundaryPos - RightBoundaryPos);
+                        leftBoundaryTrack.Value = x - dx;
+                        rightBoundaryTrack.Value = x;
+                    }
                 }
-                if (moveRightBoundary)
+                else
                 {
-                    rightBoundaryTrack.Value = x;
-                    //boundaries[1] = UpdateBoundaryPos(boundaries[1], x);
+                    if (moveLeftBoundary)
+                    {
+                        leftBoundaryTrack.Value = x;
+                    }
+                    if (moveRightBoundary)
+                    {
+                        rightBoundaryTrack.Value = x;
+                    }
                 }
             }
         }
 
-        private void brightAmountChart_KeyDown(object sender, KeyEventArgs e)
+        private bool IsFixBoundaries()
         {
-            if(e.KeyCode == Keys.Space)
-            {
-                moveBoth = true;
-            }
-            label5.Text = $"left: {moveLeftBoundary}, right: {moveRightBoundary}, both: {moveBoth}";
-
-        }
-
-        private void brightAmountChart_KeyUp(object sender, KeyEventArgs e)
-        {
-            moveBoth = false;
-            label5.Text = $"left: {moveLeftBoundary}, right: {moveRightBoundary}, both: {moveBoth}";
-
+            return fixCb.Checked;
         }
     }
 }
