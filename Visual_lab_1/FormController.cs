@@ -287,10 +287,7 @@ namespace Visual_lab_1
             Bitmap frag;
             // Получение текущего значения увеличения
             int scale = GetScaleValue();
-            // Если было выбрано нормирование яркостей
-            if (normalize)
-                // Нормирование яркостей пикселей; параметр fragPixels заменяется на массив с нормированными яркостями
-                fragPixels = ImageController.NormalizeBrightness(fragPixels);
+            
 
             // Если размер фрагмента равен 1 на 1 и выбрана билинейная интерполяция,
             // то увеличение фрагмента будет происходит методом ближайшего соседа
@@ -304,6 +301,11 @@ namespace Visual_lab_1
                 ? ImageController.BilinearInterpolationScaling(fragPixels, fragmentSize, fragmentSize, scale)
                 // Метод ближайщего соседа
                 : ImageController.NearestNeighborScaling(fragPixels, fragmentSize, fragmentSize, scale);
+
+            // Если было выбрано нормирование яркостей
+            if (normalize)
+                // Нормирование яркостей пикселей; параметр fragPixels заменяется на массив с нормированными яркостями
+                fragPixels = ImageController.NormalizeBrightness(fragPixels);
 
             // Создание изображения из массива пикселей
             // Размер созданного фрагмента равен увеличенному в scale раз размеру исходного фрагмента
