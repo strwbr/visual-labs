@@ -31,4 +31,3 @@ C:\Users\boris\source\repos\visual-labs\Visual_lab_1\obj\Debug\netcoreapp3.1\Vis
 C:\Users\boris\source\repos\visual-labs\Visual_lab_1\obj\Debug\netcoreapp3.1\Visual_lab_1.dll
 C:\Users\boris\source\repos\visual-labs\Visual_lab_1\obj\Debug\netcoreapp3.1\Visual_lab_1.pdb
 C:\Users\boris\source\repos\visual-labs\Visual_lab_1\obj\Debug\netcoreapp3.1\Visual_lab_1.genruntimeconfig.cache
-C:\Users\boris\source\repos\visual-labs\Visual_lab_1\obj\Debug\netcoreapp3.1\Visual_lab_1.csproj.AssemblyReference.cache
