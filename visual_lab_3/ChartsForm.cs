@@ -16,12 +16,14 @@ namespace visual_lab_3
         // Количество различных яркостей в изображении
         int[] amountBright = new int[256];
 
-        bool moveLeftBoundary = false;
-        bool moveRightBoundary = false;
-        bool moveBoth = false;
+        bool isMoveLeftBoundary = false;
+        bool isMoveRightBoundary = false;
 
         private int LeftBoundaryPos => leftBoundaryTrack.Value;
         private int RightBoundaryPos => rightBoundaryTrack.Value;
+
+        int lastLeftBoundaryPos = 0;
+        int lastRightBoundaryPos = 255;
 
         public ChartsForm()
         {
@@ -45,10 +47,7 @@ namespace visual_lab_3
             {
                 amountBright[val]++;
             }
-        }
 
-        private void ChartsForm_Load(object sender, EventArgs e)
-        {
             for (int i = 0; i < amountBright.Length; i++)
             {
                 brightAmountChart.Series[0].Points.AddXY(i, amountBright[i]);
@@ -63,57 +62,90 @@ namespace visual_lab_3
             rightBoundaryValueTb.Text = rightBoundaryPos.ToString();
         }
 
-
-
-        private void LeftBoundaryTrack_ValueChanged(object sender, EventArgs e)
+        private void LeftBoundaryTrack_Scroll(object sender, EventArgs e)
         {
-            int leftBoundaryPos = LeftBoundaryPos;
-            UpdateBoundaryPos(0, leftBoundaryPos);
-            leftBoundaryValueTb.Text = leftBoundaryPos.ToString();
+            MoveLeftBoundary(LeftBoundaryPos);
+            //UpdateBoundaryPos(0, LeftBoundaryPos);
+            //leftBoundaryValueTb.Text = LeftBoundaryPos.ToString();
+
+            if (IsFixBoundaries())
+            {
+                int dx = LeftBoundaryPos - lastLeftBoundaryPos;
+                rightBoundaryTrack.Value = RightBoundaryPos + dx;
+                //UpdateBoundaryPos(1, RightBoundaryPos);
+                //rightBoundaryValueTb.Text = RightBoundaryPos.ToString();
+                MoveRightBoundary(RightBoundaryPos);
+
+                lastRightBoundaryPos = RightBoundaryPos; // мб это тоже в методы Move...
+            }
+
+            lastLeftBoundaryPos = LeftBoundaryPos;
 
             // DEBUG
-            label3.Text = amountBright[leftBoundaryPos].ToString();
+            label3.Text = amountBright[LeftBoundaryPos].ToString();
         }
 
-        private void RightBoundaryTrack_ValueChanged(object sender, EventArgs e)
+        private void RightBoundaryTrack_Scroll(object sender, EventArgs e)
         {
-            int rightBoundaryPos = RightBoundaryPos;
-            UpdateBoundaryPos(1, rightBoundaryPos);
-            rightBoundaryValueTb.Text = rightBoundaryPos.ToString();
+            MoveRightBoundary(RightBoundaryPos);
+            //UpdateBoundaryPos(1, RightBoundaryPos);
+            //rightBoundaryValueTb.Text = RightBoundaryPos.ToString();
+
+            if (IsFixBoundaries())
+            {
+                int dx = RightBoundaryPos - lastRightBoundaryPos;
+                leftBoundaryTrack.Value = LeftBoundaryPos + dx;
+                //UpdateBoundaryPos(0, LeftBoundaryPos);
+                //leftBoundaryValueTb.Text = LeftBoundaryPos.ToString();
+                MoveLeftBoundary(LeftBoundaryPos);
+
+                lastLeftBoundaryPos = LeftBoundaryPos;
+            }
+
+            lastRightBoundaryPos = RightBoundaryPos;
 
             // DEBUG
-            label4.Text = amountBright[rightBoundaryPos].ToString();
+            label4.Text = amountBright[RightBoundaryPos].ToString();
         }
-
 
         private void UpdateBoundaryPos(int index, int x)
         {
             brightAmountChart.ChartAreas[0].AxisX.StripLines[index].IntervalOffset = x;
         }
 
+        private void MoveLeftBoundary(int x)
+        {
+            //leftBoundaryTrack.Value = x;
+            brightAmountChart.ChartAreas[0].AxisX.StripLines[0].IntervalOffset = x;
+            leftBoundaryValueTb.Text = x.ToString(); // = LeftBoundaryPos;
+        }
+
+        private void MoveRightBoundary(int x)
+        {
+            //rightBoundaryTrack.Value = x;
+            brightAmountChart.ChartAreas[0].AxisX.StripLines[1].IntervalOffset = x;
+            rightBoundaryValueTb.Text = x.ToString(); // = RightBoundaryPos;
+        }
+
         private void BrightAmountChart_MouseDown(object sender, MouseEventArgs e)
         {
             int x = (int)brightAmountChart.ChartAreas[0].AxisX.PixelPositionToValue(e.Location.X);
-            int xL = LeftBoundaryPos; //(int)boundaries[0].IntervalOffset;
-            int xR = RightBoundaryPos; //(int)boundaries[1].IntervalOffset;
-            moveLeftBoundary = (x > xL - 3) && (x < xL + 3);
-            moveRightBoundary = (x > xR - 3) && (x < xR + 3);
+            int xL = LeftBoundaryPos;
+            int xR = RightBoundaryPos;
+            isMoveLeftBoundary = (x > xL - 3) && (x < xL + 3);
+            isMoveRightBoundary = (x > xR - 3) && (x < xR + 3);
 
-            if (IsFixBoundaries())
-                moveLeftBoundary = moveRightBoundary = true;
-
-            // DEBUG
-            label5.Text = $"left: {moveLeftBoundary}, right: {moveRightBoundary}, both: {moveBoth}";
+            //// DEBUG
+            //label5.Text = $"left: {isMoveLeftBoundary}, right: {isMoveRightBoundary}";
         }
 
         private void BrightAmountChart_MouseUp(object sender, MouseEventArgs e)
         {
-            moveLeftBoundary = false;
-            moveRightBoundary = false;
-            moveBoth = false;
+            isMoveLeftBoundary = false;
+            isMoveRightBoundary = false;
 
-            // DEBUG
-            label5.Text = $"left: {moveLeftBoundary}, right: {moveRightBoundary}, both: {moveBoth}";
+            //// DEBUG
+            //label5.Text = $"left: {isMoveLeftBoundary}, right: {isMoveRightBoundary}";
         }
 
         private void BrightAmountChart_MouseMove(object sender, MouseEventArgs e)
@@ -122,8 +154,21 @@ namespace visual_lab_3
 
             if (x >= 0 && x <= 255)
             {
+                if (isMoveLeftBoundary)
+                {
+                    leftBoundaryTrack.Value = x;
+                    MoveLeftBoundary(LeftBoundaryPos);
+                }
+                if (isMoveRightBoundary)
+                {
+                    rightBoundaryTrack.Value = x;
+                    MoveRightBoundary(RightBoundaryPos);
+                }
+
                 if (IsFixBoundaries())
                 {
+                    int dx = Math.Abs(LeftBoundaryPos - RightBoundaryPos);
+
                     //int dxL = Math.Abs(x - leftBoundaryTrack.Value);
                     //int dxR = Math.Abs(x - rightBoundaryTrack.Value);
                     //int dx = (dxL > dxR) ? dxR : dxL;
@@ -131,28 +176,23 @@ namespace visual_lab_3
                     //rightBoundaryTrack.Value += dx;
 
                     // Это не работает если левая и правая границы поменялись местами
-                    if (moveLeftBoundary)
+                    if (isMoveLeftBoundary)
                     {
-                        int dx = Math.Abs(LeftBoundaryPos - RightBoundaryPos);
-                        leftBoundaryTrack.Value = x;
+                        //leftBoundaryTrack.Value = x;
+                        //MoveLeftBoundary(LeftBoundaryPos);
                         rightBoundaryTrack.Value = x + dx;
+                        MoveRightBoundary(RightBoundaryPos);
+
+                        lastRightBoundaryPos = RightBoundaryPos; // ???
                     }
-                    else if (moveRightBoundary)
+                    else if (isMoveRightBoundary)
                     {
-                        int dx = Math.Abs(LeftBoundaryPos - RightBoundaryPos);
                         leftBoundaryTrack.Value = x - dx;
-                        rightBoundaryTrack.Value = x;
-                    }
-                }
-                else
-                {
-                    if (moveLeftBoundary)
-                    {
-                        leftBoundaryTrack.Value = x;
-                    }
-                    if (moveRightBoundary)
-                    {
-                        rightBoundaryTrack.Value = x;
+                        MoveLeftBoundary(LeftBoundaryPos);
+                        //rightBoundaryTrack.Value = x;
+                        //MoveRightBoundary(RightBoundaryPos);
+
+                        lastLeftBoundaryPos = LeftBoundaryPos; // ???
                     }
                 }
             }

@@ -451,8 +451,11 @@ namespace visual_lab_3
 
         private void OpenChartsBtn_Click(object sender, EventArgs e)
         {
-            ChartsForm chartsForm = new ChartsForm(CurrentImage);
-            chartsForm.Show();
+            if (imageInfo != null)
+            {
+                ChartsForm chartsForm = new ChartsForm(CurrentImage);
+                chartsForm.Show(); 
+            }
         }
 
         //private ushort[,] OneDimToTwoDim(ushort[] pix)
