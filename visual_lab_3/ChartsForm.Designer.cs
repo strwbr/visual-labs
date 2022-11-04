@@ -29,10 +29,10 @@ namespace visual_lab_3
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.StripLine stripLine9 = new System.Windows.Forms.DataVisualization.Charting.StripLine();
-            System.Windows.Forms.DataVisualization.Charting.StripLine stripLine10 = new System.Windows.Forms.DataVisualization.Charting.StripLine();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.StripLine stripLine1 = new System.Windows.Forms.DataVisualization.Charting.StripLine();
+            System.Windows.Forms.DataVisualization.Charting.StripLine stripLine2 = new System.Windows.Forms.DataVisualization.Charting.StripLine();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.brightAmountChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.leftBoundaryTrack = new System.Windows.Forms.TrackBar();
             this.leftBoundaryValueTb = new System.Windows.Forms.TextBox();
@@ -63,35 +63,37 @@ namespace visual_lab_3
             // 
             // brightAmountChart
             // 
-            chartArea5.AxisX.Interval = 50D;
-            chartArea5.AxisX.MajorGrid.Enabled = false;
-            chartArea5.AxisX.MajorGrid.LineColor = System.Drawing.Color.Silver;
-            chartArea5.AxisX.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis;
-            chartArea5.AxisX.Maximum = 256D;
-            chartArea5.AxisX.Minimum = 0D;
-            chartArea5.AxisX.ScaleView.SmallScrollMinSizeType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            stripLine9.BackColor = System.Drawing.Color.DeepSkyBlue;
-            stripLine9.BorderWidth = 0;
-            stripLine9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            stripLine9.StripWidth = 1D;
-            stripLine10.BackColor = System.Drawing.Color.LightCoral;
-            stripLine10.BorderWidth = 0;
-            stripLine10.IntervalOffset = 255D;
-            stripLine10.StripWidth = 1D;
-            chartArea5.AxisX.StripLines.Add(stripLine9);
-            chartArea5.AxisX.StripLines.Add(stripLine10);
-            chartArea5.AxisY.MajorGrid.Enabled = false;
-            chartArea5.AxisY.MajorGrid.LineColor = System.Drawing.Color.Silver;
-            chartArea5.Name = "ChartArea1";
-            this.brightAmountChart.ChartAreas.Add(chartArea5);
+            chartArea1.AxisX.Interval = 50D;
+            chartArea1.AxisX.MajorGrid.Enabled = false;
+            chartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.Silver;
+            chartArea1.AxisX.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis;
+            chartArea1.AxisX.Maximum = 256D;
+            chartArea1.AxisX.Minimum = 0D;
+            chartArea1.AxisX.ScaleView.SmallScrollMinSizeType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            stripLine1.BackColor = System.Drawing.Color.DeepSkyBlue;
+            stripLine1.BorderWidth = 0;
+            stripLine1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            stripLine1.StripWidth = 1D;
+            stripLine2.BackColor = System.Drawing.Color.LightCoral;
+            stripLine2.BorderWidth = 0;
+            stripLine2.IntervalOffset = 255D;
+            stripLine2.StripWidth = 1D;
+            chartArea1.AxisX.StripLines.Add(stripLine1);
+            chartArea1.AxisX.StripLines.Add(stripLine2);
+            chartArea1.AxisY.MajorGrid.Enabled = false;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.Silver;
+            chartArea1.CursorX.LineColor = System.Drawing.Color.Lime;
+            chartArea1.CursorX.LineWidth = 5;
+            chartArea1.Name = "ChartArea1";
+            this.brightAmountChart.ChartAreas.Add(chartArea1);
             this.brightAmountChart.IsSoftShadows = false;
             this.brightAmountChart.Location = new System.Drawing.Point(15, 12);
             this.brightAmountChart.Name = "brightAmountChart";
             this.brightAmountChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Excel;
-            series5.ChartArea = "ChartArea1";
-            series5.Color = System.Drawing.Color.Gray;
-            series5.Name = "Series1";
-            this.brightAmountChart.Series.Add(series5);
+            series1.ChartArea = "ChartArea1";
+            series1.Color = System.Drawing.Color.Gray;
+            series1.Name = "Series1";
+            this.brightAmountChart.Series.Add(series1);
             this.brightAmountChart.Size = new System.Drawing.Size(670, 300);
             this.brightAmountChart.TabIndex = 0;
             this.brightAmountChart.Text = "chart1";
