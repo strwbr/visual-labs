@@ -49,7 +49,7 @@ namespace visual_lab_3
             this.label2 = new System.Windows.Forms.Label();
             this.picturePanel = new System.Windows.Forms.Panel();
             this.displayedPicturePanel = new System.Windows.Forms.PictureBox();
-            this.lensPc = new System.Windows.Forms.PictureBox();
+            this.lensPb = new System.Windows.Forms.PictureBox();
             this.normalizeCb = new System.Windows.Forms.CheckBox();
             this.interpolateCb = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -62,6 +62,7 @@ namespace visual_lab_3
             this.label1 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.openChartsBtn = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.shiftCodesGb.SuspendLayout();
@@ -69,7 +70,7 @@ namespace visual_lab_3
             this.groupBox6.SuspendLayout();
             this.picturePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.displayedPicturePanel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lensPc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lensPb)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.scaleValueGb.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.overviewImagePb)).BeginInit();
@@ -278,14 +279,14 @@ namespace visual_lab_3
             this.displayedPicturePanel.TabIndex = 0;
             this.displayedPicturePanel.TabStop = false;
             // 
-            // lensPc
+            // lensPb
             // 
-            this.lensPc.Location = new System.Drawing.Point(592, 116);
-            this.lensPc.Name = "lensPc";
-            this.lensPc.Size = new System.Drawing.Size(360, 360);
-            this.lensPc.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.lensPc.TabIndex = 10;
-            this.lensPc.TabStop = false;
+            this.lensPb.Location = new System.Drawing.Point(592, 116);
+            this.lensPb.Name = "lensPb";
+            this.lensPb.Size = new System.Drawing.Size(360, 360);
+            this.lensPb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.lensPb.TabIndex = 10;
+            this.lensPb.TabStop = false;
             // 
             // normalizeCb
             // 
@@ -422,18 +423,28 @@ namespace visual_lab_3
             this.openChartsBtn.UseVisualStyleBackColor = true;
             this.openChartsBtn.Click += new System.EventHandler(this.OpenChartsBtn_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(660, 522);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "label3";
+            // 
             // FormController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1168, 676);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.openChartsBtn);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.createOverviewImageBtn);
             this.Controls.Add(this.overviewImagePb);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.lensPc);
+            this.Controls.Add(this.lensPb);
             this.Controls.Add(this.picturePanel);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox4);
@@ -441,7 +452,7 @@ namespace visual_lab_3
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FormController";
-            this.Text = "Лабораторная работа № 2";
+            this.Text = "Лабораторная работа № 3";
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -454,7 +465,7 @@ namespace visual_lab_3
             this.picturePanel.ResumeLayout(false);
             this.picturePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.displayedPicturePanel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lensPc)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lensPb)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.scaleValueGb.ResumeLayout(false);
@@ -498,8 +509,9 @@ namespace visual_lab_3
         private System.Windows.Forms.Button createOverviewImageBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.PictureBox lensPc;
+        private System.Windows.Forms.PictureBox lensPb;
         private System.Windows.Forms.Button openChartsBtn;
+        private System.Windows.Forms.Label label3;
     }
 }
 

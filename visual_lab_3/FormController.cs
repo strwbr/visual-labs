@@ -22,8 +22,7 @@ namespace visual_lab_3
         ushort[] currentPixels;
         // Яркости пикселей фрагмента изображения
         ushort[] fragmentPixels;
-
-        
+        ChartsForm chartsForm;
 
         public FormController()
         {
@@ -50,6 +49,15 @@ namespace visual_lab_3
                 RadioButton rb = (RadioButton)scaleValueGb.Controls[i];
                 rb.CheckedChanged += ScaleValueRb_CheckedChanged;
             }
+
+            chartsForm = new ChartsForm(this);
+            chartsForm.UpdateBright += ChartsForm_ChangeBright;
+        }
+
+        private void ChartsForm_ChangeBright(Bitmap image)
+        {
+            label3.Text = "Image's bright was changed!";
+            SetImage(image);
         }
 
         /* Обработчик нажатия на кнопку "Загрузить" для загрузки файла .mbv
@@ -74,10 +82,14 @@ namespace visual_lab_3
                 // Установка полученного изображения в соответсвующее поле вывода
                 SetImage(CurrentImage);
 
+                chartsForm?.UpdateChart(CurrentImage);
+
                 // Отображение имени загруженного файла
                 loadedFileLbl.Text = Path.GetFileName(path);
                 // Очистка поля с увеличенным фрагментом
-                lensPc.Image = null;
+                lensPb.Image = null;
+                // Очистка поля с обзорным изображением
+                overviewImagePb.Image = null;
             }
         }
 
@@ -104,6 +116,9 @@ namespace visual_lab_3
                             currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                         // Установка полученного изображения в соответсвующее поле вывода
                         SetImage(CurrentImage);
+
+                        chartsForm?.UpdateChart(CurrentImage);
+
                         // Получение нового размера фрагмента
                         fragmentSize = GetFragmentSize();
                     }
@@ -174,12 +189,13 @@ namespace visual_lab_3
                            currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                 // Установка полученного изображения в соответствующее поле вывода
                 SetImage(CurrentImage);
+                
+                chartsForm?.UpdateChart(CurrentImage);
+                
                 // Отображения фрагмента (если он выбран) в соответствующем поле на форме с учетом нормирования и метода увеличения
                 if (fragmentPixels != null)
                     SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
 
-                //fragmentPixels
-                //SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
             }
         }
 
@@ -313,7 +329,7 @@ namespace visual_lab_3
             // Размер созданного фрагмента равен увеличенному в scale раз размеру исходного фрагмента
             frag = ImageController.CreateImage(fragPixels, fragmentSize * scale, fragmentSize * scale, GetShiftValue());
             // Установка созданного изображения в элемент lensPc
-            lensPc.Image = frag;
+            lensPb.Image = frag;
         }
 
         /* Обработчик изменения метода увеличения
@@ -437,6 +453,12 @@ namespace visual_lab_3
         {
             // Изменение свойства Image объекта displayedPicturePanel
             displayedPicturePanel.Image = img;
+            
+            //if(chartsForm!=null)
+            //{
+            //    chartsForm.UpdateChart(img);
+            //}
+            //ChangeImage?.Invoke(img, "SetImage");
         }
 
         /* Показ окна с предупреждением
@@ -453,25 +475,10 @@ namespace visual_lab_3
         {
             if (imageInfo != null)
             {
-                ChartsForm chartsForm = new ChartsForm(CurrentImage);
-                chartsForm.Show(); 
+                //chartsForm = new ChartsForm(this);
+                chartsForm.Show();
             }
         }
 
-        //private ushort[,] OneDimToTwoDim(ushort[] pix)
-        //{
-        //    int w = 500, h = 3000;
-        //    ushort[,] temp = new ushort[h, w];
-        //    int count = 0;
-        //    for (int i = 0; i < h; i++)
-        //    {
-        //        for (int k = 0; k < w; k++)
-        //        {
-        //            temp[i, k] = pix[count];
-        //            count++;
-        //        }
-        //    }
-        //    return temp;
-        //}
     }
 }

@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrightController.cs" />
     <Compile Include="ChartsForm.cs">
       <SubType>Form</SubType>
     </Compile>

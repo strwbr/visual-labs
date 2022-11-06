@@ -16,6 +16,7 @@ namespace visual_lab_3
         // Количество различных яркостей в изображении
         int[] amountBright = new int[256];
 
+
         bool isMoveLeftBoundary = false;
         bool isMoveRightBoundary = false;
 
@@ -28,98 +29,78 @@ namespace visual_lab_3
         int lastLeftBoundaryPos = 0;
         int lastRightBoundaryPos = 255;
 
+        public event Action<Bitmap> UpdateBright;
+
+        FormController parentForm;
+        Bitmap originImage;
+        Bitmap newImage;
+
         public ChartsForm()
         {
             InitializeComponent();
         }
 
-        public ChartsForm(Bitmap pixels)
+        // ??? мб и конструктор без параметров подойдет
+        public ChartsForm(FormController parent)
         {
             InitializeComponent();
-            ushort[] temp = new ushort[pixels.Width * pixels.Height];
-            int count = 0;
-            for (int i = 0; i < pixels.Height; i++)
+            parentForm = parent;
+            originImage = parent.CurrentImage;
+            //UpdateChart(parentForm.CurrentImage);
+            //MoveLeftBoundary(LeftPos);
+            //MoveRightBoundary(RightPos);
+
+            for (int i = 0; i < leftModeGb.Controls.Count; i++)
             {
-                for (int k = 0; k < pixels.Width; k++)
+                RadioButton rb = leftModeGb.Controls[i] as RadioButton;
+                rb.CheckedChanged += LeftModeRb_CheckedChanged;
+            }
+            for (int i = 0; i < rightModeGb.Controls.Count; i++)
+            {
+                RadioButton rb = rightModeGb.Controls[i] as RadioButton;
+                rb.CheckedChanged += RightModeRb_CheckedChanged;
+            }
+        }
+
+        
+
+        private void ChartsForm_Load(object sender, EventArgs e)
+        {
+            //if (image != null)
+            //{
+            //    amountBright = CountBright(this.image);
+            //    BuildChart(amountBright);
+            //}
+        }
+
+        public void UpdateChart(Bitmap image)
+        {
+            originImage = image;
+            amountBright = CountBright(image);
+            BuildChart(CountBright(image));
+        }
+
+        private int[] CountBright(Bitmap image)
+        {
+            int[] temp = new int[256];
+            for (int i = 0; i < image.Height; i++)
+            {
+                for (int k = 0; k < image.Width; k++)
                 {
-                    temp[count] = pixels.GetPixel(k, i).R;
-                    count++;
+                    ushort bright = image.GetPixel(k, i).R;
+                    temp[bright]++;
                 }
             }
-            foreach (ushort val in temp)
-            {
-                amountBright[val]++;
-            }
+            return temp;
+        }
 
+        private void BuildChart(int[] amountBright)
+        {
+            if (brightAmountChart.Series[0].Points != null) brightAmountChart.Series[0].Points.Clear();
             for (int i = 0; i < amountBright.Length; i++)
             {
                 brightAmountChart.Series[0].Points.AddXY(i, amountBright[i]);
             }
-
-            MoveLeftBoundary(LeftPos);
-            MoveRightBoundary(RightPos);
-
-
-        }
-
-        private void LeftBoundaryTrack_Scroll(object sender, EventArgs e)
-        {
-            //MoveLeftBoundary(LeftBoundaryPos);
-            ////UpdateBoundaryPos(0, LeftBoundaryPos);
-            ////leftBoundaryValueTb.Text = LeftBoundaryPos.ToString();
-
-            //if (IsFixBoundaries())
-            //{
-            //    int dx = Math.Abs(lastLeftBoundaryPos - RightBoundaryPos); //LeftBoundaryPos - lastLeftBoundaryPos;
-
-            //    //if (LeftBoundaryPos + dx <= 255)
-            //    //{
-            //    //    rightBoundaryTrack.Value = LeftBoundaryPos + dx; //RightBoundaryPos + dx;
-            //    //}
-            //    //else
-            //    //{
-            //    //    rightBoundaryTrack.Value = 255;
-            //    //}
-            //    rightBoundaryTrack.Value = LeftBoundaryPos + dx; //RightBoundaryPos + dx;
-            //    //UpdateBoundaryPos(1, RightBoundaryPos);
-            //    //rightBoundaryValueTb.Text = RightBoundaryPos.ToString();
-            //    MoveRightBoundary(RightBoundaryPos);
-
-            //    lastRightBoundaryPos = RightBoundaryPos; // мб это тоже в методы Move...
-            //}
-
-            //lastLeftBoundaryPos = LeftBoundaryPos;
-
-            //// DEBUG
-            //label3.Text = amountBright[LeftBoundaryPos].ToString();
-        }
-
-        private void RightBoundaryTrack_Scroll(object sender, EventArgs e)
-        {
-            //MoveRightBoundary(RightBoundaryPos);
-            ////UpdateBoundaryPos(1, RightBoundaryPos);
-            ////rightBoundaryValueTb.Text = RightBoundaryPos.ToString();
-
-            //if (IsFixBoundaries())
-            //{
-            //    int dx = Math.Abs(lastRightBoundaryPos - RightBoundaryPos); // RightBoundaryPos - lastRightBoundaryPos;
-            //    leftBoundaryTrack.Value = RightBoundaryPos - dx; //LeftBoundaryPos + dx;
-            //    //UpdateBoundaryPos(0, LeftBoundaryPos);
-            //    //leftBoundaryValueTb.Text = LeftBoundaryPos.ToString();
-            //    MoveLeftBoundary(LeftBoundaryPos);
-
-            //    lastLeftBoundaryPos = LeftBoundaryPos;
-            //}
-
-            //lastRightBoundaryPos = RightBoundaryPos;
-
-            //// DEBUG
-            //label4.Text = amountBright[RightBoundaryPos].ToString();
-        }
-
-        private void UpdateBoundaryPos(int index, int x)
-        {
-            brightAmountChart.ChartAreas[0].AxisX.StripLines[index].IntervalOffset = x;
         }
 
         private void MoveLeftBoundary(int x)
@@ -127,6 +108,7 @@ namespace visual_lab_3
             //leftBoundaryTrack.Value = x;
             brightAmountChart.ChartAreas[0].AxisX.StripLines[0].IntervalOffset = x;
             leftBoundaryValueTb.Text = x.ToString(); // = LeftBoundaryPos;
+            label3.Text = amountBright[x].ToString();
         }
 
         private void MoveRightBoundary(int x)
@@ -134,6 +116,7 @@ namespace visual_lab_3
             //rightBoundaryTrack.Value = x;
             brightAmountChart.ChartAreas[0].AxisX.StripLines[1].IntervalOffset = x;
             rightBoundaryValueTb.Text = x.ToString(); // = RightBoundaryPos;
+            label4.Text = amountBright[x].ToString();
         }
 
         private void BrightAmountChart_MouseDown(object sender, MouseEventArgs e)
@@ -151,6 +134,92 @@ namespace visual_lab_3
         {
             isMoveLeftBoundary = false;
             isMoveRightBoundary = false;
+        }
+
+        public Bitmap UpdateImageBright(Bitmap image)
+        {
+            Bitmap updatedImage = new Bitmap(image.Width, image.Height);
+
+            if(NormalizeMode())
+            {
+                updatedImage = BrightController.NormalizeBright(image, LeftPos, RightPos);
+            }
+
+            return updatedImage;
+        }
+
+        private int GetLeftMode()
+        {
+            int mode = -1;
+            for (int i = 0; i < leftModeGb.Controls.Count; i++)
+            {
+                RadioButton rb = leftModeGb.Controls[i] as RadioButton;
+                if (rb.Checked)
+                    mode = i;
+            }
+            return mode;
+        }
+
+        private int GetRightMode()
+        {
+            int mode = -1;
+            for (int i = 0; i < rightModeGb.Controls.Count; i++)
+            {
+                RadioButton rb = rightModeGb.Controls[i] as RadioButton;
+                if (rb.Checked)
+                    mode = i;
+            }
+            return mode;
+        }
+
+        private bool NormalizeMode()
+        {
+            return normalizeModeRb.Checked;
+        }
+
+        private void LeftModeRb_CheckedChanged(object sender, EventArgs e)
+        {
+            DisableNormalizeMode();
+        }
+
+        private void RightModeRb_CheckedChanged(object sender, EventArgs e)
+        {
+            DisableNormalizeMode();
+        }
+
+        private void UpdateBrightBtn_Click(object sender, EventArgs e)
+        {
+            newImage = UpdateImageBright(originImage);
+            // ЗАГЛУШКА
+            UpdateBright?.Invoke(newImage);
+        }
+
+        private void NormalizeModeRb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (normalizeModeRb.Checked)
+            {
+                DisableLeftMode();
+                DisableRightMode();
+            }
+        }
+
+        private void DisableLeftMode()
+        {
+            for (int i = 0; i < leftModeGb.Controls.Count; i++)
+            {
+                ((RadioButton)leftModeGb.Controls[i]).Checked = false;
+            }
+        }
+        private void DisableRightMode()
+        {
+            for (int i = 0; i < rightModeGb.Controls.Count; i++)
+            {
+                ((RadioButton)rightModeGb.Controls[i]).Checked = false;
+            }
+        }
+        private void DisableNormalizeMode()
+        {
+            normalizeModeRb.Checked = false;
         }
 
         private void BrightAmountChart_MouseMove(object sender, MouseEventArgs e)
@@ -229,5 +298,68 @@ namespace visual_lab_3
         {
             return fixCb.Checked;
         }
+
+
+
+        private void UpdateBoundaryPos(int index, int x)
+        {
+            brightAmountChart.ChartAreas[0].AxisX.StripLines[index].IntervalOffset = x;
+        }
+        private void LeftBoundaryTrack_Scroll(object sender, EventArgs e)
+        {
+            //MoveLeftBoundary(LeftBoundaryPos);
+            ////UpdateBoundaryPos(0, LeftBoundaryPos);
+            ////leftBoundaryValueTb.Text = LeftBoundaryPos.ToString();
+
+            //if (IsFixBoundaries())
+            //{
+            //    int dx = Math.Abs(lastLeftBoundaryPos - RightBoundaryPos); //LeftBoundaryPos - lastLeftBoundaryPos;
+
+            //    //if (LeftBoundaryPos + dx <= 255)
+            //    //{
+            //    //    rightBoundaryTrack.Value = LeftBoundaryPos + dx; //RightBoundaryPos + dx;
+            //    //}
+            //    //else
+            //    //{
+            //    //    rightBoundaryTrack.Value = 255;
+            //    //}
+            //    rightBoundaryTrack.Value = LeftBoundaryPos + dx; //RightBoundaryPos + dx;
+            //    //UpdateBoundaryPos(1, RightBoundaryPos);
+            //    //rightBoundaryValueTb.Text = RightBoundaryPos.ToString();
+            //    MoveRightBoundary(RightBoundaryPos);
+
+            //    lastRightBoundaryPos = RightBoundaryPos; // мб это тоже в методы Move...
+            //}
+
+            //lastLeftBoundaryPos = LeftBoundaryPos;
+
+            //// DEBUG
+            //label3.Text = amountBright[LeftBoundaryPos].ToString();
+        }
+
+        private void RightBoundaryTrack_Scroll(object sender, EventArgs e)
+        {
+            //MoveRightBoundary(RightBoundaryPos);
+            ////UpdateBoundaryPos(1, RightBoundaryPos);
+            ////rightBoundaryValueTb.Text = RightBoundaryPos.ToString();
+
+            //if (IsFixBoundaries())
+            //{
+            //    int dx = Math.Abs(lastRightBoundaryPos - RightBoundaryPos); // RightBoundaryPos - lastRightBoundaryPos;
+            //    leftBoundaryTrack.Value = RightBoundaryPos - dx; //LeftBoundaryPos + dx;
+            //    //UpdateBoundaryPos(0, LeftBoundaryPos);
+            //    //leftBoundaryValueTb.Text = LeftBoundaryPos.ToString();
+            //    MoveLeftBoundary(LeftBoundaryPos);
+
+            //    lastLeftBoundaryPos = LeftBoundaryPos;
+            //}
+
+            //lastRightBoundaryPos = RightBoundaryPos;
+
+            //// DEBUG
+            //label4.Text = amountBright[RightBoundaryPos].ToString();
+        }
+
+        
     }
 }
