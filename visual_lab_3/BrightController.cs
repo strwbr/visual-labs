@@ -25,5 +25,25 @@ namespace visual_lab_3
             }
             return image;
         }
+
+        public static Bitmap ChangeImageBright(Bitmap image, int L, int leftNewBright, int R, int rightNewBright)
+        {
+            for (int i = 0; i < image.Height; i++)
+            {
+                for (int k = 0; k < image.Width; k++)
+                {
+                    ushort bright = image.GetPixel(k, i).R;
+                    if (bright < L)
+                    {
+                        image.SetPixel(k, i, Color.FromArgb(leftNewBright, leftNewBright, leftNewBright));
+                    }
+                    if (bright > R)
+                    {
+                        image.SetPixel(k, i, Color.FromArgb(rightNewBright, rightNewBright, rightNewBright));
+                    }
+                }
+            }
+            return image;
+        }
     }
 }

@@ -96,7 +96,8 @@ namespace visual_lab_3
 
         private void BuildChart(int[] amountBright)
         {
-            if (brightAmountChart.Series[0].Points != null) brightAmountChart.Series[0].Points.Clear();
+            if (brightAmountChart.Series[0].Points != null) 
+                brightAmountChart.Series[0].Points.Clear();
             for (int i = 0; i < amountBright.Length; i++)
             {
                 brightAmountChart.Series[0].Points.AddXY(i, amountBright[i]);
@@ -143,8 +144,19 @@ namespace visual_lab_3
             if(NormalizeMode())
             {
                 updatedImage = BrightController.NormalizeBright(image, LeftPos, RightPos);
-            }
+            } else
+            {
+                ushort newLeftBright = GetNewLeftBrightValue();
+                ushort newRightBright = GetNewRightBrightValue();
 
+                if (newLeftBright <=255 && newRightBright <=255)
+                {
+                    updatedImage = BrightController.ChangeImageBright(
+                                image,
+                                LeftPos, GetNewLeftBrightValue(),
+                                RightPos, GetNewRightBrightValue()); 
+                }
+            }
             return updatedImage;
         }
 
@@ -160,6 +172,20 @@ namespace visual_lab_3
             return mode;
         }
 
+        private ushort GetNewLeftBrightValue()
+        {
+            ushort newBright = 0; // по умолчанию = 0
+            int mode = GetLeftMode();
+            switch (mode)
+            {
+                case -1: newBright = 9999; break;
+                case 0: newBright = (ushort)LeftPos; break;
+                case 1: newBright = 0; break;
+                case 2: newBright = 0; break;
+            }
+            return newBright;
+        }
+
         private int GetRightMode()
         {
             int mode = -1;
@@ -172,6 +198,20 @@ namespace visual_lab_3
             return mode;
         }
 
+        private ushort GetNewRightBrightValue()
+        {
+            ushort newBright = 0; // по умолчанию = 0
+            int mode = GetRightMode();
+            switch (mode)
+            {
+                case -1: newBright = 9999; break;
+                case 0: newBright = (ushort)RightPos; break;
+                case 1: newBright = 255; break;
+                case 2: newBright = 0; break;
+            }
+            return newBright;
+        }
+
         private bool NormalizeMode()
         {
             return normalizeModeRb.Checked;
@@ -180,16 +220,18 @@ namespace visual_lab_3
         private void LeftModeRb_CheckedChanged(object sender, EventArgs e)
         {
             DisableNormalizeMode();
+            newImage = UpdateImageBright(originImage);
         }
 
         private void RightModeRb_CheckedChanged(object sender, EventArgs e)
         {
             DisableNormalizeMode();
+            newImage = UpdateImageBright(originImage);
         }
 
         private void UpdateBrightBtn_Click(object sender, EventArgs e)
         {
-            newImage = UpdateImageBright(originImage);
+            //newImage = UpdateImageBright(originImage);
             // ЗАГЛУШКА
             UpdateBright?.Invoke(newImage);
         }
@@ -200,6 +242,7 @@ namespace visual_lab_3
             {
                 DisableLeftMode();
                 DisableRightMode();
+                newImage = UpdateImageBright(originImage);
             }
         }
 
