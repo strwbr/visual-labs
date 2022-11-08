@@ -449,7 +449,7 @@ namespace visual_lab_3
         /* Отображение изображения на экране в соответствующем элементе пользовательского интерфейса
          * Параметр: img - изображение, которое необходимо отобразить.
          */
-        private void SetImage(Bitmap img)
+        public void SetImage(Bitmap img)
         {
             // Изменение свойства Image объекта displayedPicturePanel
             displayedPicturePanel.Image = img;

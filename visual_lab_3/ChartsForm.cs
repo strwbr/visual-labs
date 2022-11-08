@@ -62,7 +62,7 @@ namespace visual_lab_3
             }
         }
 
-        
+
 
         private void ChartsForm_Load(object sender, EventArgs e)
         {
@@ -96,8 +96,9 @@ namespace visual_lab_3
 
         private void BuildChart(int[] amountBright)
         {
-            if (brightAmountChart.Series[0].Points != null) 
+            if (brightAmountChart.Series[0].Points != null)
                 brightAmountChart.Series[0].Points.Clear();
+
             for (int i = 0; i < amountBright.Length; i++)
             {
                 brightAmountChart.Series[0].Points.AddXY(i, amountBright[i]);
@@ -139,22 +140,23 @@ namespace visual_lab_3
 
         public Bitmap UpdateImageBright(Bitmap image)
         {
-            Bitmap updatedImage = new Bitmap(image.Width, image.Height);
+            Bitmap updatedImage = null;
 
-            if(NormalizeMode())
+            if (NormalizeMode())
             {
                 updatedImage = BrightController.NormalizeBright(image, LeftPos, RightPos);
-            } else
+            }
+            else
             {
                 ushort newLeftBright = GetNewLeftBrightValue();
                 ushort newRightBright = GetNewRightBrightValue();
 
-                if (newLeftBright <=255 && newRightBright <=255)
+                if (newLeftBright >=0 && newRightBright <=255 && newRightBright >= 0 && newRightBright <= 255)
                 {
                     updatedImage = BrightController.ChangeImageBright(
                                 image,
-                                LeftPos, GetNewLeftBrightValue(),
-                                RightPos, GetNewRightBrightValue()); 
+                                LeftPos, newLeftBright,
+                                RightPos, newRightBright); 
                 }
             }
             return updatedImage;
@@ -219,21 +221,24 @@ namespace visual_lab_3
 
         private void LeftModeRb_CheckedChanged(object sender, EventArgs e)
         {
-            DisableNormalizeMode();
-            newImage = UpdateImageBright(originImage);
+            if (NormalizeMode())
+                DisableNormalizeMode();
         }
 
         private void RightModeRb_CheckedChanged(object sender, EventArgs e)
         {
-            DisableNormalizeMode();
-            newImage = UpdateImageBright(originImage);
+            if (NormalizeMode())
+                DisableNormalizeMode();
         }
 
         private void UpdateBrightBtn_Click(object sender, EventArgs e)
         {
-            //newImage = UpdateImageBright(originImage);
+            //newImage = UpdateImageBright(parentForm.CurrentImage);
             // ЗАГЛУШКА
-            UpdateBright?.Invoke(newImage);
+            //UpdateBright?.Invoke(newImage);
+            Bitmap oldImg = parentForm.CurrentImage;
+            Bitmap newImg = UpdateImageBright(oldImg);
+            parentForm?.SetImage(newImg);
         }
 
         private void NormalizeModeRb_CheckedChanged(object sender, EventArgs e)
@@ -242,7 +247,6 @@ namespace visual_lab_3
             {
                 DisableLeftMode();
                 DisableRightMode();
-                newImage = UpdateImageBright(originImage);
             }
         }
 
@@ -403,6 +407,6 @@ namespace visual_lab_3
             //label4.Text = amountBright[RightBoundaryPos].ToString();
         }
 
-        
+
     }
 }
