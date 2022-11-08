@@ -56,7 +56,6 @@ namespace visual_lab_3
 
         private void ChartsForm_ChangeBright(Bitmap image)
         {
-            label3.Text = "Image's bright was changed!";
             SetImage(image);
         }
 

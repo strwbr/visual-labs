@@ -62,7 +62,6 @@ namespace visual_lab_3
             this.label1 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.openChartsBtn = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.shiftCodesGb.SuspendLayout();
@@ -86,7 +85,7 @@ namespace visual_lab_3
             this.groupBox1.Size = new System.Drawing.Size(409, 72);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Загрузка tiff-файла";
+            this.groupBox1.Text = "Загрузка mbv-файла";
             // 
             // loadFileBtn
             // 
@@ -423,21 +422,11 @@ namespace visual_lab_3
             this.openChartsBtn.UseVisualStyleBackColor = true;
             this.openChartsBtn.Click += new System.EventHandler(this.OpenChartsBtn_Click);
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(660, 522);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 19;
-            this.label3.Text = "label3";
-            // 
             // FormController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1168, 676);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.openChartsBtn);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
@@ -511,7 +500,6 @@ namespace visual_lab_3
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox lensPb;
         private System.Windows.Forms.Button openChartsBtn;
-        private System.Windows.Forms.Label label3;
     }
 }
 
