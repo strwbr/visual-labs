@@ -151,12 +151,12 @@ namespace visual_lab_3
                 ushort newLeftBright = GetNewLeftBrightValue();
                 ushort newRightBright = GetNewRightBrightValue();
 
-                if (newLeftBright >=0 && newRightBright <=255 && newRightBright >= 0 && newRightBright <= 255)
+                if (newLeftBright >= 0 && newRightBright <= 255 && newRightBright >= 0 && newRightBright <= 255)
                 {
                     updatedImage = BrightController.ChangeImageBright(
                                 image,
                                 LeftPos, newLeftBright,
-                                RightPos, newRightBright); 
+                                RightPos, newRightBright);
                 }
             }
             return updatedImage;
@@ -221,13 +221,17 @@ namespace visual_lab_3
 
         private void LeftModeRb_CheckedChanged(object sender, EventArgs e)
         {
-            if (NormalizeMode())
+            if (GetLeftMode() != -1)
+                DisableNormalizeMode();
+            if (GetLeftMode() != -1 && GetRightMode() != -1)
                 DisableNormalizeMode();
         }
 
         private void RightModeRb_CheckedChanged(object sender, EventArgs e)
         {
-            if (NormalizeMode())
+            if (GetRightMode() != -1)
+                DisableNormalizeMode();
+            if (GetLeftMode() != -1 && GetRightMode() != -1)
                 DisableNormalizeMode();
         }
 
@@ -243,7 +247,7 @@ namespace visual_lab_3
 
         private void NormalizeModeRb_CheckedChanged(object sender, EventArgs e)
         {
-            if (normalizeModeRb.Checked)
+            if (NormalizeMode())
             {
                 DisableLeftMode();
                 DisableRightMode();

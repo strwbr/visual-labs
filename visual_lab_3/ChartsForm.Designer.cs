@@ -29,10 +29,10 @@ namespace visual_lab_3
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.StripLine stripLine1 = new System.Windows.Forms.DataVisualization.Charting.StripLine();
-            System.Windows.Forms.DataVisualization.Charting.StripLine stripLine2 = new System.Windows.Forms.DataVisualization.Charting.StripLine();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.StripLine stripLine7 = new System.Windows.Forms.DataVisualization.Charting.StripLine();
+            System.Windows.Forms.DataVisualization.Charting.StripLine stripLine8 = new System.Windows.Forms.DataVisualization.Charting.StripLine();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.brightAmountChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.leftBoundaryTrack = new System.Windows.Forms.TrackBar();
             this.leftBoundaryValueTb = new System.Windows.Forms.TextBox();
@@ -63,44 +63,44 @@ namespace visual_lab_3
             // 
             // brightAmountChart
             // 
-            chartArea1.AxisX.Interval = 5D;
-            chartArea1.AxisX.MajorGrid.Enabled = false;
-            chartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.Silver;
-            chartArea1.AxisX.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis;
-            chartArea1.AxisX.Maximum = 256D;
-            chartArea1.AxisX.Minimum = 0D;
-            chartArea1.AxisX.ScaleView.SmallScrollMinSizeType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            stripLine1.BackColor = System.Drawing.Color.DeepSkyBlue;
-            stripLine1.BorderWidth = 0;
-            stripLine1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            stripLine1.StripWidth = 1D;
-            stripLine1.TextLineAlignment = System.Drawing.StringAlignment.Center;
-            stripLine1.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
-            stripLine2.BackColor = System.Drawing.Color.LightCoral;
-            stripLine2.BorderWidth = 0;
-            stripLine2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            stripLine2.IntervalOffset = 255D;
-            stripLine2.StripWidth = 1D;
-            stripLine2.TextAlignment = System.Drawing.StringAlignment.Near;
-            stripLine2.TextLineAlignment = System.Drawing.StringAlignment.Center;
-            stripLine2.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
-            chartArea1.AxisX.StripLines.Add(stripLine1);
-            chartArea1.AxisX.StripLines.Add(stripLine2);
-            chartArea1.AxisY.MajorGrid.Enabled = false;
-            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.Silver;
-            chartArea1.CursorX.LineColor = System.Drawing.Color.Lime;
-            chartArea1.CursorX.LineWidth = 5;
-            chartArea1.Name = "ChartArea1";
-            this.brightAmountChart.ChartAreas.Add(chartArea1);
+            chartArea4.AxisX.Interval = 5D;
+            chartArea4.AxisX.MajorGrid.Enabled = false;
+            chartArea4.AxisX.MajorGrid.LineColor = System.Drawing.Color.Silver;
+            chartArea4.AxisX.MajorTickMark.TickMarkStyle = System.Windows.Forms.DataVisualization.Charting.TickMarkStyle.AcrossAxis;
+            chartArea4.AxisX.Maximum = 256D;
+            chartArea4.AxisX.Minimum = 0D;
+            chartArea4.AxisX.ScaleView.SmallScrollMinSizeType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            stripLine7.BackColor = System.Drawing.Color.DeepSkyBlue;
+            stripLine7.BorderWidth = 0;
+            stripLine7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            stripLine7.StripWidth = 1D;
+            stripLine7.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            stripLine7.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
+            stripLine8.BackColor = System.Drawing.Color.LightCoral;
+            stripLine8.BorderWidth = 0;
+            stripLine8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            stripLine8.IntervalOffset = 255D;
+            stripLine8.StripWidth = 1D;
+            stripLine8.TextAlignment = System.Drawing.StringAlignment.Near;
+            stripLine8.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            stripLine8.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Horizontal;
+            chartArea4.AxisX.StripLines.Add(stripLine7);
+            chartArea4.AxisX.StripLines.Add(stripLine8);
+            chartArea4.AxisY.MajorGrid.Enabled = false;
+            chartArea4.AxisY.MajorGrid.LineColor = System.Drawing.Color.Silver;
+            chartArea4.CursorX.LineColor = System.Drawing.Color.Lime;
+            chartArea4.CursorX.LineWidth = 5;
+            chartArea4.Name = "ChartArea1";
+            this.brightAmountChart.ChartAreas.Add(chartArea4);
             this.brightAmountChart.IsSoftShadows = false;
             this.brightAmountChart.Location = new System.Drawing.Point(20, 15);
-            this.brightAmountChart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.brightAmountChart.Margin = new System.Windows.Forms.Padding(4);
             this.brightAmountChart.Name = "brightAmountChart";
             this.brightAmountChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Excel;
-            series1.ChartArea = "ChartArea1";
-            series1.Color = System.Drawing.Color.Gray;
-            series1.Name = "Series1";
-            this.brightAmountChart.Series.Add(series1);
+            series4.ChartArea = "ChartArea1";
+            series4.Color = System.Drawing.Color.Gray;
+            series4.Name = "Series1";
+            this.brightAmountChart.Series.Add(series4);
             this.brightAmountChart.Size = new System.Drawing.Size(893, 369);
             this.brightAmountChart.TabIndex = 0;
             this.brightAmountChart.Text = "chart1";
@@ -123,7 +123,7 @@ namespace visual_lab_3
             // leftBoundaryValueTb
             // 
             this.leftBoundaryValueTb.Location = new System.Drawing.Point(89, 398);
-            this.leftBoundaryValueTb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.leftBoundaryValueTb.Margin = new System.Windows.Forms.Padding(4);
             this.leftBoundaryValueTb.Name = "leftBoundaryValueTb";
             this.leftBoundaryValueTb.ReadOnly = true;
             this.leftBoundaryValueTb.Size = new System.Drawing.Size(104, 22);
@@ -165,7 +165,7 @@ namespace visual_lab_3
             // rightBoundaryValueTb
             // 
             this.rightBoundaryValueTb.Location = new System.Drawing.Point(777, 398);
-            this.rightBoundaryValueTb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rightBoundaryValueTb.Margin = new System.Windows.Forms.Padding(4);
             this.rightBoundaryValueTb.Name = "rightBoundaryValueTb";
             this.rightBoundaryValueTb.ReadOnly = true;
             this.rightBoundaryValueTb.Size = new System.Drawing.Size(104, 22);
@@ -195,7 +195,7 @@ namespace visual_lab_3
             // 
             this.fixCb.AutoSize = true;
             this.fixCb.Location = new System.Drawing.Point(416, 406);
-            this.fixCb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.fixCb.Margin = new System.Windows.Forms.Padding(4);
             this.fixCb.Name = "fixCb";
             this.fixCb.Size = new System.Drawing.Size(133, 21);
             this.fixCb.TabIndex = 10;
@@ -218,9 +218,9 @@ namespace visual_lab_3
             this.leftModeGb.Controls.Add(this.radioButton2);
             this.leftModeGb.Controls.Add(this.radioButton1);
             this.leftModeGb.Location = new System.Drawing.Point(939, 26);
-            this.leftModeGb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.leftModeGb.Margin = new System.Windows.Forms.Padding(4);
             this.leftModeGb.Name = "leftModeGb";
-            this.leftModeGb.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.leftModeGb.Padding = new System.Windows.Forms.Padding(4);
             this.leftModeGb.Size = new System.Drawing.Size(377, 158);
             this.leftModeGb.TabIndex = 11;
             this.leftModeGb.TabStop = false;
@@ -230,7 +230,7 @@ namespace visual_lab_3
             // 
             this.radioButton3.AutoSize = true;
             this.radioButton3.Location = new System.Drawing.Point(13, 111);
-            this.radioButton3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton3.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(157, 21);
             this.radioButton3.TabIndex = 2;
@@ -241,7 +241,7 @@ namespace visual_lab_3
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(13, 74);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(327, 21);
             this.radioButton2.TabIndex = 1;
@@ -253,7 +253,7 @@ namespace visual_lab_3
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
             this.radioButton1.Location = new System.Drawing.Point(13, 34);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(157, 21);
             this.radioButton1.TabIndex = 0;
@@ -267,9 +267,9 @@ namespace visual_lab_3
             this.rightModeGb.Controls.Add(this.radioButton7);
             this.rightModeGb.Controls.Add(this.radioButton8);
             this.rightModeGb.Location = new System.Drawing.Point(939, 191);
-            this.rightModeGb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rightModeGb.Margin = new System.Windows.Forms.Padding(4);
             this.rightModeGb.Name = "rightModeGb";
-            this.rightModeGb.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rightModeGb.Padding = new System.Windows.Forms.Padding(4);
             this.rightModeGb.Size = new System.Drawing.Size(380, 150);
             this.rightModeGb.TabIndex = 12;
             this.rightModeGb.TabStop = false;
@@ -279,7 +279,7 @@ namespace visual_lab_3
             // 
             this.radioButton6.AutoSize = true;
             this.radioButton6.Location = new System.Drawing.Point(13, 111);
-            this.radioButton6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton6.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton6.Name = "radioButton6";
             this.radioButton6.Size = new System.Drawing.Size(157, 21);
             this.radioButton6.TabIndex = 2;
@@ -290,7 +290,7 @@ namespace visual_lab_3
             // 
             this.radioButton7.AutoSize = true;
             this.radioButton7.Location = new System.Drawing.Point(13, 74);
-            this.radioButton7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton7.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton7.Name = "radioButton7";
             this.radioButton7.Size = new System.Drawing.Size(349, 21);
             this.radioButton7.TabIndex = 1;
@@ -302,7 +302,7 @@ namespace visual_lab_3
             this.radioButton8.AutoSize = true;
             this.radioButton8.Checked = true;
             this.radioButton8.Location = new System.Drawing.Point(13, 34);
-            this.radioButton8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton8.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton8.Name = "radioButton8";
             this.radioButton8.Size = new System.Drawing.Size(159, 21);
             this.radioButton8.TabIndex = 0;
@@ -314,7 +314,7 @@ namespace visual_lab_3
             // 
             this.normalizeModeRb.AutoSize = true;
             this.normalizeModeRb.Location = new System.Drawing.Point(952, 348);
-            this.normalizeModeRb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.normalizeModeRb.Margin = new System.Windows.Forms.Padding(4);
             this.normalizeModeRb.Name = "normalizeModeRb";
             this.normalizeModeRb.Size = new System.Drawing.Size(208, 21);
             this.normalizeModeRb.TabIndex = 3;
@@ -326,7 +326,7 @@ namespace visual_lab_3
             // 
             this.updateBrightBtn.AutoSize = true;
             this.updateBrightBtn.Location = new System.Drawing.Point(359, 434);
-            this.updateBrightBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.updateBrightBtn.Margin = new System.Windows.Forms.Padding(4);
             this.updateBrightBtn.Name = "updateBrightBtn";
             this.updateBrightBtn.Size = new System.Drawing.Size(241, 28);
             this.updateBrightBtn.TabIndex = 13;
@@ -354,7 +354,7 @@ namespace visual_lab_3
             this.Controls.Add(this.leftBoundaryValueTb);
             this.Controls.Add(this.leftBoundaryTrack);
             this.Controls.Add(this.brightAmountChart);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ChartsForm";
             this.Text = "Диаграммы";
             this.Load += new System.EventHandler(this.ChartsForm_Load);
