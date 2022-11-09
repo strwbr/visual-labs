@@ -339,6 +339,8 @@ namespace visual_lab_3
         {
             e.Cancel = true;
             parentForm.SetImage(originImage); // ПОД ВОПРОСОМ
+            MoveLeftBoundary(0);
+            MoveRightBoundary(255);
             this.Hide();
         }
 
