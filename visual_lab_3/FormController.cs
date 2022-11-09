@@ -476,6 +476,11 @@ namespace visual_lab_3
             {
                 //chartsForm = new ChartsForm(this);
                 chartsForm.Show();
+            } else
+            {
+                ShowWarning(
+                "Изображение отсутствует. Загрузите файл формата .mbv, воспользовавшись кнопкой \"Загрузить\".",
+                "Файл не загружен");
             }
         }
 

@@ -58,10 +58,10 @@ namespace visual_lab_3
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.overviewImagePb = new System.Windows.Forms.PictureBox();
-            this.createOverviewImageBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.openChartsBtn = new System.Windows.Forms.Button();
+            this.createOverviewImageBtn = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.shiftCodesGb.SuspendLayout();
@@ -378,18 +378,6 @@ namespace visual_lab_3
             this.overviewImagePb.TabIndex = 14;
             this.overviewImagePb.TabStop = false;
             // 
-            // createOverviewImageBtn
-            // 
-            this.createOverviewImageBtn.AutoSize = true;
-            this.createOverviewImageBtn.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.createOverviewImageBtn.Location = new System.Drawing.Point(208, 629);
-            this.createOverviewImageBtn.Name = "createOverviewImageBtn";
-            this.createOverviewImageBtn.Size = new System.Drawing.Size(378, 29);
-            this.createOverviewImageBtn.TabIndex = 15;
-            this.createOverviewImageBtn.Text = "Построить обзорное изображение";
-            this.createOverviewImageBtn.UseVisualStyleBackColor = true;
-            this.createOverviewImageBtn.Click += new System.EventHandler(this.CreateOverviewImageBtn_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -421,6 +409,18 @@ namespace visual_lab_3
             this.openChartsBtn.Text = "Построить диаграммы";
             this.openChartsBtn.UseVisualStyleBackColor = true;
             this.openChartsBtn.Click += new System.EventHandler(this.OpenChartsBtn_Click);
+            // 
+            // createOverviewImageBtn
+            // 
+            this.createOverviewImageBtn.AutoSize = true;
+            this.createOverviewImageBtn.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.createOverviewImageBtn.Location = new System.Drawing.Point(208, 629);
+            this.createOverviewImageBtn.Name = "createOverviewImageBtn";
+            this.createOverviewImageBtn.Size = new System.Drawing.Size(378, 29);
+            this.createOverviewImageBtn.TabIndex = 15;
+            this.createOverviewImageBtn.Text = "Построить обзорное изображение";
+            this.createOverviewImageBtn.UseVisualStyleBackColor = true;
+            this.createOverviewImageBtn.Click += new System.EventHandler(this.CreateOverviewImageBtn_Click);
             // 
             // FormController
             // 
@@ -495,11 +495,11 @@ namespace visual_lab_3
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.PictureBox overviewImagePb;
-        private System.Windows.Forms.Button createOverviewImageBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox lensPb;
         private System.Windows.Forms.Button openChartsBtn;
+        private System.Windows.Forms.Button createOverviewImageBtn;
     }
 }
 
