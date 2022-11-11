@@ -406,7 +406,7 @@ namespace visual_lab_3
             this.openChartsBtn.Name = "openChartsBtn";
             this.openChartsBtn.Size = new System.Drawing.Size(189, 29);
             this.openChartsBtn.TabIndex = 18;
-            this.openChartsBtn.Text = "Построить диаграммы";
+            this.openChartsBtn.Text = "Гистограмма";
             this.openChartsBtn.UseVisualStyleBackColor = true;
             this.openChartsBtn.Click += new System.EventHandler(this.OpenChartsBtn_Click);
             // 

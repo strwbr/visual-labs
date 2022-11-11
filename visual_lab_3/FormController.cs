@@ -12,8 +12,6 @@ namespace visual_lab_3
         ImageInfo imageInfo;
         // Текущее изображение, с параметрами, заданными пользователем
         public Bitmap CurrentImage { get; private set; }
-        // Пиксели, наблюдаемые на экране (со сдвигом и обрезкой)
-        ushort[] visiblePixles;
         // Верхняя граница изображения (при запуске приложения граница = 0)
         int topLines = 0;
         // Размер фрагмента, равный 50х50
@@ -22,6 +20,7 @@ namespace visual_lab_3
         ushort[] currentPixels;
         // Яркости пикселей фрагмента изображения
         ushort[] fragmentPixels;
+        // Объект формы с гистограммой
         ChartsForm chartsForm;
 
         public FormController()
@@ -49,14 +48,8 @@ namespace visual_lab_3
                 RadioButton rb = (RadioButton)scaleValueGb.Controls[i];
                 rb.CheckedChanged += ScaleValueRb_CheckedChanged;
             }
-
+            // Инициализация объекта формы с гистограммой и передача в него основной формы
             chartsForm = new ChartsForm(this);
-            chartsForm.UpdateBright += ChartsForm_ChangeBright;
-        }
-
-        private void ChartsForm_ChangeBright(Bitmap image)
-        {
-            SetImage(image);
         }
 
         /* Обработчик нажатия на кнопку "Загрузить" для загрузки файла .mbv
@@ -80,9 +73,10 @@ namespace visual_lab_3
                     currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                 // Установка полученного изображения в соответсвующее поле вывода
                 SetImage(CurrentImage);
-
+               
+                // Обновление гистограммы
                 chartsForm?.UpdateChart(CurrentImage);
-
+                
                 // Отображение имени загруженного файла
                 loadedFileLbl.Text = Path.GetFileName(path);
                 // Очистка поля с увеличенным фрагментом
@@ -115,9 +109,10 @@ namespace visual_lab_3
                             currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                         // Установка полученного изображения в соответсвующее поле вывода
                         SetImage(CurrentImage);
-
+                        
+                        // Обновление гистограммы
                         chartsForm?.UpdateChart(CurrentImage);
-
+                        
                         // Получение нового размера фрагмента
                         fragmentSize = GetFragmentSize();
                     }
@@ -188,9 +183,10 @@ namespace visual_lab_3
                            currentPixels, imageInfo.Width, imageInfo.Height - topLines, GetShiftValue());
                 // Установка полученного изображения в соответствующее поле вывода
                 SetImage(CurrentImage);
-                
+
+                // Обновление гистограммы
                 chartsForm?.UpdateChart(CurrentImage);
-                
+
                 // Отображения фрагмента (если он выбран) в соответствующем поле на форме с учетом нормирования и метода увеличения
                 if (fragmentPixels != null)
                     SetFragment(fragmentPixels, normalizeCb.Checked, interpolateCb.Checked);
@@ -452,12 +448,6 @@ namespace visual_lab_3
         {
             // Изменение свойства Image объекта displayedPicturePanel
             displayedPicturePanel.Image = img;
-            
-            //if(chartsForm!=null)
-            //{
-            //    chartsForm.UpdateChart(img);
-            //}
-            //ChangeImage?.Invoke(img, "SetImage");
         }
 
         /* Показ окна с предупреждением
@@ -469,15 +459,22 @@ namespace visual_lab_3
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-
+        /* Обработчик нажатия на кнопку "Гистограмма" для отображения окна с гистограммой
+         * Параметры: sender - объект, вызвавший событие,
+         *            e - аргумент, хранящий информацию о событии.
+         */
         private void OpenChartsBtn_Click(object sender, EventArgs e)
         {
+            // Если изображения было загружено из файла
             if (imageInfo != null)
             {
-                //chartsForm = new ChartsForm(this);
+                // Отображение формы с гистограммой
                 chartsForm.Show();
-            } else
+            }
+            // Если не было загружено
+            else
             {
+                // Показ соответствующего предупреждения
                 ShowWarning(
                 "Изображение отсутствует. Загрузите файл формата .mbv, воспользовавшись кнопкой \"Загрузить\".",
                 "Файл не загружен");
