@@ -35,7 +35,6 @@ namespace visual_lab_3
             parentForm = parent;
             // Получение исходного изображения с родительской формы
             originImage = parent.CurrentImage;
-            //UpdateChart(parentForm.CurrentImage);
 
             // Установка левого движка в положение LeftPos
             MoveLeftBoundary(LeftPos);
@@ -108,32 +107,6 @@ namespace visual_lab_3
             }
         }
 
-        /* Передвижение левого движка
-         * Параметр: x - координата по оси X, в которую необходимо установить движок
-         */
-        private void MoveLeftBoundary(int x)
-        {
-            // Установка расположения движка в точку x
-            brightAmountChart.ChartAreas[0].AxisX.StripLines[0].IntervalOffset = x;
-            // Отображения значения x - значения яркости
-            leftBrightValueTb.Text = x.ToString();
-            // Отображения количества пикселей яркости x
-            leftBrightAmountTb.Text = amountBright[x].ToString();
-        }
-
-        /* Передвижение правого движка
-         * Параметр: x - координата по оси X, в которую необходимо установить движок
-         */
-        private void MoveRightBoundary(int x)
-        {
-            // Установка расположения движка в точку x
-            brightAmountChart.ChartAreas[0].AxisX.StripLines[1].IntervalOffset = x;
-            // Отображения значения x - значения яркости
-            rightBrightValueTb.Text = x.ToString();
-            // Отображения количества пикселей яркости x
-            rightBrightAmountTb.Text = amountBright[x].ToString();
-        }
-
         /* Обновление яркостей изображения
          * Параметр: image - изображения, у которого необходимо обновить яркости
          * Возвращаемое значение: обновленное изображение 
@@ -152,21 +125,29 @@ namespace visual_lab_3
             else
             {
                 // Получение новых значений яркостей, которые расположены
-                // левее L
-                ushort newLeftBright = GetNewLeftBrightValue();
-                // правее R
-                ushort newRightBright = GetNewRightBrightValue();
+                ushort newLeftBright = GetNewLeftBrightValue(); // левее L
+                ushort newRightBright = GetNewRightBrightValue(); // правее R
                 // Если были получены новые яркости, т.е. включены соответствующие радиокнопки
                 if (newLeftBright != 9999 && newRightBright != 9999)
                 {
                     // // Получение обновленного изображения путем вызова соответствующего метода класса BrightController
-                    updatedImage = BrightController.ChangeImageBright(
-                                image,
-                                LeftPos, newLeftBright,
-                                RightPos, newRightBright);
-                } // else (newRightBright == 9999 && newLeftBright!=9999) R = 255; ...
+                    updatedImage = BrightController.ChangeImageBright(image, LeftPos, newLeftBright, RightPos, newRightBright);
+                }
             }
             return updatedImage;
+        }
+
+        /* Обработчик нажатия на кнопку "Обновить яркости изображения" для вывода нового изображения в родительской форме 
+         * Параметры: sender - объект, вызвавший событие,
+         *            e - аргумент, хранящий информацию о событии.
+         */
+        private void UpdateBrightBtn_Click(object sender, EventArgs e)
+        {
+            // Изменение яркостей исходного изображения originImage
+            Bitmap newImg = UpdateImageBright(originImage);
+            // Отображение полученного изобрежения в родительской форме
+            // путем вызова метода SetImage из класса этой формы
+            parentForm?.SetImage(newImg);
         }
 
         /* Получения режима изменения яркостей левее L
@@ -253,6 +234,142 @@ namespace visual_lab_3
             return newBright;
         }
 
+        /* Передвижение левого движка
+         * Параметр: x - координата по оси X, в которую необходимо установить движок
+         */
+        private void MoveLeftBoundary(int x)
+        {
+            // Установка расположения движка в точку x
+            brightAmountChart.ChartAreas[0].AxisX.StripLines[0].IntervalOffset = x;
+            // Отображения значения x - значения яркости
+            leftBrightValueTb.Text = x.ToString();
+            // Отображения количества пикселей яркости x
+            leftBrightAmountTb.Text = amountBright[x].ToString();
+        }
+
+        /* Передвижение правого движка
+         * Параметр: x - координата по оси X, в которую необходимо установить движок
+         */
+        private void MoveRightBoundary(int x)
+        {
+            // Установка расположения движка в точку x
+            brightAmountChart.ChartAreas[0].AxisX.StripLines[1].IntervalOffset = x;
+            // Отображения значения x - значения яркости
+            rightBrightValueTb.Text = x.ToString();
+            // Отображения количества пикселей яркости x
+            rightBrightAmountTb.Text = amountBright[x].ToString();
+        }
+
+        /* Обработчик нажатия на кнопку мыши, когда ее указатель находится на гистограмме
+         * Параметры: sender - объект, вызвавший событие,
+         *            e - аргумент, хранящий информацию о событии.
+         */
+        private void BrightAmountChart_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Получение координаты клика относительно оси X гистограммы, в которую необходимо переместить движок
+            double x = brightAmountChart.ChartAreas[0].AxisX.PixelPositionToValue(e.Location.X);
+            // Положение левого движка
+            int xL = LeftPos;
+            // Положение правого движка
+            int xR = RightPos;
+
+            // Проверка захвата движков для перемещения
+            isMoveLeftBoundary = (x > xL - 5) && (x < xL + 5);
+            isMoveRightBoundary = (x > xR - 5) && (x < xR + 5);
+
+            // Проверка случая, когда движки расположены близко друг к другу,
+            // т.е. когда оба движка были захвачены
+            if (isMoveLeftBoundary && isMoveRightBoundary)
+            {
+                // Если движок расположен на расстоянии меньше 5 от правой границы (255) области гистограммы,
+                // то его можно перемещать; иначе - нельзя
+                isMoveLeftBoundary = 255 - xR < 5;
+                // Правый движок может перемещать только, когда левый движок неподвижен, и наоборот
+                isMoveRightBoundary = !isMoveLeftBoundary;
+            }
+        }
+
+        /* Обработчик отпускания кнопки мыши, когда ее указатель находится на гистограмме
+         * Параметры: sender - объект, вызвавший событие,
+         *            e - аргумент, хранящий информацию о событии.
+         */
+        private void BrightAmountChart_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Отключение возможности перемещения для обоих движков
+            isMoveLeftBoundary = false;
+            isMoveRightBoundary = false;
+        }
+
+        /* Обработчик перемещения указателя мыши по гистограмме
+         * Параметры: sender - объект, вызвавший событие,
+         *            e - аргумент, хранящий информацию о событии.
+         */
+        private void BrightAmountChart_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Координата клика относительно оси X гистограммы, в которую необходимо переместить движок
+            int x = -1;
+            try
+            {
+                // Получение координаты x
+                x = (int)brightAmountChart.ChartAreas[0].AxisX.PixelPositionToValue(e.Location.X);
+            }
+            // Обработка исключения
+            catch (Exception)
+            {
+                // Если координата x = -1, то есть вышла за пределы гистограммы, и при этом перемещается левый движок
+                if (isMoveLeftBoundary && x == -1)
+                    // то его положение устанавливается равным 0
+                    MoveLeftBoundary(0);
+                // Если координата x = 256, то есть вышла за пределы гистограммы, и при этом перемещается правый движок
+                if (isMoveRightBoundary && x == 256)
+                    // то его положение устанавливается равным 255
+                    MoveRightBoundary(255);
+            }
+
+            // Если координата x расположена в пределах оси Х гистограммы
+            if (x >= 0 && x <= 255)
+            {
+                // Если включен режим фиксированного перемещения движков
+                if (IsFixBoundaries())
+                {
+                    // Расстояние между левым и правым движком
+                    int dx = Math.Abs(LeftPos - RightPos);
+                    // Если был захвачен левый движок и расстояние до правой границы области гистограммы меньше или равно dx
+                    // (т.е. можно передвинуть правый движок с сохранением расстояния dx между ними)
+                    if (isMoveLeftBoundary && x + dx <= 255)
+                    {
+                        // Перемещение левого движка в позицию x
+                        MoveLeftBoundary(x);
+                        // Перемещение правого движка в позицию x+dx
+                        MoveRightBoundary(x + dx);
+                    }
+                    // Если был захвачен правый движок и можно передвинуть левый движок с сохранением расстояния dx между ними
+                    else if (isMoveRightBoundary && x - dx >= 0)
+                    {
+                        // Перемещение левого движка в позицию x-dx
+                        MoveLeftBoundary(x - dx);
+                        // Перемещение правого движка в позицию x
+                        MoveRightBoundary(x);
+                    }
+                }
+                // Если режим фиксированного перемещения выключен
+                else
+                {
+                    // Если был захвачен левый движок, и при этом новая координата меньше координаты правого движка
+                    if (isMoveLeftBoundary && x <= RightPos)
+                        // Перемещение левого движка в позицию x
+                        MoveLeftBoundary(x);
+                    // Если был захвачен правый движок, и при этом новая координата больше координаты левого движка
+                    if (isMoveRightBoundary && x >= LeftPos)
+                        // Перемещение правого движка в позицию x
+                        MoveRightBoundary(x);
+                }
+            }
+        }
+
+        /* Получение статуса режима фиксированного перемещения движков */
+        private bool IsFixBoundaries() => fixCb.Checked;
+
         /* Получение статуса режима "[L, R] отображать в [0, 255]" */
         private bool NormalizeMode() => normalizeModeRb.Checked;
 
@@ -272,8 +389,6 @@ namespace visual_lab_3
                     // Включить режим "Считать равными R"
                     ((RadioButton)rightModesGb.Controls[0]).Checked = true;
             }
-            //if (GetLeftMode() != -1 && GetRightMode() != -1)
-            //    DisableNormalizeMode();
         }
 
         /* Обработчик радиокнопок выбора режима изменения яркостей правее движка R
@@ -293,21 +408,6 @@ namespace visual_lab_3
                     ((RadioButton)leftModesGb.Controls[0]).Checked = true;
 
             }
-            //if (GetLeftMode() != -1 && GetRightMode() != -1)
-            //    DisableNormalizeMode();
-        }
-
-        /* Обработчик нажатия на кнопку "Обновить яркости изображения" для вывода нового изображения в родительской форме 
-         * Параметры: sender - объект, вызвавший событие,
-         *            e - аргумент, хранящий информацию о событии.
-         */
-        private void UpdateBrightBtn_Click(object sender, EventArgs e)
-        {
-            // Изменение яркостей исходного изображения originImage
-            Bitmap newImg = UpdateImageBright(originImage);
-            // Отображение полученного изобрежения в родительской форме
-            // путем вызова метода SetImage из класса этой формы
-            parentForm?.SetImage(newImg);
         }
 
         /* Обоработчик режима "[L, R] отображать в [0, 255]"
@@ -351,132 +451,6 @@ namespace visual_lab_3
             // Отключение соответстующей радикнопки
             normalizeModeRb.Checked = false;
         }
-
-        /* Обработчик нажатия на кнопку мыши, когда ее указатель находится на гистограмме
-         * Параметры: sender - объект, вызвавший событие,
-         *            e - аргумент, хранящий информацию о событии.
-         */
-        private void BrightAmountChart_MouseDown(object sender, MouseEventArgs e)
-        {
-            // Получение координаты клика относительно оси X гистограммы, в которую необходимо переместить движок
-            double x = brightAmountChart.ChartAreas[0].AxisX.PixelPositionToValue(e.Location.X);
-            // Положение левого движка
-            int xL = LeftPos;
-            // Положение правого движка
-            int xR = RightPos;
-
-            // Проверка захвата движков для пермещения
-            isMoveLeftBoundary = (x > xL - 5) && (x < xL + 5);
-            isMoveRightBoundary = (x > xR - 5) && (x < xR + 5);
-
-            // Проверка случая, когда движки расположены близко друг к другу,
-            // т.е. когда оба движка были захвачены
-            if (isMoveLeftBoundary && isMoveRightBoundary)
-            {
-                // Флаг передвижения левого движка
-                // Если движок расположен на расстоянии меньше 5 от правой границы (255) области гистограммы,
-                // то его можно перемещать; иначе - нельзя
-                isMoveLeftBoundary = 255 - xR < 5;
-                // Правый движок может перемещать только, когда левый движок неподвижен, и наоборот
-                isMoveRightBoundary = !isMoveLeftBoundary;
-
-                //isMoveLeftBoundary = isMoveRightBoundary = false;
-                //if (xL < 5) isMoveRightBoundary = true;
-                //else if (255 - xR < 5) isMoveLeftBoundary = true;
-                //else isMoveRightBoundary = true;
-            }
-        }
-
-        /* Обработчик отпускания кнопки мыши, когда ее указатель находится на гистограмме
-         * Параметры: sender - объект, вызвавший событие,
-         *            e - аргумент, хранящий информацию о событии.
-         */
-        private void BrightAmountChart_MouseUp(object sender, MouseEventArgs e)
-        {
-            // Отключение возможности перемещения для обоих движков
-            isMoveLeftBoundary = false;
-            isMoveRightBoundary = false;
-        }
-
-        /* Обработчик перемещения указателя мыши по гистограмме
-         * Параметры: sender - объект, вызвавший событие,
-         *            e - аргумент, хранящий информацию о событии.
-         */
-        private void BrightAmountChart_MouseMove(object sender, MouseEventArgs e)
-        {
-            // Координата клика относительно оси X гистограммы, в которую необходимо переместить движок
-            int x = -1;
-            try
-            {
-                // Получение координаты x
-                x = (int)brightAmountChart.ChartAreas[0].AxisX.PixelPositionToValue(e.Location.X);
-            }
-            // Обработка исключения
-            catch (Exception)
-            {
-                //MessageBox.Show(ex.ToString(), "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                // Если координата x = -1, то есть вышла за пределы гистограммы, и при этом перемещается левый движок
-                if (isMoveLeftBoundary && x == -1)
-                {
-                    // то его положение устанавливается равным 0
-                    MoveLeftBoundary(0);
-                }
-                // Если координата x = 256, то есть вышла за пределы гистограммы, и при этом перемещается правый движок
-                if (isMoveRightBoundary && x == 256)
-                {
-                    // то его положение устанавливается равным 255
-                    MoveRightBoundary(255);
-                }
-            }
-
-            // Если координата x расположена в пределах оси Х гистограммы
-            if (x >= 0 && x <= 255)
-            {
-                // Если включен режим фиксированного перемещения движков
-                if (IsFixBoundaries())
-                {
-                    // Расстояние между левым и правым движком
-                    int dx = Math.Abs(LeftPos - RightPos);
-                    // Если движки перемещаются с помощью левого движка (т.е. был захвачен левый движок)
-                    // и расстояние до правой границы области гистограммы меньше или равно dx
-                    // (т.е.можно передвинуть правый движок с слхранением расстояния dx между ними)
-                    if (isMoveLeftBoundary && x + dx <= 255)
-                    {
-                        // Перемещение левого движка в позицию x
-                        MoveLeftBoundary(x);
-                        // Перемещение правого движка в позицию x+dx
-                        MoveRightBoundary(x + dx);
-                    }
-                    // Если был захвачен правый движок и можно передвинуть левый движок с сохранением расстояния dx между ними
-                    else if (isMoveRightBoundary && x - dx >= 0)
-                    {
-                        // Перемещение левого движка в позицию x-dx
-                        MoveLeftBoundary(x - dx);
-                        // Перемещение правого движка в позицию x
-                        MoveRightBoundary(x);
-                    }
-                }
-                // Если режим фиксированного перемещения выключен
-                else
-                {
-                    // Если был захвачен левый движок, и при этом новая координата меньше координаты правого движка
-                    if (isMoveLeftBoundary && x <= RightPos)
-                    {
-                        // Перемещение левого движка в позицию x
-                        MoveLeftBoundary(x);
-                    }
-                    // Если был захвачен правый движок, и при этом новая координата больше координаты левого движка
-                    if (isMoveRightBoundary && x >= LeftPos)
-                    {
-                        // Перемещение правого движка в позицию x
-                        MoveRightBoundary(x);
-                    }
-                }
-            }
-        }
-
-        /* Получение статуса режима фиксированного пермещения движков */
-        private bool IsFixBoundaries() => fixCb.Checked;
 
         /* Обработчик закрытия формы
          * Параметры: sender - объект, вызвавший событие,
